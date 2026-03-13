@@ -1,0 +1,46 @@
+---
+title: "Errors"
+description: "Error codes and handling in the Zenedu API"
+---
+
+## HTTP status codes
+
+| Code | Description |
+|------|-------------|
+| `200` | Success |
+| `201` | Resource created |
+| `204` | Success, no content |
+| `401` | Unauthorized — invalid or missing token |
+| `403` | Forbidden — lacks permission or requires Pro subscription |
+| `404` | Not found — resource does not exist |
+| `413` | Payload too large — file exceeds size limit |
+| `422` | Validation error — check the `errors` field for details |
+| `429` | Rate limit exceeded — check the `Retry-After` header |
+| `502` | Bad gateway — external service (Telegram) failed |
+
+## Error response format
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "The field_name is required."
+    ]
+  }
+}
+```
+
+## Rate limiting
+
+API requests are subject to rate limiting. When the limit is exceeded, the API returns a `429` status code with a `Retry-After` header indicating how many seconds to wait before retrying.
+
+## Telegram-specific errors
+
+When sending messages through the API, Telegram may return errors:
+
+| Code | Meaning |
+|------|---------|
+| `422` | Subscriber is blocked or inactive |
+| `429` | Telegram rate limit — respect the `Retry-After` header |
+| `502` | Telegram authentication failed or message delivery failed |

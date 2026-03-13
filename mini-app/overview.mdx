@@ -1,0 +1,68 @@
+---
+title: "Mini App API"
+description: "API reference for Telegram Mini App frontends integrated with Zenedu"
+---
+
+The Mini App API powers Telegram Mini App frontends connected to Zenedu bots. It provides endpoints for authentication, product browsing, lesson delivery, subscription management, offers, affiliate stats, and support.
+
+## Base URL
+
+```
+https://app.zenedu.com
+```
+
+## Authentication flow
+
+The API uses a two-stage authentication flow:
+
+### Stage 1: Exchange Telegram initData for a JWT
+
+When a subscriber opens the Mini App, the Telegram client provides `initData` (a signed query string). Send it to the auth endpoint to receive a JWT token:
+
+```bash
+curl -X POST https://app.zenedu.com/api/mini-apps/auth \
+  -H "X-Mini-App-Id: YOUR_MINI_APP_CODE" \
+  -H "Authorization: tma TELEGRAM_INIT_DATA_RAW"
+```
+
+The server validates the `initData` signature against the bot token. On success, it returns a JWT and the full app configuration (theme, menus, products, subscriber profile, etc.).
+
+### Stage 2: Use the JWT for subsequent requests
+
+Pass the JWT as a Bearer token on all following requests:
+
+```bash
+curl -X GET https://app.zenedu.com/api/mini-apps/products/42 \
+  -H "X-Mini-App-Id: YOUR_MINI_APP_CODE" \
+  -H "Authorization: Bearer JWT_TOKEN"
+```
+
+## Required headers
+
+Every request to the Mini App API must include:
+
+| Header | Description |
+| --- | --- |
+| `X-Mini-App-Id` | Identifies the mini app and associated bot. Obtain this value from the Zenedu dashboard. |
+| `Authorization` | `tma {initDataRaw}` for the auth endpoint, `Bearer {token}` for all other endpoints. |
+
+<Warning>
+  Requests without the `X-Mini-App-Id` header will be rejected.
+</Warning>
+
+## Token lifetime
+
+JWT tokens are valid for **30 days**. After expiration, repeat Stage 1 to obtain a fresh token.
+
+## Localization
+
+Responses are localized according to the bot's configured locale. The current locale is returned in the `data.locale` field of the auth response.
+
+## Side effects
+
+Some endpoints trigger Telegram messages rather than returning content directly:
+
+- **GET /api/mini-apps/steps/{stepId}** -- Sends lesson step content to the subscriber's Telegram chat.
+- **POST /api/mini-apps/support-click** -- Sends a support message to the subscriber via Telegram.
+
+These endpoints return `{ "success": true }` to confirm the action was dispatched.

@@ -1,97 +1,49 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Zenedu API"
+description: "API documentation for the Zenedu educational platform"
 ---
 
-## Setting up
+## Overview
 
-Get your documentation site up and running in minutes.
+Zenedu provides two APIs for integrating with the platform:
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<Columns>
+  <Card title="API v1" icon="code" href="/api-reference/introduction">
+    Server-to-server API for managing bots, subscribers, orders, products, and offers. Uses Sanctum Bearer token authentication.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Mini App API" icon="mobile" href="/mini-app/overview">
+    API for Telegram Mini App frontend. Uses JWT authentication with Telegram initData validation.
   </Card>
 </Columns>
 
-## Create beautiful pages
+## Quick start
 
-Everything you need to create world-class documentation.
+<Steps>
+  <Step title="Get your API token">
+    Generate an API token in your Zenedu dashboard under account settings.
+  </Step>
+  <Step title="Make your first request">
+    ```bash
+    curl -X GET https://app.zenedu.com/api/v1/me \
+      -H "Authorization: Bearer YOUR_API_TOKEN" \
+      -H "Accept: application/json"
+    ```
+  </Step>
+  <Step title="Explore endpoints">
+    Browse the [API v1 reference](/api-reference/introduction) to see all available endpoints.
+  </Step>
+</Steps>
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Base URL
 
-## Need inspiration?
+All API v1 requests should be made to:
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+```
+https://app.zenedu.com/api/v1
+```
+
+Mini App API requests use:
+
+```
+https://app.zenedu.com/api/mini-apps
+```

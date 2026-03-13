@@ -1,0 +1,971 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Zenedu Mini App API",
+    "description": "API for Telegram Mini App frontends integrated with Zenedu bots. Provides authentication, product browsing, lesson delivery, subscription management, offers, affiliate stats, and support.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://app.zenedu.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": [],
+      "miniAppId": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Exchange Telegram initData for a JWT token"
+    },
+    {
+      "name": "Products",
+      "description": "Browse products and lesson progress"
+    },
+    {
+      "name": "Steps",
+      "description": "Display step content to the subscriber via Telegram"
+    },
+    {
+      "name": "Subscriptions",
+      "description": "List and manage recurring subscriptions"
+    },
+    {
+      "name": "Offers",
+      "description": "Browse available offers"
+    },
+    {
+      "name": "Affiliates",
+      "description": "Affiliate program information and statistics"
+    },
+    {
+      "name": "Support",
+      "description": "Trigger support interactions"
+    }
+  ],
+  "paths": {
+    "/api/mini-apps/auth": {
+      "post": {
+        "operationId": "miniAppAuth",
+        "summary": "Authenticate with Telegram initData",
+        "description": "Exchanges Telegram Web App `initData` for a JWT token. The token is valid for 30 days. This is the first step in the two-stage authentication flow.",
+        "tags": ["Authentication"],
+        "security": [
+          {
+            "miniAppId": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XMiniAppId"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "Telegram initData prefixed with `tma `. Example: `tma query_id=...&user=...&hash=...`",
+            "schema": {
+              "type": "string",
+              "example": "tma query_id=AAE1234&user=%7B%22id%22%3A123456%7D&auth_date=1700000000&hash=abc123"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authentication successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "token", "data"],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "JWT token valid for 30 days",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/AuthData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/mini-apps/products/{productId}": {
+      "get": {
+        "operationId": "getProduct",
+        "summary": "Get product details with progress",
+        "description": "Returns full product details including the lesson list and the subscriber's completion progress.",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XMiniAppId"
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "description": "Product ID",
+            "schema": {
+              "type": "integer",
+              "example": 42
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "product"],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "product": {
+                      "$ref": "#/components/schemas/ProductDetail"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/mini-apps/steps/{stepId}": {
+      "get": {
+        "operationId": "showStep",
+        "summary": "Display a step",
+        "description": "Sends the step content to the subscriber's Telegram chat. The response confirms the action; the actual content is delivered via Telegram message.",
+        "tags": ["Steps"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XMiniAppId"
+          },
+          {
+            "name": "stepId",
+            "in": "path",
+            "required": true,
+            "description": "Step ID",
+            "schema": {
+              "type": "integer",
+              "example": 101
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Step content sent to Telegram",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/mini-apps/subscriptions": {
+      "get": {
+        "operationId": "listSubscriptions",
+        "summary": "List subscriptions",
+        "description": "Returns all subscriptions for the authenticated subscriber.",
+        "tags": ["Subscriptions"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XMiniAppId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subscription list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "subscriptions"],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "subscriptions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Subscription"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/mini-apps/subscriptions/{subscriptionId}/cancel": {
+      "post": {
+        "operationId": "cancelSubscription",
+        "summary": "Cancel a subscription",
+        "description": "Cancels the specified subscription and returns the updated subscription list.",
+        "tags": ["Subscriptions"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XMiniAppId"
+          },
+          {
+            "name": "subscriptionId",
+            "in": "path",
+            "required": true,
+            "description": "Subscription ID",
+            "schema": {
+              "type": "integer",
+              "example": 7
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subscription cancelled; updated list returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "subscriptions"],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "subscriptions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Subscription"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/mini-apps/offers": {
+      "get": {
+        "operationId": "listOffers",
+        "summary": "List offers",
+        "description": "Returns all available offers for the bot.",
+        "tags": ["Offers"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XMiniAppId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Offer list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "offers"],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "offers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Offer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/mini-apps/offers/{offerId}": {
+      "get": {
+        "operationId": "getOffer",
+        "summary": "Get offer details",
+        "description": "Returns details for a single offer.",
+        "tags": ["Offers"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XMiniAppId"
+          },
+          {
+            "name": "offerId",
+            "in": "path",
+            "required": true,
+            "description": "Offer ID",
+            "schema": {
+              "type": "integer",
+              "example": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Offer details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "offer"],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "offer": {
+                      "$ref": "#/components/schemas/Offer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/mini-apps/affiliates": {
+      "get": {
+        "operationId": "getAffiliates",
+        "summary": "Get affiliate info and stats",
+        "description": "Returns the affiliate program description, referral links, and statistics for the authenticated subscriber.",
+        "tags": ["Affiliates"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XMiniAppId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Affiliate information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["success", "title", "description", "links", "statistic"],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Affiliate program title",
+                      "example": "Referral Program"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Affiliate program description (may contain HTML)",
+                      "example": "Invite friends and earn 20% commission on every sale."
+                    },
+                    "links": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AffiliateLink"
+                      }
+                    },
+                    "statistic": {
+                      "$ref": "#/components/schemas/AffiliateStatistic"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/mini-apps/support-click": {
+      "post": {
+        "operationId": "supportClick",
+        "summary": "Handle support button click",
+        "description": "Triggers a support message sent to the subscriber via Telegram. Use this when the user taps the support button in the Mini App.",
+        "tags": ["Support"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/XMiniAppId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Support message sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT token obtained from the `/api/mini-apps/auth` endpoint."
+      },
+      "miniAppId": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Mini-App-Id",
+        "description": "Mini App identifier. Required on every request."
+      }
+    },
+    "parameters": {
+      "XMiniAppId": {
+        "name": "X-Mini-App-Id",
+        "in": "header",
+        "required": true,
+        "description": "Mini App identifier. Identifies the mini app and associated bot.",
+        "schema": {
+          "type": "string",
+          "example": "abc123"
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Authentication failed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["success", "message", "error"],
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                },
+                "error": {
+                  "type": "string",
+                  "description": "Machine-readable error code",
+                  "example": "invalid_init_data"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "SuccessResponse": {
+        "type": "object",
+        "required": ["success"],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "AuthData": {
+        "type": "object",
+        "description": "Initial data returned after authentication, including theme, onboarding, subscriber profile, bot info, navigation menus, and content lists.",
+        "properties": {
+          "locale": {
+            "type": "string",
+            "description": "Bot locale code",
+            "example": "en"
+          },
+          "isDisabled": {
+            "type": "boolean",
+            "description": "Whether the mini app is disabled by the bot owner",
+            "example": false
+          },
+          "theme": {
+            "$ref": "#/components/schemas/Theme"
+          },
+          "onboarding": {
+            "type": "array",
+            "description": "Onboarding slides shown on first visit",
+            "items": {
+              "$ref": "#/components/schemas/OnboardingSlide"
+            }
+          },
+          "subscriber": {
+            "$ref": "#/components/schemas/Subscriber"
+          },
+          "bot": {
+            "$ref": "#/components/schemas/Bot"
+          },
+          "menu": {
+            "type": "array",
+            "description": "Main navigation menu items",
+            "items": {
+              "$ref": "#/components/schemas/MenuItem"
+            }
+          },
+          "profile": {
+            "type": "array",
+            "description": "Profile section menu items",
+            "items": {
+              "$ref": "#/components/schemas/MenuItem"
+            }
+          },
+          "products": {
+            "type": "array",
+            "description": "Available products",
+            "items": {
+              "$ref": "#/components/schemas/ProductSummary"
+            }
+          },
+          "groups": {
+            "type": "array",
+            "description": "Available groups",
+            "items": {
+              "type": "object"
+            }
+          },
+          "channels": {
+            "type": "array",
+            "description": "Available channels",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "Theme": {
+        "type": "object",
+        "description": "Mini app theme configuration",
+        "properties": {
+          "color": {
+            "type": "string",
+            "description": "Primary theme color (hex)",
+            "example": "#6366F1"
+          },
+          "appearance": {
+            "type": "string",
+            "description": "Color scheme",
+            "enum": ["light", "dark", "system"],
+            "example": "system"
+          },
+          "disableBranding": {
+            "type": "boolean",
+            "description": "Whether Zenedu branding is hidden",
+            "example": false
+          }
+        }
+      },
+      "OnboardingSlide": {
+        "type": "object",
+        "description": "A single onboarding slide",
+        "properties": {
+          "image": {
+            "type": "string",
+            "nullable": true,
+            "description": "Image URL",
+            "example": "https://app.zenedu.com/storage/onboarding/slide1.jpg"
+          },
+          "title": {
+            "type": "string",
+            "description": "Slide title",
+            "example": "Welcome!"
+          },
+          "description": {
+            "type": "string",
+            "description": "Slide description",
+            "example": "Browse courses and track your progress."
+          },
+          "button": {
+            "type": "string",
+            "description": "Button label",
+            "example": "Next"
+          }
+        }
+      },
+      "Subscriber": {
+        "type": "object",
+        "description": "Authenticated subscriber profile",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Internal subscriber ID",
+            "example": 1234
+          },
+          "telegram_id": {
+            "type": "integer",
+            "description": "Telegram user ID",
+            "example": 567890
+          },
+          "first_name": {
+            "type": "string",
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "nullable": true,
+            "example": "Doe"
+          },
+          "username": {
+            "type": "string",
+            "nullable": true,
+            "example": "johndoe"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true,
+            "example": "+1234567890"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "example": "john@example.com"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true,
+            "description": "Avatar URL",
+            "example": "https://app.zenedu.com/storage/avatars/1234.jpg"
+          }
+        }
+      },
+      "Bot": {
+        "type": "object",
+        "description": "Bot information",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Bot display name",
+            "example": "My Course Bot"
+          },
+          "username": {
+            "type": "string",
+            "description": "Telegram bot username",
+            "example": "my_course_bot"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true,
+            "description": "Bot avatar URL",
+            "example": "https://app.zenedu.com/storage/bots/avatar.jpg"
+          }
+        }
+      },
+      "MenuItem": {
+        "type": "object",
+        "description": "Navigation menu item",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Display label",
+            "example": "My Courses"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Icon identifier",
+            "example": "book"
+          },
+          "type": {
+            "type": "string",
+            "description": "Item type",
+            "example": "products"
+          },
+          "link": {
+            "type": "string",
+            "nullable": true,
+            "description": "URL for external link items",
+            "example": null
+          }
+        }
+      },
+      "ProductSummary": {
+        "type": "object",
+        "description": "Product summary returned in the auth response",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 42
+          },
+          "name": {
+            "type": "string",
+            "example": "Python Basics"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "example": "Learn Python from scratch"
+          },
+          "cover_url": {
+            "type": "string",
+            "nullable": true,
+            "example": "https://app.zenedu.com/storage/products/cover.jpg"
+          }
+        }
+      },
+      "ProductDetail": {
+        "type": "object",
+        "description": "Full product details with lesson list and progress",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 42
+          },
+          "name": {
+            "type": "string",
+            "example": "Python Basics"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "example": "Learn Python from scratch"
+          },
+          "cover_url": {
+            "type": "string",
+            "nullable": true,
+            "example": "https://app.zenedu.com/storage/products/cover.jpg"
+          },
+          "access": {
+            "type": "boolean",
+            "description": "Whether the subscriber has access to this product",
+            "example": true
+          },
+          "lessons_has_covers": {
+            "type": "boolean",
+            "description": "Whether lessons in this product have cover images",
+            "example": true
+          },
+          "lessons_count": {
+            "type": "integer",
+            "description": "Total number of lessons",
+            "example": 12
+          },
+          "completed_count": {
+            "type": "integer",
+            "description": "Number of completed lessons",
+            "example": 5
+          },
+          "progress": {
+            "type": "number",
+            "description": "Completion percentage (0-100)",
+            "example": 41.67
+          },
+          "days_left": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Days remaining for time-limited access, or null for unlimited",
+            "example": 30
+          },
+          "lessons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Lesson"
+            }
+          }
+        }
+      },
+      "Lesson": {
+        "type": "object",
+        "description": "A single lesson within a product",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 101
+          },
+          "order": {
+            "type": "integer",
+            "description": "Display order",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Introduction to Variables"
+          },
+          "module_name": {
+            "type": "string",
+            "nullable": true,
+            "description": "Module or section name",
+            "example": "Module 1: Basics"
+          },
+          "cover_url": {
+            "type": "string",
+            "nullable": true,
+            "example": "https://app.zenedu.com/storage/lessons/cover.jpg"
+          },
+          "is_opened": {
+            "type": "boolean",
+            "description": "Whether the lesson is unlocked for the subscriber",
+            "example": true
+          },
+          "is_completed": {
+            "type": "boolean",
+            "description": "Whether the subscriber has completed this lesson",
+            "example": false
+          }
+        }
+      },
+      "Subscription": {
+        "type": "object",
+        "description": "A recurring subscription",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 7
+          },
+          "name": {
+            "type": "string",
+            "description": "Subscription plan name",
+            "example": "Pro Monthly"
+          },
+          "date": {
+            "type": "string",
+            "description": "Subscription start or renewal date",
+            "example": "2025-01-15"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "terminated", "cancelled"],
+            "description": "Current subscription status",
+            "example": "active"
+          },
+          "price": {
+            "type": "string",
+            "description": "Formatted price",
+            "example": "$9.99"
+          },
+          "price_period": {
+            "type": "string",
+            "description": "Billing period",
+            "example": "month"
+          },
+          "image": {
+            "type": "string",
+            "nullable": true,
+            "description": "Subscription image URL",
+            "example": "https://app.zenedu.com/storage/subscriptions/pro.jpg"
+          }
+        }
+      },
+      "Offer": {
+        "type": "object",
+        "description": "A purchasable offer",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 5
+          },
+          "name": {
+            "type": "string",
+            "example": "Full Course Access"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "example": "Get lifetime access to all courses"
+          },
+          "price": {
+            "type": "string",
+            "description": "Formatted price",
+            "example": "$49.00"
+          },
+          "cover_url": {
+            "type": "string",
+            "nullable": true,
+            "example": "https://app.zenedu.com/storage/offers/cover.jpg"
+          },
+          "subscribers": {
+            "type": "integer",
+            "description": "Number of subscribers who purchased this offer",
+            "example": 128
+          }
+        }
+      },
+      "AffiliateLink": {
+        "type": "object",
+        "description": "An affiliate referral link",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Link label",
+            "example": "Main referral link"
+          },
+          "url": {
+            "type": "string",
+            "description": "Referral URL",
+            "example": "https://t.me/my_course_bot?start=ref_abc123"
+          }
+        }
+      },
+      "AffiliateStatistic": {
+        "type": "object",
+        "description": "Affiliate performance statistics",
+        "properties": {
+          "referrals": {
+            "type": "integer",
+            "description": "Total number of referrals",
+            "example": 15
+          },
+          "balance": {
+            "type": "string",
+            "description": "Current affiliate balance (formatted)",
+            "example": "$120.50"
+          }
+        }
+      }
+    }
+  }
+}

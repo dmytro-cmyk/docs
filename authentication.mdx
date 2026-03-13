@@ -1,0 +1,58 @@
+---
+title: "Authentication"
+description: "How to authenticate with the Zenedu API"
+---
+
+## API v1 authentication
+
+API v1 uses [Laravel Sanctum](https://laravel.com/docs/sanctum) Bearer tokens.
+
+### Getting your token
+
+Generate an API token in your Zenedu dashboard under account settings. The token is displayed once — store it securely.
+
+### Using the token
+
+Include the token in the `Authorization` header of every request:
+
+```bash
+curl -X GET https://app.zenedu.com/api/v1/bots \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Accept: application/json"
+```
+
+<Warning>
+  The `Accept: application/json` header is required for all API v1 requests. Requests without this header will be rejected.
+</Warning>
+
+### Pro features
+
+Some endpoints require an active Pro subscription. These are marked with a **Pro** badge in the documentation. Calling a Pro endpoint without an active subscription returns a `403` error.
+
+---
+
+## Mini App authentication
+
+The Mini App API uses a two-stage authentication flow:
+
+### Stage 1: exchange Telegram initData for JWT
+
+```bash
+curl -X POST https://app.zenedu.com/api/mini-apps/auth \
+  -H "X-Mini-App-Id: YOUR_MINI_APP_CODE" \
+  -H "Authorization: tma TELEGRAM_INIT_DATA_RAW"
+```
+
+The response includes a JWT token valid for 30 days.
+
+### Stage 2: use the JWT token
+
+```bash
+curl -X GET https://app.zenedu.com/api/mini-apps/offers \
+  -H "X-Mini-App-Id: YOUR_MINI_APP_CODE" \
+  -H "Authorization: Bearer JWT_TOKEN"
+```
+
+<Note>
+  The `X-Mini-App-Id` header is required for all Mini App API requests. It identifies the mini app and associated bot.
+</Note>

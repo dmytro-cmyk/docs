@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Zenedu API",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#6366F1",
+    "light": "#818CF8",
+    "dark": "#4F46E5"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -17,71 +17,148 @@
             "group": "Getting started",
             "pages": [
               "index",
-              "quickstart",
-              "development"
-            ]
-          },
-          {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "authentication",
+              "errors"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API v1",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Overview",
             "pages": [
               "api-reference/introduction"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "User",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/user/me"
+            ]
+          },
+          {
+            "group": "Bots",
+            "pages": [
+              "api-reference/bots/list"
+            ]
+          },
+          {
+            "group": "Subscribers",
+            "pages": [
+              "api-reference/subscribers/list",
+              "api-reference/subscribers/get",
+              "api-reference/subscribers/send-message",
+              "api-reference/subscribers/add-funnel",
+              "api-reference/subscribers/add-tags",
+              "api-reference/subscribers/grant-offer",
+              "api-reference/subscribers/revoke-offer",
+              "api-reference/subscribers/update-notes"
+            ]
+          },
+          {
+            "group": "Orders",
+            "pages": [
+              "api-reference/orders/list"
+            ]
+          },
+          {
+            "group": "Products",
+            "pages": [
+              "api-reference/products/list"
+            ]
+          },
+          {
+            "group": "Funnels",
+            "pages": [
+              "api-reference/funnels/list"
+            ]
+          },
+          {
+            "group": "Offers",
+            "pages": [
+              "api-reference/offers/list"
+            ]
+          },
+          {
+            "group": "Links",
+            "pages": [
+              "api-reference/links/offer-link",
+              "api-reference/links/funnel-link"
+            ]
+          },
+          {
+            "group": "Files",
+            "pages": [
+              "api-reference/files/download"
+            ]
+          },
+          {
+            "group": "Zapier",
+            "pages": [
+              "api-reference/zapier/create-webhook",
+              "api-reference/zapier/delete-webhook"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Mini App API",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "mini-app/overview"
+            ]
+          },
+          {
+            "group": "Authentication",
+            "pages": [
+              "mini-app/auth"
+            ]
+          },
+          {
+            "group": "Products",
+            "pages": [
+              "mini-app/products/show"
+            ]
+          },
+          {
+            "group": "Steps",
+            "pages": [
+              "mini-app/steps/show"
+            ]
+          },
+          {
+            "group": "Subscriptions",
+            "pages": [
+              "mini-app/subscriptions/list",
+              "mini-app/subscriptions/cancel"
+            ]
+          },
+          {
+            "group": "Offers",
+            "pages": [
+              "mini-app/offers/list",
+              "mini-app/offers/show"
+            ]
+          },
+          {
+            "group": "Affiliates",
+            "pages": [
+              "mini-app/affiliates/show"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "mini-app/support/click"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -91,32 +168,21 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@zenedu.com"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+    ]
+  },
+  "api": {
+    "baseUrl": "https://app.zenedu.com",
+    "auth": {
+      "method": "bearer"
     }
   },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
+  "openapi": [
+    "/api-reference/openapi.json",
+    "/mini-app/openapi.json"
+  ],
   "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    "socials": {}
   }
 }

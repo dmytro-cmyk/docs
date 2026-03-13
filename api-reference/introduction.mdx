@@ -1,33 +1,65 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "API v1"
+description: "Zenedu REST API for managing bots, subscribers, products, funnels, offers, and orders"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Base URL
 
-## Welcome
+All API v1 endpoints use the following base URL:
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+```
+https://app.zenedu.com/api/v1
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+API v1 uses Bearer token authentication via Laravel Sanctum. Include your token in every request:
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+```bash
+curl -X GET https://app.zenedu.com/api/v1/bots \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Accept: application/json"
 ```
+
+<Warning>
+  The `Accept: application/json` header is required for all API v1 requests.
+</Warning>
+
+Generate an API token in your Zenedu dashboard under account settings. The token is shown only once -- store it securely.
+
+## Pro endpoints
+
+Some endpoints require an active Pro subscription. These are marked with **(Pro)** in the documentation. Calling a Pro endpoint without an active subscription returns `403 Forbidden`.
+
+## Pagination
+
+List endpoints return paginated responses with `data`, `links`, and `meta` fields. Use the `per_page` query parameter to control page size (default: 30).
+
+## Available resources
+
+<CardGroup cols={2}>
+  <Card title="User" icon="user" href="/api-reference/user/me">
+    Get your profile
+  </Card>
+  <Card title="Bots" icon="robot" href="/api-reference/bots/list">
+    List your bots
+  </Card>
+  <Card title="Subscribers" icon="users" href="/api-reference/subscribers/list">
+    Manage bot subscribers
+  </Card>
+  <Card title="Orders" icon="receipt" href="/api-reference/orders/list">
+    View orders
+  </Card>
+  <Card title="Products" icon="box" href="/api-reference/products/list">
+    List products
+  </Card>
+  <Card title="Funnels" icon="filter" href="/api-reference/funnels/list">
+    List funnels
+  </Card>
+  <Card title="Offers" icon="tag" href="/api-reference/offers/list">
+    List offers
+  </Card>
+  <Card title="Links" icon="link" href="/api-reference/links/offer-link">
+    Generate payment and invite links
+  </Card>
+</CardGroup>
