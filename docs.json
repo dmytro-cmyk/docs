@@ -102,61 +102,6 @@
             ]
           }
         ]
-      },
-      {
-        "tab": "Mini App API",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "mini-app/overview"
-            ]
-          },
-          {
-            "group": "Authentication",
-            "pages": [
-              "mini-app/auth"
-            ]
-          },
-          {
-            "group": "Products",
-            "pages": [
-              "mini-app/products/show"
-            ]
-          },
-          {
-            "group": "Steps",
-            "pages": [
-              "mini-app/steps/show"
-            ]
-          },
-          {
-            "group": "Subscriptions",
-            "pages": [
-              "mini-app/subscriptions/list",
-              "mini-app/subscriptions/cancel"
-            ]
-          },
-          {
-            "group": "Offers",
-            "pages": [
-              "mini-app/offers/list",
-              "mini-app/offers/show"
-            ]
-          },
-          {
-            "group": "Affiliates",
-            "pages": [
-              "mini-app/affiliates/show"
-            ]
-          },
-          {
-            "group": "Support",
-            "pages": [
-              "mini-app/support/click"
-            ]
-          }
-        ]
       }
     ]
   },
@@ -179,8 +124,7 @@
     }
   },
   "openapi": [
-    "/api-reference/openapi.json",
-    "/mini-app/openapi.json"
+    "/api-reference/openapi.json"
   ],
   "footer": {
     "socials": {}

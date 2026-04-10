@@ -5,16 +5,11 @@ description: "API documentation for the Zenedu educational platform"
 
 ## Overview
 
-Zenedu provides two APIs for integrating with the platform:
+Zenedu provides a server-to-server API for integrating with the platform:
 
-<Columns>
-  <Card title="API v1" icon="code" href="/api-reference/introduction">
-    Server-to-server API for managing bots, subscribers, orders, products, and offers. Uses Sanctum Bearer token authentication.
-  </Card>
-  <Card title="Mini App API" icon="mobile" href="/mini-app/overview">
-    API for Telegram Mini App frontend. Uses JWT authentication with Telegram initData validation.
-  </Card>
-</Columns>
+<Card title="API v1" icon="code" href="/api-reference/introduction">
+  Manage bots, subscribers, orders, products, and offers. Uses Sanctum Bearer token authentication.
+</Card>
 
 ## Quick start
 
@@ -40,10 +35,4 @@ All API v1 requests should be made to:
 
 ```
 https://app.zenedu.com/api/v1
-```
-
-Mini App API requests use:
-
-```
-https://app.zenedu.com/api/mini-apps
 ```
