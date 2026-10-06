@@ -523,7 +523,7 @@
     }
   },
   "openapi": [
-    "/api-reference/openapi.json"
+    "api-reference/openapi.json"
   ],
   "footer": {
     "socials": {}
