@@ -97,8 +97,11 @@ Affiliate, Mini-app, Web, Folders.
 - **Fixed value sets → `enum`.** If a field (query param or body) accepts only a specific set of values
   — the code uses `Rule::in(...)`, a model's constants, a backed enum, etc. — document it as
   `{ "type": "string", "enum": [ …all allowed values… ] }` with the **complete** list. Never leave such a
-  field as a plain `string`. Keep the field description short: Mintlify renders the values from `enum`
-  automatically (the "Available options" list), so do **not** also list them in the description.
+  field as a plain `string`. Use the **exact** values from the code (e.g. product `platform` is `miniApp`,
+  not `mini_app`) — verify against the constants, don't guess casing. Mintlify renders the values from `enum`
+  automatically (the "Available options" list), so do **not** re-list them in the description when their names
+  are self-explanatory (as with the Zapier triggers); but when the values carry non-obvious meaning (e.g. a
+  step's `sending_time.option`: `never`, `stop`, …), **do** explain what each one means in the description.
   Exception: when the set is resolved at runtime rather than fixed (e.g. automation `when_event` /
   `then_action`, whose values come from the catalog endpoint), describe the source instead of hardcoding an enum.
 - **Authorization is described via 401/403 only** — there is no Pro middleware on `/api/v1`.
@@ -111,3 +114,12 @@ Affiliate, Mini-app, Web, Folders.
 - Don't publish these agent files or let them reach the build — they stay in `.mintignore`.
 - Don't add a leading slash to the `openapi` path in `docs.json`.
 - Don't reorder pages in a way that interleaves HTTP methods, and don't bury a resource's own endpoints in a same-named subgroup.
+
+## Intentionally not documented
+
+A code↔docs diff may flag the route below as "in code, not in docs". That is **deliberate** — do not re-add it:
+
+- `POST /api/v1/bot/{bot}/subscribers/{student}/products/{product}` — the route loop generates it for both
+  `products` and `funnels`, but the controller returns **404 for `products`** (only funnels can be added this way).
+  Adding a subscriber to a product is done by granting an offer (`POST …/subscribers/{student}/offers/{offer}`
+  or `…/offers`). The funnel variant (`POST …/subscribers/{student}/funnels/{product}`) is documented as `join-funnel`.

@@ -91,7 +91,6 @@
                 "group": "Product access",
                 "pages": [
                   "api-reference/subscribers/list-products",
-                  "api-reference/subscribers/add-product",
                   "api-reference/subscribers/update-product-access",
                   "api-reference/subscribers/activate-product",
                   "api-reference/subscribers/set-product-lessons",
@@ -229,7 +228,8 @@
                   "api-reference/products/steps/deactivate",
                   "api-reference/products/steps/delete-cover",
                   "api-reference/products/steps/delete-button",
-                  "api-reference/products/steps/delete"
+                  "api-reference/products/steps/delete",
+                  "api-reference/products/steps/delete-attachment"
                 ]
               }
             ]
@@ -292,7 +292,8 @@
                   "api-reference/funnels/steps/deactivate",
                   "api-reference/funnels/steps/delete-cover",
                   "api-reference/funnels/steps/delete-button",
-                  "api-reference/funnels/steps/delete"
+                  "api-reference/funnels/steps/delete",
+                  "api-reference/funnels/steps/delete-attachment"
                 ]
               }
             ]
@@ -464,6 +465,7 @@
               "api-reference/broadcasts/cancel",
               "api-reference/broadcasts/delete-messages",
               "api-reference/broadcasts/delete",
+              "api-reference/broadcasts/delete-attachment",
               {
                 "group": "Buttons",
                 "pages": [
@@ -637,6 +639,14 @@
             "pages": [
               "api-reference/zapier/create-webhook",
               "api-reference/zapier/delete-webhook"
+            ]
+          },
+          {
+            "group": "Telegram files",
+            "pages": [
+              "api-reference/telegram-files/list",
+              "api-reference/telegram-files/register",
+              "api-reference/telegram-files/delete"
             ]
           },
           {

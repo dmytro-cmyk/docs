@@ -127,6 +127,10 @@
     {
       "name": "Web",
       "description": "Web app configuration"
+    },
+    {
+      "name": "Telegram files",
+      "description": "Telegram file attachments for steps and broadcasts"
     }
   ],
   "paths": {
@@ -2922,10 +2926,10 @@
                   "platform": {
                     "type": "string",
                     "enum": [
-                      "mini_app",
+                      "miniApp",
                       "bot"
                     ],
-                    "description": "Product platform"
+                    "description": "Platform: miniApp or bot"
                   },
                   "folder_id": {
                     "type": "integer",
@@ -7126,90 +7130,6 @@
       }
     },
     "/api/v1/bot/{bot}/subscribers/{student}/products/{product}": {
-      "post": {
-        "operationId": "addSubscriberProduct",
-        "summary": "Add subscriber to product",
-        "description": "Always returns 404: only funnels can be added this way, use the funnel route.",
-        "tags": [
-          "Subscribers"
-        ],
-        "parameters": [
-          {
-            "name": "bot",
-            "in": "path",
-            "required": true,
-            "description": "Bot ID",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "student",
-            "in": "path",
-            "required": true,
-            "description": "Subscriber ID",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "product",
-            "in": "path",
-            "required": true,
-            "description": "Product ID",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Not returned for products",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/SubscriberProduct"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden — lacks access to this bot",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Always returned — adding is available only for funnels",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
       "delete": {
         "operationId": "removeSubscriberProduct",
         "summary": "Remove subscriber from product",
@@ -23272,6 +23192,13 @@
                   "filters": {
                     "type": "object",
                     "description": "Recipient filters (same shape as subscriber filters)"
+                  },
+                  "telegram_file_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this broadcast (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — an already-attached, non-existent, or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/broadcasts/{broadcast}/attachments/{file}`."
                   }
                 }
               }
@@ -23487,6 +23414,13 @@
                   "filters": {
                     "type": "object",
                     "description": "Recipient filters"
+                  },
+                  "telegram_file_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this broadcast (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — an already-attached, non-existent, or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/broadcasts/{broadcast}/attachments/{file}`."
                   }
                 }
               }
@@ -32703,6 +32637,551 @@
           }
         }
       }
+    },
+    "/api/v1/bot/{bot}/telegram-files": {
+      "get": {
+        "operationId": "listTelegramFiles",
+        "summary": "List Telegram files",
+        "description": "Returns the current user's uploaded Telegram files that are not yet attached to a step or broadcast.",
+        "tags": [
+          "Telegram files"
+        ],
+        "parameters": [
+          {
+            "name": "bot",
+            "in": "path",
+            "required": true,
+            "description": "Bot ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Telegram files",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TelegramFile"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden — lacks access to this bot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTelegramFile",
+        "summary": "Register or request a file",
+        "description": "Adds a Telegram file. Files live on Telegram's servers (the Bot API upload limit is 50 MB), so there are two modes: send `file_id` and `type` to register a file that was already uploaded through this bot by any method (Bot API or MTProto, up to ~2 GB); or send an empty body to ask the user to send a file to the bot — the received file then appears in the list endpoint until it is attached. In both modes the user must have started the bot.",
+        "tags": [
+          "Telegram files"
+        ],
+        "parameters": [
+          {
+            "name": "bot",
+            "in": "path",
+            "required": true,
+            "description": "Bot ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file_id": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "A Telegram file_id for a file uploaded through this bot by any method (Bot API or MTProto). Required together with `type` to register."
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "photo",
+                      "video",
+                      "document",
+                      "audio",
+                      "voice",
+                      "video_note",
+                      "animation",
+                      "sticker"
+                    ],
+                    "description": "File type (required together with `file_id`)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "File registered, or an upload was requested",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "description": "Returned when a file_id is registered",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/TelegramFile"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "description": "Returned when the body is empty: the user is asked to send the file to the bot",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "example": "waiting"
+                        },
+                        "expires_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "When the upload request expires"
+                        },
+                        "bot_username": {
+                          "type": "string",
+                          "description": "Bot username the user should send the file to"
+                        },
+                        "chat_id": {
+                          "type": "integer",
+                          "description": "Chat ID to send the file to"
+                        },
+                        "token_hint": {
+                          "type": "string",
+                          "description": "First characters of the bot token"
+                        },
+                        "max_file_size": {
+                          "type": "integer",
+                          "description": "Maximum file size in bytes"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden — lacks access to this bot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The user has not started the bot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error. When registering: `file_id` invalid (Telegram rejected it) or `type` does not match the file.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bot/{bot}/telegram-files/{file}": {
+      "delete": {
+        "operationId": "deleteTelegramFile",
+        "summary": "Delete Telegram file",
+        "description": "Deletes an uploaded Telegram file that is not attached.",
+        "tags": [
+          "Telegram files"
+        ],
+        "parameters": [
+          {
+            "name": "bot",
+            "in": "path",
+            "required": true,
+            "description": "Bot ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "file",
+            "in": "path",
+            "required": true,
+            "description": "Telegram file ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "File deleted"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden — lacks access to this bot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "File not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bot/{bot}/products/{product}/steps/{step}/attachments/{file}": {
+      "delete": {
+        "operationId": "deleteProductStepAttachment",
+        "summary": "Delete step attachment",
+        "description": "Removes a file attachment from a product step. Returns the updated step.",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "bot",
+            "in": "path",
+            "required": true,
+            "description": "Bot ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "product",
+            "in": "path",
+            "required": true,
+            "description": "Product ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "step",
+            "in": "path",
+            "required": true,
+            "description": "Step ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "file",
+            "in": "path",
+            "required": true,
+            "description": "Attachment file ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attachment removed; returns the updated step",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Step"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden — lacks access to this bot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Step or attachment not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bot/{bot}/funnels/{product}/steps/{step}/attachments/{file}": {
+      "delete": {
+        "operationId": "deleteFunnelStepAttachment",
+        "summary": "Delete step attachment",
+        "description": "Removes a file attachment from a funnel step. Returns the updated step.",
+        "tags": [
+          "Funnels"
+        ],
+        "parameters": [
+          {
+            "name": "bot",
+            "in": "path",
+            "required": true,
+            "description": "Bot ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "product",
+            "in": "path",
+            "required": true,
+            "description": "Funnel ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "step",
+            "in": "path",
+            "required": true,
+            "description": "Step ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "file",
+            "in": "path",
+            "required": true,
+            "description": "Attachment file ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attachment removed; returns the updated step",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Step"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden — lacks access to this bot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Step or attachment not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bot/{bot}/broadcasts/{broadcast}/attachments/{file}": {
+      "delete": {
+        "operationId": "deleteBroadcastAttachment",
+        "summary": "Delete broadcast attachment",
+        "description": "Removes a file attachment from a broadcast. Returns the updated broadcast.",
+        "tags": [
+          "Broadcasts"
+        ],
+        "parameters": [
+          {
+            "name": "bot",
+            "in": "path",
+            "required": true,
+            "description": "Bot ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "broadcast",
+            "in": "path",
+            "required": true,
+            "description": "Broadcast ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "file",
+            "in": "path",
+            "required": true,
+            "description": "Attachment file ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attachment removed; returns the updated broadcast",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Broadcast"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden — lacks access to this bot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Broadcast or attachment not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -33011,7 +33490,7 @@
           },
           "platform": {
             "type": "string",
-            "description": "Platform: mini_app or bot",
+            "description": "Platform: miniApp or bot",
             "nullable": true
           },
           "is_active": {
@@ -34171,7 +34650,7 @@
               "never",
               "stop"
             ],
-            "description": "Sending mode. duration requires delay_number and delay_type, date requires delay_at, time requires delay_time"
+            "description": "When the step is sent to the student. `never` is the default when `sending_time` is omitted — the step is not sent automatically. `stop` waits until the student completes the previous step's action (a question, test, poll, task, or a `send_next_step` button) before sending, and is only allowed when the previous step has such an action. `immediately` sends right after the previous step; `duration` after `delay_number` × `delay_type`; `date` at `delay_at`; `time` at `delay_time` (optionally limited by `delay_limit`)."
           },
           "delay_number": {
             "type": [
@@ -34323,7 +34802,8 @@
               "question",
               "poll",
               "quiz"
-            ]
+            ],
+            "description": "Step type. A `task` step automatically gets a task submission button (type: `task`), named in the bot's language — you don't add it yourself."
           },
           "name": {
             "type": "string",
@@ -34342,7 +34822,8 @@
             "type": "boolean"
           },
           "task_autocheck": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Task steps only: accept a submitted task automatically and advance the student immediately, instead of waiting for manual review."
           },
           "custom_field_id": {
             "type": [
@@ -34445,6 +34926,13 @@
                 }
               }
             }
+          },
+          "telegram_file_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this step (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — an already-attached, non-existent, or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/steps/{step}/attachments/{file}`."
           }
         }
       },
@@ -34469,7 +34957,8 @@
             "type": "boolean"
           },
           "task_autocheck": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Task steps only: accept a submitted task automatically and advance the student immediately, instead of waiting for manual review."
           },
           "custom_field_id": {
             "type": [
@@ -34572,6 +35061,13 @@
                 }
               }
             }
+          },
+          "telegram_file_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this step (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — an already-attached, non-existent, or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/steps/{step}/attachments/{file}`."
           }
         }
       },
@@ -36282,6 +36778,51 @@
           },
           "sort": {
             "type": "integer"
+          }
+        }
+      },
+      "TelegramFile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "File ID"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "photo",
+              "video",
+              "document",
+              "audio",
+              "voice",
+              "video_note",
+              "animation",
+              "sticker"
+            ],
+            "description": "File type"
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Original file name"
+          },
+          "size": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "File size in bytes"
+          },
+          "created_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "Upload timestamp"
           }
         }
       }
