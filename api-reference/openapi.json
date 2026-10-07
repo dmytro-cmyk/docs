@@ -3303,7 +3303,30 @@
                   },
                   "currency": {
                     "type": "string",
-                    "description": "Currency code"
+                    "description": "Currency code",
+                    "enum": [
+                      "USD",
+                      "EUR",
+                      "UAH",
+                      "PLN",
+                      "KZT",
+                      "CNY",
+                      "CHF",
+                      "CZK",
+                      "GBP",
+                      "SGD",
+                      "ILS",
+                      "CAD",
+                      "JPY",
+                      "HKD",
+                      "AUD",
+                      "MDL",
+                      "BGN",
+                      "TRY",
+                      "KGS",
+                      "MXN",
+                      "RON"
+                    ]
                   },
                   "is_subscription": {
                     "type": "boolean",
@@ -3785,7 +3808,7 @@
       "post": {
         "operationId": "createZapierWebhook",
         "summary": "Create Zapier webhook",
-        "description": "Registers a Zapier webhook for the specified bot. (Pro)",
+        "description": "Subscribes a Zapier webhook to an event for the specified bot. When the `trigger` event fires, the platform sends a POST request with the event data to `hookUrl`. This is the subscribe step Zapier calls when a Zap is turned on; keep the returned `id` to remove the subscription later. (Pro)",
         "tags": [
           "Zapier"
         ],
@@ -3809,11 +3832,19 @@
                 "properties": {
                   "hookUrl": {
                     "type": "string",
-                    "description": "Zapier webhook URL"
+                    "format": "uri",
+                    "description": "Destination URL that receives a POST request with the event data every time the trigger fires (Zapier's catch hook URL)."
                   },
                   "trigger": {
                     "type": "string",
-                    "description": "Event trigger name"
+                    "enum": [
+                      "NewSubscriber",
+                      "NewOrder",
+                      "NewOrderStatus",
+                      "NewSubscriberContacts",
+                      "TagAssignedToSubscriber"
+                    ],
+                    "description": "The event that triggers a POST with the event data to `hookUrl`."
                   }
                 },
                 "required": [
@@ -3834,7 +3865,7 @@
                   "properties": {
                     "id": {
                       "type": "integer",
-                      "description": "ID of the created webhook"
+                      "description": "ID of the created subscription. Pass it as `hookId` to the DELETE endpoint to unsubscribe."
                     }
                   }
                 }
@@ -3866,7 +3897,7 @@
       "delete": {
         "operationId": "deleteZapierWebhook",
         "summary": "Delete Zapier webhook",
-        "description": "Removes a Zapier webhook from the specified bot. (Pro)",
+        "description": "Removes a Zapier webhook subscription so matching events stop being sent to its `hookUrl`. This is the unsubscribe step Zapier calls when a Zap is turned off. (Pro)",
         "tags": [
           "Zapier"
         ],
@@ -3890,7 +3921,7 @@
                 "properties": {
                   "hookId": {
                     "type": "integer",
-                    "description": "ID of the webhook to delete"
+                    "description": "ID of the subscription to remove (the `id` returned when it was created)."
                   }
                 },
                 "required": [
@@ -4523,7 +4554,17 @@
                   },
                   "action": {
                     "type": "string",
-                    "description": "Command action. Special actions (manage subscriptions, manage affiliate program) are accepted as well"
+                    "description": "Command action. Special actions (manage subscriptions, manage affiliate program) are accepted as well",
+                    "enum": [
+                      "send_step",
+                      "send_funnel_step",
+                      "product_navigation",
+                      "funnel_navigation",
+                      "add_to_product",
+                      "add_to_funnel",
+                      "manage_subscriptions",
+                      "manage_affiliate_program"
+                    ]
                   },
                   "settings": {
                     "type": [
@@ -4742,7 +4783,17 @@
                   },
                   "action": {
                     "type": "string",
-                    "description": "Command action. Special actions (manage subscriptions, manage affiliate program) are accepted as well"
+                    "description": "Command action. Special actions (manage subscriptions, manage affiliate program) are accepted as well",
+                    "enum": [
+                      "send_step",
+                      "send_funnel_step",
+                      "product_navigation",
+                      "funnel_navigation",
+                      "add_to_product",
+                      "add_to_funnel",
+                      "manage_subscriptions",
+                      "manage_affiliate_program"
+                    ]
                   },
                   "settings": {
                     "type": [
@@ -5126,7 +5177,11 @@
                   },
                   "type": {
                     "type": "string",
-                    "description": "Field type: one of the question step types except email, phone and name"
+                    "description": "Field type: one of the question step types except email, phone and name",
+                    "enum": [
+                      "text",
+                      "number"
+                    ]
                   },
                   "description": {
                     "type": [
@@ -5233,7 +5288,11 @@
                   },
                   "type": {
                     "type": "string",
-                    "description": "Field type: one of the question step types except email, phone and name"
+                    "description": "Field type: one of the question step types except email, phone and name",
+                    "enum": [
+                      "text",
+                      "number"
+                    ]
                   },
                   "description": {
                     "type": [
@@ -10932,7 +10991,13 @@
                       },
                       "delay_type": {
                         "type": "string",
-                        "description": "Delay unit; required for duration"
+                        "description": "Delay unit; required for duration",
+                        "enum": [
+                          "seconds",
+                          "minutes",
+                          "hours",
+                          "days"
+                        ]
                       },
                       "delay_at": {
                         "type": "string",
@@ -11210,7 +11275,13 @@
                       },
                       "delay_type": {
                         "type": "string",
-                        "description": "Delay unit; required for duration"
+                        "description": "Delay unit; required for duration",
+                        "enum": [
+                          "seconds",
+                          "minutes",
+                          "hours",
+                          "days"
+                        ]
                       },
                       "delay_at": {
                         "type": "string",
@@ -19703,7 +19774,30 @@
                   },
                   "currency": {
                     "type": "string",
-                    "description": "Currency code"
+                    "description": "Currency code",
+                    "enum": [
+                      "USD",
+                      "EUR",
+                      "UAH",
+                      "PLN",
+                      "KZT",
+                      "CNY",
+                      "CHF",
+                      "CZK",
+                      "GBP",
+                      "SGD",
+                      "ILS",
+                      "CAD",
+                      "JPY",
+                      "HKD",
+                      "AUD",
+                      "MDL",
+                      "BGN",
+                      "TRY",
+                      "KGS",
+                      "MXN",
+                      "RON"
+                    ]
                   },
                   "is_subscription": {
                     "type": "boolean",
@@ -22982,7 +23076,14 @@
             "required": false,
             "description": "Filter by broadcast status",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "draft",
+                "awaiting",
+                "sending",
+                "sent",
+                "deleted"
+              ]
             }
           },
           {
@@ -23153,7 +23254,11 @@
                       },
                       "attach_style": {
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "enum": [
+                          "classic",
+                          "under_text"
+                        ]
                       },
                       "autodelete": {
                         "type": "integer"
@@ -23364,7 +23469,11 @@
                       },
                       "attach_style": {
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "enum": [
+                          "classic",
+                          "under_text"
+                        ]
                       },
                       "autodelete": {
                         "type": "integer"
@@ -23911,7 +24020,15 @@
                   },
                   "type": {
                     "type": "string",
-                    "description": "Button type"
+                    "description": "Button type",
+                    "enum": [
+                      "link",
+                      "task",
+                      "action",
+                      "offer",
+                      "affiliate",
+                      "app"
+                    ]
                   },
                   "link": {
                     "type": "string",
@@ -24048,7 +24165,15 @@
                   },
                   "type": {
                     "type": "string",
-                    "description": "Button type"
+                    "description": "Button type",
+                    "enum": [
+                      "link",
+                      "task",
+                      "action",
+                      "offer",
+                      "affiliate",
+                      "app"
+                    ]
                   },
                   "link": {
                     "type": "string",

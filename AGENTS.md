@@ -94,6 +94,13 @@ Affiliate, Mini-app, Web, Folders.
 - **`operationId`:** camelCase, unique across the whole spec (prefix with the resource, e.g. `listCoupons`, `createCoupon`).
 - Define each schema **once** in `components/schemas`; reference shared schemas
   (`Bot`, `Subscriber`, `Offer`, `Product`, `Error`, `PaginatedResponse`, …) by `$ref`.
+- **Fixed value sets → `enum`.** If a field (query param or body) accepts only a specific set of values
+  — the code uses `Rule::in(...)`, a model's constants, a backed enum, etc. — document it as
+  `{ "type": "string", "enum": [ …all allowed values… ] }` with the **complete** list. Never leave such a
+  field as a plain `string`. Keep the field description short: Mintlify renders the values from `enum`
+  automatically (the "Available options" list), so do **not** also list them in the description.
+  Exception: when the set is resolved at runtime rather than fixed (e.g. automation `when_event` /
+  `then_action`, whose values come from the catalog endpoint), describe the source instead of hardcoding an enum.
 - **Authorization is described via 401/403 only** — there is no Pro middleware on `/api/v1`.
   Keep an existing `(Pro)` note if one is already there; do not add new `(Pro)` notes.
 
