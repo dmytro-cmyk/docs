@@ -1,0 +1,364 @@
+---
+title: "Build a course in a bot"
+description: "Create a step-by-step Telegram course with lessons, media, quizzes, and assignments"
+---
+
+This guide builds a complete course that runs inside your Telegram bot: lessons with videos and pictures, printable materials, quizzes, questions, and assignments. The course waits for the subscriber at every step — it moves on only after they press a button, answer a question, or submit an assignment.
+
+The flow is:
+
+1. Create a product
+2. Upload files to Telegram and register them
+3. Create the steps
+4. Set when each step is sent
+5. Activate the product
+
+## Before you start
+
+You need:
+
+- **An API token** — see [Authentication](/authentication).
+- **The bot ID** — from [List bots](/api-reference/bots/list).
+- **The bot token from @BotFather** — only for uploading files from a script. The API never returns it (only `token_hint`).
+- **You have started the bot** — the Telegram account linked to your Zenedu user (the owner of the API token) must have pressed **Start** in the bot at least once. The file endpoints check the file by sending it to that chat and return `409` otherwise.
+- **For videos over 50 MB** — an `api_id` and `api_hash` from [my.telegram.org](https://my.telegram.org) (see [Upload files](#2-upload-files)).
+
+The examples are shell commands. Set these variables first; later steps tell you which returned IDs to save into new ones (`PRODUCT_ID`, `OFFER_ID`, …):
+
+```bash
+API=https://app.zenedu.com/api/v1/bot/BOT_ID
+TOKEN=YOUR_API_TOKEN
+```
+
+<Warning>
+  Send a common `User-Agent` from scripts. Requests with the default Python `urllib` user agent are blocked by Cloudflare with `403` (error 1010) before they reach the API. `curl` and most HTTP libraries work as is.
+</Warning>
+
+## 1. Create a product
+
+```bash
+curl -X POST $API/products \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"name": "Fun geometry for kids", "platform": "bot"}'
+```
+
+```json
+{ "data": { "id": 123, "platform": "bot", "is_active": false, "steps_count": 0, "link": "https://t.me/YourBot?start=…" } }
+```
+
+Save `data.id` as `PRODUCT_ID`. `platform` must be `bot` — steps belong to bot products. A new product is **inactive**; you activate it in [step 5](#5-activate-the-product) when the content is ready.
+
+## 2. Upload files
+
+Step attachments live on Telegram's servers. The API does not accept file uploads — it accepts a Telegram `file_id` of a file **uploaded by this bot**. You attach files to steps in two stages: get the file into Telegram, then register it with [Register a file](/api-reference/telegram-files/register) to get an ID for `telegram_file_ids`.
+
+<Tabs>
+  <Tab title="From a script (up to 50 MB)">
+    Send the file with the Bot API to your chat with the bot, take its `file_id`, and delete the message:
+
+    ```bash
+    BOT_TOKEN=123456:ABC…   # from @BotFather
+    CHAT_ID=123456789       # your Telegram user ID
+
+    curl -s https://api.telegram.org/bot$BOT_TOKEN/sendVideo \
+      -F chat_id=$CHAT_ID -F disable_notification=true \
+      -F video=@lesson-1.mp4 -F supports_streaming=true -F width=1280 -F height=720 -F duration=18
+    # → result.video.file_id, result.message_id
+
+    curl -s https://api.telegram.org/bot$BOT_TOKEN/deleteMessage -d chat_id=$CHAT_ID -d message_id=MESSAGE_ID
+    ```
+
+    Use `sendPhoto` for pictures and `sendDocument` for PDFs and other files. For videos, pass `width`, `height`, `duration`, and `supports_streaming` — otherwise Telegram may store the file as a `document`, and registering it as `video` fails with `type_mismatch`.
+
+    For documents, the uploaded file name is what subscribers see. Use a readable name: `-F "document=@sheet.pdf;filename=Coloring page.pdf"`.
+
+    <Tip>
+      You don't know your `CHAT_ID`? Call [Register a file](/api-reference/telegram-files/register) with an empty body once — the response contains `chat_id`. The bot will also ask you to send a file; you can ignore that message.
+    </Tip>
+  </Tab>
+  <Tab title="From a script (over 50 MB)">
+    The Bot API rejects uploads over 50 MB. Use MTProto, Telegram's client protocol, instead: authorize **as the bot** (`auth.importBotAuthorization` with the bot token and your `api_id` and `api_hash`), upload the file, and send it to `CHAT_ID` with `messages.sendMedia`. This way a bot can upload files up to 2 GB.
+
+    MTProto identifies the uploaded file in its own format, not as a Bot API `file_id`. To get the `file_id`, forward the message you just sent with the Bot API — the response contains it:
+
+    ```bash
+    curl -s https://api.telegram.org/bot$BOT_TOKEN/forwardMessage \
+      -d chat_id=$CHAT_ID -d from_chat_id=$CHAT_ID -d message_id=MESSAGE_ID -d disable_notification=true
+    # → result.video.file_id
+    ```
+
+    Then delete both messages with `deleteMessage`.
+  </Tab>
+  <Tab title="By hand in Telegram">
+    No bot token needed:
+
+    1. Call [Register a file](/api-reference/telegram-files/register) with an **empty body**. The bot asks you to send a file (the request stays open for 3 hours — see `expires_at`).
+    2. Send the file to the bot in Telegram.
+    3. It appears in [List Telegram files](/api-reference/telegram-files/list).
+  </Tab>
+</Tabs>
+
+Register each `file_id`:
+
+```bash
+curl -X POST $API/telegram-files \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"file_id": "BAACAgIAAxkD…", "type": "video"}'
+```
+
+```json
+{ "data": { "id": 123, "type": "video", "name": "lesson-1.mp4", "size": 64657027 } }
+```
+
+Save `data.id` of each file, for example as `VIDEO_FILE_ID` and `IMAGE_FILE_ID`.
+
+The API checks the file by sending it to your chat and deleting the message right away, so you may see a short flicker in the chat.
+
+| Response | Meaning |
+|---|---|
+| `201` | Registered. Use `data.id` in `telegram_file_ids`. |
+| `409` | The user behind the API token hasn't started the bot. |
+| `422` `file_id` | Telegram rejected the `file_id` — usually it was uploaded by a different bot. |
+| `422` `type` | The `type` doesn't match the file, the message says what Telegram detected. |
+
+Registered files stay in [List Telegram files](/api-reference/telegram-files/list) until you attach them. Files are per user: you only see and attach your own. [Delete a file](/api-reference/telegram-files/delete) removes a file you don't need.
+
+## 3. Create the steps
+
+Create steps with [Create a product step](/api-reference/products/steps/create). Each new step is added to the end of the product. All step types:
+
+| `type` | What the subscriber gets | Extra fields |
+|---|---|---|
+| `message` | A message | — |
+| `lesson` | A lesson | — |
+| `task` | An assignment with a submission button (added automatically) | `task_autocheck` |
+| `question` | A question; the subscriber replies with text | `settings.subtype`, `settings.question_error_message`, `settings.save_profile` |
+| `poll` | A Telegram poll | `options` |
+| `quiz` | A Telegram quiz with one correct answer | `options`, `settings.quiz_explanation` |
+
+A lesson with a video and a picture:
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/steps \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  --data @- <<EOF
+{
+  "type": "lesson",
+  "name": "Lesson 1. Circle",
+  "text": "<p>🟡 <strong>Lesson 1. Circle</strong></p><p>Watch the video together. A circle has no corners, so it can roll.</p>",
+  "sending_time": {"option": "immediately"},
+  "telegram_file_ids": [$VIDEO_FILE_ID, $IMAGE_FILE_ID]
+}
+EOF
+```
+
+The response is the created step. Save its `data.id` (here as `LESSON_STEP_ID`) — you'll need step IDs for buttons and `sending_time`.
+
+<Warning>
+  Always pass `sending_time`. When it's omitted, the step gets `never` and is **never sent automatically** — it's skipped in the course. See [step 4](#4-set-when-each-step-is-sent) for all options.
+</Warning>
+
+### Text
+
+`text` is HTML, the same as the dashboard editor produces. `<p>` and `<br>` become line breaks. Formatting tags are passed to Telegram: `<b>`/`<strong>`, `<i>`/`<em>`, `<u>`, `<s>`, `<a href="…">`, `<code>`, `<pre>`, `<blockquote>`, `<tg-spoiler>`. Any other tag is stripped and its text is kept — for example, lists (`<ul>`, `<li>`) turn into plain lines.
+
+Length limits:
+
+- **4096** characters — a regular message.
+- **1024** characters — when the step has attachments and `settings.attach_file` is `true` (the text is sent as the media caption). With `attach_file: false` (the default), the text goes as a separate message after the media, and the 4096 limit applies.
+- **300** characters — `poll` and `quiz` (the question).
+
+### Attachments
+
+`telegram_file_ids` takes IDs from [step 2](#2-upload-files). Several attachments are sent together as an album. The set you pass **replaces** the step's attachments; to remove one file use [Delete step attachment](/api-reference/products/steps/delete-attachment).
+
+### Questions
+
+```json
+{
+  "type": "question",
+  "name": "How many corners does a square have?",
+  "text": "<p>Count the corners together and type the answer as a number 👇</p>",
+  "settings": {"subtype": "number", "question_error_message": "Type a number, for example: 2"},
+  "sending_time": {"option": "stop"}
+}
+```
+
+`subtype` is one of `text`, `number`, `email`, `phone`, `name`. The answer is checked against it; on a wrong format the subscriber gets `question_error_message` and can try again. If you don't set it, a default message in the bot's language is used. `save_profile: true` saves a `name`, `email`, or `phone` answer to the subscriber's profile.
+
+### Polls and quizzes
+
+```json
+{
+  "type": "quiz",
+  "name": "Quiz: triangle corners",
+  "text": "<p>How many corners does a triangle have?</p>",
+  "options": [{"text": "2"}, {"text": "3", "is_correct": true}, {"text": "4"}],
+  "settings": {"quiz_explanation": "Tri-angle — three corners!"},
+  "sending_time": {"option": "stop"}
+}
+```
+
+- 2–12 options, up to 100 characters each.
+- A `quiz` needs **exactly one** `is_correct: true`, otherwise `422` `options`.
+- `quiz_explanation` (up to 200 characters) is shown after the answer.
+- A `poll` has no correct answer.
+
+### Assignments
+
+```json
+{
+  "type": "task",
+  "name": "Assignment 1. Shape hunt",
+  "text": "<p>Find 3 round and 3 square things at home, put them together, and take a photo. Press the button below and send the photo.</p>",
+  "task_autocheck": true,
+  "sending_time": {"option": "stop"}
+}
+```
+
+The submission button is created automatically, named in the bot's language — don't add it yourself. The subscriber presses it and sends their work to the chat.
+
+- `task_autocheck: true` — the assignment is accepted on submission, and the course continues right away.
+- `task_autocheck: false` — the assignment waits for review in [Tasks](/api-reference/tasks/list); the course continues after you [approve it](/api-reference/tasks/approve).
+
+## 4. Set when each step is sent
+
+Every step has a `sending_time`. A step is scheduled when the previous step is sent; the first step — when the subscriber gets access to the product. `sending_time.option` decides when exactly:
+
+| `option` | The step is sent | Fields |
+|---|---|---|
+| `immediately` | right after the previous step | — |
+| `stop` | after the subscriber's action on the previous step | — |
+| `duration` | after a delay | `delay_number`, `delay_type`, optional `delay_limit` |
+| `time` | at a time of day | `delay_time`, optional `delay_number`, `delay_limit` |
+| `date` | at an exact date and time | `delay_at`, optional `skip_past_date` |
+| `never` | not sent automatically | — |
+
+Set it when you create the step, or later with [Update sending time](/api-reference/products/steps/update-sending-time):
+
+```bash
+curl -X PATCH $API/products/$PRODUCT_ID/steps/$NEXT_STEP_ID/sending-time \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"sending_time": {"option": "stop"}}'
+```
+
+<Note>
+  Only `stop` waits for the subscriber. With any other option, the next step is scheduled as soon as the previous one is sent — even if the subscriber hasn't answered the question or submitted the assignment yet. With `immediately` on every step, the whole course arrives at once.
+</Note>
+
+### Wait for the subscriber: `stop`
+
+What counts as an action on the previous step:
+
+| Previous step | The next `stop` step is sent when the subscriber… |
+|---|---|
+| `question`, `quiz`, `poll` | answers |
+| `task` | submits the assignment (with `task_autocheck`) or you approve it |
+| any step with a `send_next_step` button | presses the button |
+
+A `message` or `lesson` has no action of its own — give it a button:
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/steps/$LESSON_STEP_ID/buttons \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"type": "action", "name": "✅ Watched! Next", "actions": [{"name": "send_next_step"}]}'
+```
+
+<Warning>
+  `stop` is accepted only if the previous step already has an action. Otherwise the request fails with `422` `sending_time` — "Select the action in the previous step". The first step of a product can't be `stop`.
+</Warning>
+
+So the order matters. Either:
+
+- create the steps one by one: after each `message` or `lesson`, add its button, then create the next step with `stop`; or
+- create all steps with `immediately`, add the buttons, then switch steps 2…N to `stop` with [Update sending time](/api-reference/products/steps/update-sending-time).
+
+A typical course:
+
+| # | Step | `sending_time` | Moves on when |
+|---|---|---|---|
+| 1 | `message` Welcome + button «🚀 Start» | `immediately` | button |
+| 2 | `question` (`name`) Introductions | `stop` | answer |
+| 3 | `lesson` Lesson 1 + button «Next» | `stop` | button |
+| 4 | `quiz` | `stop` | answer |
+| 5 | `message` Printables + button «Next» | `stop` | button |
+| 6 | `task` Assignment (`task_autocheck`) | `stop` | submission |
+| 7 | `poll` Favourite shape | `stop` | answer |
+| 8 | `message` Certificate | `stop` | — |
+
+### After a delay: `duration`
+
+```json
+{"option": "duration", "delay_number": 1, "delay_type": "days"}
+```
+
+The delay counts from the moment the previous step was sent — for the first step, from the moment the subscriber got access. `delay_type` is `seconds`, `minutes`, `hours`, or `days`.
+
+After a text `question` there's one exception: if the subscriber answers before the delay is over, the delay starts again from the moment of the answer. Answers to polls and quizzes and submitted assignments don't affect the delay.
+
+To keep messages out of the night or weekends, add a sending window (`delay_limit`, see below).
+
+### At a time of day: `time`
+
+```json
+{"option": "time", "delay_time": "2026-01-01T10:00:00+02:00", "delay_number": 1}
+```
+
+- Only the **time of day** from `delay_time` is used; the date part is ignored. Pass it with an offset — see [Time zone](#time-zone).
+- `delay_number` is the number of days after the previous step was sent: `0` — the same day at that time, or the next day if that time has already passed; `1` — the next day; and so on.
+- `delay_limit.weekdays` limits the days: on a day that isn't allowed, the step moves to the next allowed day at the same time. `time_from` and `time_to` are ignored for this option.
+
+For example, "every lesson the next morning at 10:00" is `time` with `delay_number: 1` on each lesson.
+
+### On a date: `date`
+
+```json
+{"option": "date", "delay_at": "2026-11-01T10:00:00+02:00", "skip_past_date": false}
+```
+
+The step is sent at the same moment to every subscriber — use it for launches and live events. Pass `delay_at` with an offset — see [Time zone](#time-zone).
+
+- When you save an active step, `delay_at` must be in the future, otherwise `422` `sending_time` — "Change the sending time to a date in the future".
+- A subscriber who reaches the step after the date has passed gets it right away. With `skip_past_date: true`, the step is skipped instead, and the subscriber moves on to the next step.
+
+### Sending window: `delay_limit`
+
+Limits `duration` to certain hours and days (for `time`, only the days apply):
+
+```json
+{
+  "option": "duration", "delay_number": 2, "delay_type": "hours",
+  "delay_limit": {"time_from": 540, "time_to": 1260, "weekdays": ["mon", "tue", "wed", "thu", "fri"]}
+}
+```
+
+- `time_from` and `time_to` are minutes from midnight in the [workspace time zone](#time-zone): `540` is 09:00, `1260` is 21:00. Only whole hours count — `570` (09:30) works as 09:00.
+- `time_from` greater than `time_to` is an overnight window, for example `1320`–`360` (22:00–06:00).
+- `time_from` equal to `time_to` means any time of day; then only `weekdays` apply.
+- `weekdays`: `mon`, `tue`, `wed`, `thu`, `fri`, `sat`, `sun` — at least one.
+- If the step falls outside the window, it's moved to the next moment the window is open on an allowed day.
+- A window of any time on all seven days is the same as no window and isn't saved.
+
+### Not sent automatically: `never`
+
+The step is skipped in the course: subscribers don't get it after the previous step, and the next step follows the previous one directly. This is the default when `sending_time` is omitted.
+
+### Time zone
+
+Schedules are calculated in the time zone of your workspace (set in the dashboard, workspace settings; UTC if not set): the time of day for `time`, and the hours and days of `delay_limit`.
+
+`delay_at` and `delay_time` are date-time values. A value without an offset is read as UTC, so pass the offset of your workspace time zone — for example, `10:00:00+02:00` for 10:00 in Kyiv in winter. For `time`, the time of day stays fixed in the workspace time zone all year.
+
+## 5. Activate the product
+
+```bash
+curl -X PUT $API/products/$PRODUCT_ID/active \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+```
+
+When the product is active, give subscribers access to it — see [Give access to a product](/guides/product-access).
+
+## Things to keep in mind
+
+- **Language of default texts.** The task button, its messages, and the default question errors are created in the **bot's language**. API responses and error messages are always in English.
+- **Files are per user.** Files registered with one API token can't be attached by another user's token.

@@ -20,6 +20,13 @@
               "authentication",
               "errors"
             ]
+          },
+          {
+            "group": "How-to",
+            "pages": [
+              "guides/bot-course",
+              "guides/product-access"
+            ]
           }
         ]
       },

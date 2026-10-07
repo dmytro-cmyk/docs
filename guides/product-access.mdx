@@ -1,0 +1,52 @@
+---
+title: "Give access to a product"
+description: "Grant a subscriber access to a product through an offer, check their progress, and restart"
+---
+
+Access to a product is always granted through an **offer**. There is no endpoint that adds a subscriber to a product directly. The product must be active — see [Activate product](/api-reference/products/activate).
+
+The examples use the same variables as [Build a course in a bot](/guides/bot-course#before-you-start): `API`, `TOKEN`, and `PRODUCT_ID`.
+
+## 1. Create an offer
+
+Create a free offer for the product, or use an existing one:
+
+```bash
+curl -X POST $API/offers \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  --data @- <<EOF
+{"name": "Free access", "price": 0, "currency": "USD", "offerables": [{"type": "product", "id": $PRODUCT_ID}]}
+EOF
+```
+
+Save `data.id` as `OFFER_ID`.
+
+## 2. Find the subscriber
+
+A subscriber is anyone who has started the bot. Find the subscriber ID: [List subscribers](/api-reference/subscribers/list) returns `user_id` (the Telegram user ID) and `username` for each subscriber; match on one of them and save its `id` as `SUBSCRIBER_ID`. There's no search parameter, so page through the list (`per_page`, `links.next`).
+
+## 3. Grant the offer
+
+```bash
+curl -X POST $API/subscribers/$SUBSCRIBER_ID/offers/$OFFER_ID \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+```
+
+The subscriber is added to the product. In a bot product, they receive the first step right away. Subscribers can also get access by buying or activating the offer themselves — via the offer link from [Get offer link](/api-reference/links/offer-link).
+
+## Check progress
+
+```bash
+curl $API/subscribers/$SUBSCRIBER_ID/products -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+```
+
+```json
+{ "data": [ { "id": 123, "status": "active", "steps_total": 8, "steps_completed": 2, "access": true, "offer_id": 123 } ] }
+```
+
+- `status: "active"` and `steps_completed` growing as the subscriber goes — the course works.
+- `status: "finished"` with `steps_completed` = `steps_total` right after enrolling in a bot course — the course didn't wait for the subscriber. See [Set when each step is sent](/guides/bot-course#4-set-when-each-step-is-sent).
+
+## Restart
+
+To start over for a subscriber, [remove them from the product](/api-reference/subscribers/remove-product) and grant the offer again. Pass `"delete_steps": true` to also delete the messages the bot already sent, otherwise they stay in the chat.
