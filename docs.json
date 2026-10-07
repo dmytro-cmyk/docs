@@ -522,9 +522,7 @@
       "method": "bearer"
     }
   },
-  "openapi": [
-    "api-reference/openapi.json"
-  ],
+  "openapi": "api-reference/openapi.json",
   "footer": {
     "socials": {}
   }
