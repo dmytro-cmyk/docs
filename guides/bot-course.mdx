@@ -21,7 +21,7 @@ You need:
 - **The bot ID** — from [List bots](/api-reference/bots/list).
 - **The bot token from @BotFather** — only for uploading files from a script. The API never returns it (only `token_hint`).
 - **You have started the bot** — the Telegram account linked to your Zenedu user (the owner of the API token) must have pressed **Start** in the bot at least once. The file endpoints check the file by sending it to that chat and return `409` otherwise.
-- **For videos over 50 MB** — an `api_id` and `api_hash` from [my.telegram.org](https://my.telegram.org) (see [Upload files](#2-upload-files)).
+- **For files over 50 MB** — either an `api_id` and `api_hash` from [my.telegram.org](https://my.telegram.org) to upload them from a script, **or** a person who sends each such file to the bot once. See [Upload files](#2-upload-files).
 
 The examples are shell commands. Set these variables first; later steps tell you which returned IDs to save into new ones (`PRODUCT_ID`, `OFFER_ID`, …):
 
@@ -52,8 +52,22 @@ Save `data.id` as `PRODUCT_ID`. `platform` must be `bot` — steps belong to bot
 
 Step attachments live on Telegram's servers. The API does not accept file uploads — it accepts a Telegram `file_id` of a file **uploaded by this bot**. You attach files to steps in two stages: get the file into Telegram, then register it with [Register a file](/api-reference/telegram-files/register) to get an ID for `telegram_file_ids`.
 
+There are three ways to get a file into Telegram. Choose by file size and by what you have:
+
+| Method | File size | What you need | Human action |
+|---|---|---|---|
+| Bot API | up to 50 MB | bot token | none |
+| MTProto | up to 2 GB | bot token, `api_id`, `api_hash` | none |
+| Send the file to the bot | up to 2 GB | nothing | send the file in Telegram |
+
+<Warning>
+  50 MB is a limit of uploading through the Bot API only. A step can have files up to 2 GB attached. Don't compress or re-encode media to fit into 50 MB — for larger files, use MTProto or send the file to the bot. If you have neither `api_id` and `api_hash` nor a person to send the file, ask for one of them.
+</Warning>
+
+Videos must be MPEG4 (`.mp4`, for example H.264 video with AAC audio) to play as videos. Telegram may store other formats as a `document`, and registering such a file as `video` fails with `type_mismatch`.
+
 <Tabs>
-  <Tab title="From a script (up to 50 MB)">
+  <Tab title="Bot API (up to 50 MB)">
     Send the file with the Bot API to your chat with the bot, take its `file_id`, and delete the message:
 
     ```bash
@@ -76,8 +90,8 @@ Step attachments live on Telegram's servers. The API does not accept file upload
       You don't know your `CHAT_ID`? Call [Register a file](/api-reference/telegram-files/register) with an empty body once — the response contains `chat_id`. The bot will also ask you to send a file; you can ignore that message.
     </Tip>
   </Tab>
-  <Tab title="From a script (over 50 MB)">
-    The Bot API rejects uploads over 50 MB. Use MTProto, Telegram's client protocol, instead: authorize **as the bot** (`auth.importBotAuthorization` with the bot token and your `api_id` and `api_hash`), upload the file, and send it to `CHAT_ID` with `messages.sendMedia`. This way a bot can upload files up to 2 GB.
+  <Tab title="MTProto (up to 2 GB)">
+    For files over 50 MB from a script. The Bot API rejects uploads over 50 MB; MTProto, Telegram's client protocol, doesn't. Authorize **as the bot** (`auth.importBotAuthorization` with the bot token and your `api_id` and `api_hash`), upload the file, and send it to `CHAT_ID` with `messages.sendMedia`. This way a bot can upload files up to 2 GB.
 
     MTProto identifies the uploaded file in its own format, not as a Bot API `file_id`. To get the `file_id`, forward the message you just sent with the Bot API — the response contains it:
 
@@ -89,8 +103,8 @@ Step attachments live on Telegram's servers. The API does not accept file upload
 
     Then delete both messages with `deleteMessage`.
   </Tab>
-  <Tab title="By hand in Telegram">
-    No bot token needed:
+  <Tab title="Send to the bot (up to 2 GB)">
+    For files over 50 MB when there are no `api_id` and `api_hash`, or when there's no bot token at all. A person sends the file to the bot once; everything else stays automated:
 
     1. Call [Register a file](/api-reference/telegram-files/register) with an **empty body**. The bot asks you to send a file (the request stays open for 3 hours — see `expires_at`).
     2. Send the file to the bot in Telegram.

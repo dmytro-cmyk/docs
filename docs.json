@@ -24,6 +24,7 @@
           {
             "group": "How-to",
             "pages": [
+              "guides/miniapp-course",
               "guides/bot-course",
               "guides/product-access"
             ]

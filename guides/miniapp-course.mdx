@@ -1,0 +1,378 @@
+---
+title: "Build a course in the miniApp"
+description: "Create a lesson-based course for the miniApp and the web version: lessons, videos, materials, sections, and opening schedule"
+---
+
+A miniApp product is a course made of **lessons**, not bot steps. Subscribers study it in the miniApp of your bot (opens inside Telegram), in the web version, or both. Both platforms show the same products and lessons; each platform is published separately (see [Publish the miniApp and the web version](#9-publish-the-miniapp-and-the-web-version)).
+
+The flow is:
+
+1. Create a product
+2. Create lessons
+3. Set when lessons open
+4. Add images
+5. Add materials
+6. Add videos
+7. Group lessons into sections
+8. Activate the product
+9. Publish the miniApp and the web version
+
+## Before you start
+
+You need:
+
+- **An API token** — see [Authentication](/authentication).
+- **The bot ID** — from [List bots](/api-reference/bots/list). The miniApp and the web version belong to a bot.
+- **Your files:**
+  - images (covers, notification pictures) — JPG, PNG, or WebP, up to 20 MB;
+  - lesson materials — up to 50 MB: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, CSV, MP3, MP4, WAV, OGG, ZIP, RAR, JPG, JPEG, PNG, WebP;
+  - videos — MP4 files to upload, or links to YouTube, Vimeo, or Bunny videos.
+
+Unlike a [course in a bot](/guides/bot-course), you don't need a bot token or Telegram uploads: images and materials go straight to the API, videos go to the video hosting.
+
+The examples are shell commands. Set these variables first; later steps tell you which returned IDs to save into new ones:
+
+```bash
+API=https://app.zenedu.com/api/v1/bot/BOT_ID
+TOKEN=YOUR_API_TOKEN
+```
+
+<Warning>
+  Send a common `User-Agent` from scripts. Requests with the default Python `urllib` user agent are blocked by Cloudflare with `403` (error 1010) before they reach the API. `curl` and most HTTP libraries work as is.
+</Warning>
+
+## 1. Create a product
+
+```bash
+curl -X POST $API/products \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"name": "Fun geometry for kids. Part 2", "platform": "miniApp"}'
+```
+
+Save `data.id` as `PRODUCT_ID`. `platform` must be `miniApp` — that's the miniApp product (the same product works in the web version). Product names are unique within a bot: a duplicate name returns `422` `name`. A new product is **inactive**; you activate it in [step 8](#8-activate-the-product).
+
+Optional product settings:
+
+- **Description** — [Update product](/api-reference/products/update) with `description`.
+- **Cover** — [Update product cover](/api-reference/products/update-cover), multipart `file`: JPG, PNG, or WebP up to 20 MB.
+- **Invite message** — the message a subscriber gets in the bot when they get access to the product. Set it with [Update product invite](/api-reference/products/update-invite): `invite_text` and `invite_button` (required), `invite_web_button` (optional), button styles `primary`, `success`, or `danger`. The message has a button that opens the miniApp; the web button is added only while the web version is published. A picture for it — [Update invite image](/api-reference/products/update-invite-image).
+
+## 2. Create lessons
+
+Create lessons with [Create lesson](/api-reference/products/lessons/create). Each new lesson is added to the end of the product.
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/lessons \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{
+    "name": "Lesson 1. Oval",
+    "text": "<p>An <strong>oval</strong> is a stretched circle.</p><ul><li>Watch the video.</li><li>Find oval things at home.</li></ul>",
+    "active": true,
+    "access_time": {"type": "immediately"}
+  }'
+```
+
+Save `data.id` as `LESSON_ID`.
+
+<Warning>
+  Pass `"active": true`. A lesson is created **inactive** by default, and subscribers don't see inactive lessons — the miniApp and the web version show "0 lessons". You can also activate a lesson later with [Activate lesson](/api-reference/products/lessons/activate).
+</Warning>
+
+- `name` — up to 255 characters, shown in the lesson list.
+- `text` — the lesson body in HTML: paragraphs, bold, italic, links, lists. Up to 4000 characters of text, not counting tags.
+- `access_time` — when the lesson opens, see [step 3](#3-set-when-lessons-open). If omitted, the lesson opens immediately.
+- `settings` — the notification sent when the lesson opens, see [Notify when a lesson opens](#notify-when-a-lesson-opens).
+
+Change a lesson with [Update lesson](/api-reference/products/lessons/update) — only the fields you pass change. Other lesson operations: [Reorder lessons](/api-reference/products/lessons/reorder) (`lesson_ids` in the new order), [Duplicate lesson](/api-reference/products/lessons/duplicate), [Deactivate lesson](/api-reference/products/lessons/deactivate), [Delete lesson](/api-reference/products/lessons/delete).
+
+## 3. Set when lessons open
+
+Each subscriber has their own schedule. It starts when the subscriber **gets access to the product**. `access_time.type` decides when each lesson opens for them:
+
+| `type` | The lesson opens | Fields |
+|---|---|---|
+| `immediately` | when the subscriber gets access | — |
+| `after_previous` | when the subscriber completes the previous lesson | — |
+| `duration` | after a delay from getting access | `delay_number`, `delay_type` |
+| `date` | at an exact date and time, the same for everyone | `delay_at` |
+| `time` | at a time of day | `delay_time`, `delay_number` |
+| `never` | only when you open it manually | — |
+
+### Step by step: `after_previous`
+
+```json
+{"access_time": {"type": "after_previous"}}
+```
+
+The subscriber completes a lesson in the miniApp or the web version; then the next lesson opens. Use `immediately` for the first lesson and `after_previous` for the rest to make a course that goes one lesson at a time.
+
+### After a delay: `duration`
+
+```json
+{"access_time": {"type": "duration", "delay_number": 2, "delay_type": "days"}}
+```
+
+Counts from the moment the subscriber got access, not from the previous lesson. `delay_type` is `seconds`, `minutes`, `hours`, or `days`. For "one lesson a day", give lesson N a delay of N − 1 days.
+
+### On a date: `date`
+
+```json
+{"access_time": {"type": "date", "delay_at": "2026-11-01T10:00:00+02:00"}}
+```
+
+Opens for everyone at that moment — use it for launches. A subscriber who gets access after the date gets the lesson right away. A value without an offset is read as UTC, so pass the offset.
+
+### At a time of day: `time`
+
+```json
+{"access_time": {"type": "time", "delay_time": "2026-01-01T09:00:00+02:00", "delay_number": 0}}
+```
+
+Opens at the next occurrence of the time of day from `delay_time` after the subscriber got access: today if that time hasn't passed yet, otherwise tomorrow. Only the time of day is used; pass it with an offset (without one it's read as UTC). `delay_number` is required for this type — pass `0`.
+
+### Manually: `never`
+
+The lesson doesn't open by itself. Open it for a subscriber with [Set product lessons](/api-reference/subscribers/set-product-lessons):
+
+```bash
+curl -X PUT $API/subscribers/$SUBSCRIBER_ID/products/$PRODUCT_ID/lessons \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"ids": [LESSON_ID_1, LESSON_ID_2]}'
+```
+
+<Warning>
+  `ids` is the **full** list of lessons open for this subscriber: lessons in the list open now, and every other lesson of the product closes for them. To open all lessons, pass `{"ids": [], "all": true}`.
+</Warning>
+
+This works with any `access_time` type — for example, to give one subscriber all lessons at once.
+
+### Changing the schedule later
+
+When you change `access_time` or activate or deactivate a lesson, the schedule is recalculated for subscribers who already have access. You can add and reorder lessons in a running course.
+
+When a subscriber completes all lessons, the product is finished for them.
+
+### Notify when a lesson opens
+
+The bot can send a message when a lesson opens for a subscriber. Pass `settings` when you create or update the lesson:
+
+```json
+{
+  "settings": {
+    "notify_on_open": true,
+    "lesson_open_text": "🔓 New lesson: <b>{{lesson_name}}</b>",
+    "lesson_open_button": "Open in the miniApp",
+    "lesson_open_web_button": "Open in the browser",
+    "lesson_open_button_style": "primary"
+  }
+}
+```
+
+- `lesson_open_text` — Telegram HTML; `{{lesson_name}}` and `{{product_name}}` are replaced with the lesson and product names. If empty, a default text in the bot's language is used.
+- `lesson_open_button` opens the miniApp. `lesson_open_web_button` is added only while the web version is published.
+- `lesson_open_button_style`, `lesson_open_web_button_style` — `primary`, `success`, or `danger`.
+- The picture for the message is the lesson's notification image, see [step 4](#4-add-images).
+
+The message is sent within about a minute after the lesson opens. Don't turn it on for a lesson that opens immediately with access — the subscriber already gets the [invite message](#1-create-a-product).
+
+## 4. Add images
+
+Both are multipart uploads of one `file`: JPG, PNG, or WebP up to 20 MB.
+
+| Image | Endpoint | Where it's shown |
+|---|---|---|
+| Cover | [Update lesson cover](/api-reference/products/lessons/update-cover) | the lesson card in the miniApp and the web version, 16:9 |
+| Notification image | [Update lesson open image](/api-reference/products/lessons/update-open-image) | the message sent when the lesson opens |
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/lessons/$LESSON_ID/cover \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
+  -F "file=@lesson-1-cover.png"
+```
+
+A new upload replaces the previous image. Remove one with [Delete lesson cover](/api-reference/products/lessons/delete-cover) or [Delete lesson open image](/api-reference/products/lessons/delete-open-image).
+
+## 5. Add materials
+
+Materials are files or links listed under the lesson. Add them with [Add lesson material](/api-reference/products/lessons/materials/create), one per request.
+
+A file — multipart `file`, with an optional display `name` (without it, the file name is shown):
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/lessons/$LESSON_ID/materials \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
+  -F "file=@worksheet.pdf;filename=Color the ovals.pdf" -F "name=Color the ovals"
+```
+
+A link — `name` and `url` (`http` or `https`), no file:
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/lessons/$LESSON_ID/materials \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
+  -F "name=Part 1 of the course" -F "url=https://t.me/YourBot?start=…"
+```
+
+Manage them with [List](/api-reference/products/lessons/materials/list), [Update](/api-reference/products/lessons/materials/update) (`name`, and `url` for links), [Reorder](/api-reference/products/lessons/materials/reorder) (`media_ids` in the new order), and [Delete](/api-reference/products/lessons/materials/delete).
+
+## 6. Add videos
+
+A lesson has at most one video. Adding a video replaces the current one.
+
+<Tabs>
+  <Tab title="Upload a file">
+    The file goes directly to the video hosting over [tus](https://tus.io), a resumable upload protocol — not through the Zenedu API.
+
+    **1. Request an upload** with [Create video upload](/api-reference/products/lessons/video/create-upload). `file_size` is the exact file size in bytes:
+
+    ```bash
+    curl -X POST $API/products/$PRODUCT_ID/lessons/$LESSON_ID/video \
+      -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+      -d '{"title": "Lesson 1. Oval", "file_size": 909208}'
+    ```
+
+    ```json
+    {
+      "video_id": 123,
+      "status": "uploading",
+      "upload": {
+        "protocol": "tus",
+        "endpoint": "https://video.bunnycdn.com/tusupload",
+        "headers": {"AuthorizationSignature": "…", "AuthorizationExpire": "…", "VideoId": "…", "LibraryId": "…"},
+        "expires_at": "…"
+      }
+    }
+    ```
+
+    The upload must finish before `expires_at`.
+
+    **2. Create the tus upload.** Send every header from `upload.headers` with each request:
+
+    ```bash
+    curl -i -X POST "$ENDPOINT" \
+      -H "Tus-Resumable: 1.0.0" -H "Upload-Length: 909208" \
+      -H "Upload-Metadata: filetype dmlkZW8vbXA0,title TGVzc29uIDE=" \
+      -H "AuthorizationSignature: …" -H "AuthorizationExpire: …" -H "VideoId: …" -H "LibraryId: …"
+    ```
+
+    The response is `201` with a `Location` header. It may be a path (`/tusupload/…`) — then it's relative to the `endpoint` host. `Upload-Metadata` values are base64-encoded (`filetype video/mp4`, `title`).
+
+    **3. Send the file:**
+
+    ```bash
+    curl -X PATCH "https://video.bunnycdn.com/tusupload/…" \
+      -H "Tus-Resumable: 1.0.0" -H "Upload-Offset: 0" -H "Content-Type: application/offset+octet-stream" \
+      -H "AuthorizationSignature: …" -H "AuthorizationExpire: …" -H "VideoId: …" -H "LibraryId: …" \
+      --data-binary @lesson-1.mp4
+    ```
+
+    `204` means the file is uploaded. Any tus client library works the same way: give it the endpoint, the headers, and the file.
+
+    **4. Wait for processing.** The video goes `uploading` → `processing` → `ready` on its own, usually within a few minutes. Check with [Get lesson video](/api-reference/products/lessons/video/get). `ready` means the video is processed and can be played; `failed` means the hosting couldn't process the file — upload it again.
+  </Tab>
+  <Tab title="Link to YouTube, Vimeo, or Bunny">
+    ```bash
+    curl -X PUT $API/products/$PRODUCT_ID/lessons/$LESSON_ID/video/external \
+      -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+      -d '{"url": "https://www.youtube.com/watch?v=…"}'
+    ```
+
+    The video is `ready` right away. A link the API can't recognize returns `422` `url`.
+  </Tab>
+</Tabs>
+
+Remove a video with [Delete lesson video](/api-reference/products/lessons/video/delete).
+
+## 7. Group lessons into sections
+
+Sections are optional headings that group lessons in the miniApp and the web version. Create one with [Create section](/api-reference/products/sections/create):
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/sections \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  --data @- <<EOF
+{"name": "New shapes", "lesson_ids": [$LESSON_ID_1, $LESSON_ID_2, $LESSON_ID_3]}
+EOF
+```
+
+- [Update section](/api-reference/products/sections/update) — `name` and `lesson_ids`. The `lesson_ids` you pass **replace** the section's lessons.
+- [Reorder sections](/api-reference/products/sections/reorder) — `section_ids` in the new order.
+- [Delete section](/api-reference/products/sections/delete).
+
+## 8. Activate the product
+
+```bash
+curl -X PUT $API/products/$PRODUCT_ID/active \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+```
+
+Subscribers see only active products. Then give subscribers access — see [Give access to a product](/guides/product-access). The schedule from [step 3](#3-set-when-lessons-open) starts at that moment, and the subscriber gets the invite message.
+
+## 9. Publish the miniApp and the web version
+
+Products and lessons are shown on two platforms:
+
+| Platform | Path prefix | Where subscribers open it |
+|---|---|---|
+| miniApp | `/mini-app` | the bot's menu button in Telegram |
+| Web version | `/web` | a website in the browser |
+
+**Both platforms show the same products and lessons**, and you don't add products to them: the **Content** section of each lists every active miniApp product the subscriber has access to. Bot products are listed too only if `show_bot_products` is on in the platform settings.
+
+Each platform is configured and published **separately**: you can run only the miniApp, only the web version, or both.
+
+### Draft and published version
+
+Each platform has a draft and a published version. Settings, menu, profile, logo, and onboarding changes go to the draft; subscribers see them only after you publish. Products, lessons, and their content are not part of the draft — they change for subscribers right away.
+
+1. Call [Get miniApp](/api-reference/mini-app/get) or [Get web version](/api-reference/web/get) first: it prepares the platform if it hasn't been set up yet and returns `is_published`, `has_changes` (the draft differs from the published version), `app_url`, and the settings.
+2. Change the draft.
+3. Publish: [Publish miniApp](/api-reference/mini-app/publish) or [Publish web version](/api-reference/web/publish).
+
+```bash
+curl -X POST $API/mini-app/publish -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+curl -X POST $API/web/publish -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+```
+
+Turn a platform off with [Unpublish miniApp](/api-reference/mini-app/unpublish) or [Unpublish web version](/api-reference/web/unpublish) (`DELETE …/publish`). The draft stays; subscribers who open an unpublished platform see it as disabled.
+
+<Warning>
+  Publishing the **miniApp** changes the bot: the bot's command menu is turned off, and the bot's menu button opens the miniApp. Unpublishing the miniApp returns the standard menu button. Publishing the web version doesn't change the bot.
+</Warning>
+
+### Settings
+
+[Update miniApp settings](/api-reference/mini-app/update-settings) and [Update web settings](/api-reference/web/update-settings) take the same fields, set per platform:
+
+- `brand_name`, `open_button_name`, `appearance` (`system`, `light`, `dark`), `brand_color` (`#RRGGBB`), `disable_branding`;
+- `show_bot_products` — also list bot products in Content;
+- `support_type` (`bot` or `link`) and `support_text` — the Support item;
+- `phone_login_enabled` — web version only: sign-in with a phone number.
+
+The logo is set per platform ([miniApp logo](/api-reference/mini-app/update-logo), [web logo](/api-reference/web/update-logo)); the favicon only for the web version ([Update web favicon](/api-reference/web/update-favicon)).
+
+### Menu and profile
+
+Each platform has its own menu and profile items: Content, Shop, Subscriptions, Support, and others. You can add your own **links** and a **Shop** item ([create menu item](/api-reference/mini-app/create-menu-item), [create profile item](/api-reference/mini-app/create-profile-item), the same under `/web`), reorder, update, move between menu and profile, and delete links. A subscriber without products opens the Shop first if it has offers; otherwise Content.
+
+### Onboarding
+
+Onboarding screens are shown on the first open of the **miniApp** only — see [Create onboarding screen](/api-reference/mini-app/create-onboarding). The web version has no onboarding.
+
+### Web address
+
+The web version has an address on a Zenedu subdomain. Change it with [Update web address](/api-reference/web/update-address):
+
+```json
+{"web_handle": "fun-geometry"}
+```
+
+- `web_handle` — 3–32 characters: lowercase letters, digits, and hyphens, not at the start or end. It must be unique; some names are reserved.
+- `custom_domain_enabled` — serve the web version on your own domain. Requires a paid Pro plan, otherwise the request fails; the domain itself is set in the dashboard.
+
+The current link is `app_url` in [Get web version](/api-reference/web/get).
+
+## Things to keep in mind
+
+- **Lessons are created inactive.** Pass `"active": true` or activate them — otherwise subscribers see an empty product.
+- **The schedule starts with access.** `duration` and `time` count from the moment the subscriber got access, not from the previous lesson. For one lesson after another, use `after_previous`.
+- **Videos aren't ready immediately.** An uploaded video is `uploading`, then `processing`, and can be played once it's `ready`.
