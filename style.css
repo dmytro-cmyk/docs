@@ -1,0 +1,3 @@
+a[href*="utm_campaign=poweredBy"] {
+  display: none !important;
+}
