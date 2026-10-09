@@ -203,6 +203,7 @@
                 "pages": [
                   "api-reference/products/lessons/video/get",
                   "api-reference/products/lessons/video/create-upload",
+                  "api-reference/products/lessons/video/complete-upload",
                   "api-reference/products/lessons/video/attach-external",
                   "api-reference/products/lessons/video/delete"
                 ]
@@ -338,6 +339,18 @@
                   "api-reference/offers/links/delete"
                 ]
               }
+            ]
+          },
+          {
+            "group": "Payment systems",
+            "pages": [
+              "api-reference/payment-systems/list",
+              "api-reference/payment-systems/types",
+              "api-reference/payment-systems/get",
+              "api-reference/payment-systems/create",
+              "api-reference/payment-systems/update",
+              "api-reference/payment-systems/reorder",
+              "api-reference/payment-systems/delete"
             ]
           },
           {

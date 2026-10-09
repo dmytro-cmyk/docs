@@ -267,7 +267,20 @@ A lesson has at most one video. Adding a video replaces the current one.
 
     `204` means the file is uploaded. Any tus client library works the same way: give it the endpoint, the headers, and the file.
 
-    **4. Wait for processing.** The video goes `uploading` → `processing` → `ready` on its own, usually within a few minutes. Check with [Get lesson video](/api-reference/products/lessons/video/get). `ready` means the video is processed and can be played; `failed` means the hosting couldn't process the file — upload it again.
+    **4. Report that the upload is complete** with [Complete video upload](/api-reference/products/lessons/video/complete-upload):
+
+    ```bash
+    curl -X POST $API/products/$PRODUCT_ID/lessons/$LESSON_ID/video/upload-complete \
+      -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+    ```
+
+    The video moves from `uploading` to `processing`.
+
+    <Warning>
+      Don't skip this call. Without it, the video stays `uploading` and can be removed as an abandoned upload.
+    </Warning>
+
+    **5. Wait for processing.** The video goes `uploading` → `processing` → `ready` on its own, usually within a few minutes. Check with [Get lesson video](/api-reference/products/lessons/video/get). `ready` means the video is processed and can be played; `failed` means the hosting couldn't process the file — upload it again.
   </Tab>
   <Tab title="Link to YouTube, Vimeo, or Bunny">
     ```bash

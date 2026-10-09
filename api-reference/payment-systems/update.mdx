@@ -1,0 +1,15 @@
+---
+title: "Update payment method"
+description: "Partially updates a payment method"
+openapi: "PATCH /api/v1/payment-systems/{paymentSystem}"
+---
+
+Partially updates a payment method: only sent fields change.
+
+- `type` cannot be changed and is ignored.
+- `settings` are merged over the stored ones by key, so a single key can be changed without resending credentials. `manualTextRequisites` is replaced as a whole list.
+- `public_name: null` or an empty string resets the subscriber-facing name to the type name.
+
+<Warning>
+For `stripe`, the webhook is registered again only when `secret_key` changes. If Stripe rejects the new key, nothing is saved and `422` is returned with the error under `settings.secret_key`.
+</Warning>

@@ -1,0 +1,17 @@
+---
+title: "Create payment method"
+description: "Creates a payment method for the account"
+openapi: "POST /api/v1/payment-systems"
+---
+
+Creates a payment method of the given `type`.
+
+- Keys in `settings` depend on `type`, see the table in the `settings` field. Unknown keys are dropped and text values are trimmed.
+- `name` must be unique within the account, case-insensitive.
+- Only one `telegramstars` method is allowed per account: a second one returns `409`.
+- For `manually`, requisites need both `name` and `value`, and the resulting bot message must fit into 4000 characters.
+- `attach_to_all_offers` adds the method to every offer whose currency and minimum amount it supports.
+
+<Warning>
+For `stripe`, a webhook is registered in Stripe with the given `secret_key` before saving. If Stripe rejects the key, nothing is saved and `422` is returned with the error under `settings.secret_key`.
+</Warning>

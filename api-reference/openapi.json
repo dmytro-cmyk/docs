@@ -61,6 +61,10 @@
       "description": "Account webhook subscriptions"
     },
     {
+      "name": "Payment systems",
+      "description": "Account payment methods"
+    },
+    {
       "name": "Bot settings",
       "description": "Bot configuration: email, branding, integrations, legal documents"
     },
@@ -861,6 +865,409 @@
           },
           "404": {
             "description": "Webhook subscription not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment-systems": {
+      "get": {
+        "operationId": "listPaymentSystems",
+        "summary": "List payment methods",
+        "description": "Returns all payment methods of the account in display order. Credentials are never returned.",
+        "tags": [
+          "Payment systems"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of payment methods",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PaymentSystem"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createPaymentSystem",
+        "summary": "Create payment method",
+        "description": "Creates a payment method. For `stripe`, a webhook is registered in Stripe with the given `secret_key` before saving; if Stripe rejects the key, nothing is saved and 422 is returned with the error under `settings.secret_key`. Only one `telegramstars` method is allowed per account.",
+        "tags": [
+          "Payment systems"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentSystemInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Payment method created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PaymentSystem"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A Telegram Stars payment method already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error: missing settings (`settings.<key>`), unfilled requisites (`settings.manualTextRequisites.<n>.name|value`), bot message too long (`settings.manualTextIntro`), duplicate `name`, or Stripe connection error (`settings.secret_key`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment-systems/types": {
+      "get": {
+        "operationId": "listPaymentSystemTypes",
+        "summary": "List payment method types",
+        "description": "Returns the payment method types and the settings keys each type accepts.",
+        "tags": [
+          "Payment systems"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of payment method types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PaymentSystemType"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment-systems/order": {
+      "put": {
+        "operationId": "reorderPaymentSystems",
+        "summary": "Reorder payment methods",
+        "description": "Sets the display order of payment methods and returns the reordered list.",
+        "tags": [
+          "Payment systems"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentSystemOrderInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reordered list of payment methods",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PaymentSystem"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden — requires account manage permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error, or an ID does not belong to this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment-systems/{paymentSystem}": {
+      "get": {
+        "operationId": "getPaymentSystem",
+        "summary": "Get payment method",
+        "description": "Returns a single payment method by ID. Credentials are never returned.",
+        "tags": [
+          "Payment systems"
+        ],
+        "parameters": [
+          {
+            "name": "paymentSystem",
+            "in": "path",
+            "required": true,
+            "description": "Payment method ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PaymentSystem"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found in this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updatePaymentSystem",
+        "summary": "Update payment method",
+        "description": "Partially updates a payment method. Sent settings are merged over the stored ones, so a single key can be changed without resending credentials. For `stripe`, the webhook is registered again only when `secret_key` changes; if Stripe rejects the new key, nothing is saved and 422 is returned with the error under `settings.secret_key`.",
+        "tags": [
+          "Payment systems"
+        ],
+        "parameters": [
+          {
+            "name": "paymentSystem",
+            "in": "path",
+            "required": true,
+            "description": "Payment method ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentSystemUpdateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment method updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PaymentSystem"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found in this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error: empty setting, unfilled requisites, bot message too long, duplicate `name`, or Stripe connection error (`settings.secret_key`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deletePaymentSystem",
+        "summary": "Delete payment method",
+        "description": "Deletes a payment method. Offers for which it was the only payment method are stopped. For `stripe`, the webhook is removed from Stripe.",
+        "tags": [
+          "Payment systems"
+        ],
+        "parameters": [
+          {
+            "name": "paymentSystem",
+            "in": "path",
+            "required": true,
+            "description": "Payment method ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Payment method deleted"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden — requires account manage permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found in this account",
             "content": {
               "application/json": {
                 "schema": {
@@ -12847,7 +13254,7 @@
       "post": {
         "operationId": "createLessonVideoUpload",
         "summary": "Create video upload",
-        "description": "Registers a video upload and returns TUS credentials. The file is uploaded by the client directly to the video host; the status moves uploading, processing, ready or failed.",
+        "description": "Registers a video upload and returns TUS credentials. The file is uploaded by the client directly to the video host; after the upload finishes, call Complete video upload. The status moves uploading, processing, ready or failed.",
         "tags": [
           "Products"
         ],
@@ -33182,6 +33589,102 @@
           }
         }
       }
+    },
+    "/api/v1/bot/{bot}/products/{product}/lessons/{lesson}/video/upload-complete": {
+      "post": {
+        "operationId": "completeLessonVideoUpload",
+        "summary": "Complete video upload",
+        "description": "Marks an uploaded video as received: call it once after the TUS upload finishes (the upload request returned `204`). The video moves from `uploading` to `processing`; the video host then sets `ready` or `failed`. Calling it again, or for a video in any other status, changes nothing.",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "bot",
+            "in": "path",
+            "required": true,
+            "description": "Bot ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "product",
+            "in": "path",
+            "required": true,
+            "description": "Product ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "lesson",
+            "in": "path",
+            "required": true,
+            "description": "Lesson ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Video",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/LessonVideo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - lacks access to this bot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Lesson or its video not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The lesson video was added by link, there is no upload to complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -36823,6 +37326,189 @@
             ],
             "format": "date-time",
             "description": "Upload timestamp"
+          }
+        }
+      },
+      "PaymentSystem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Payment method ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Internal name, unique within the account"
+          },
+          "public_name": {
+            "type": "string",
+            "nullable": true,
+            "description": "Name shown to subscribers; `null` means the type name is shown"
+          },
+          "type": {
+            "type": "string",
+            "description": "Payment method type, see [List payment method types](/api-reference/payment-systems/types)"
+          },
+          "type_name": {
+            "type": "string",
+            "description": "Human-readable type name"
+          },
+          "supports_subscription": {
+            "type": "boolean",
+            "description": "Whether the type supports recurring payments"
+          },
+          "sort": {
+            "type": "integer",
+            "description": "Position in the account list"
+          },
+          "settings": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": true,
+            "description": "Full settings for `manually` (texts and requisites) and `telegramstars` (`bot_only`); `null` for other types. An empty set is returned as an empty array `[]`."
+          },
+          "credentials_set": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "For automatic types: whether every credential is filled. Credentials themselves are never returned. `null` for `manually` and `telegramstars`."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Creation timestamp"
+          }
+        }
+      },
+      "PaymentSystemType": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type code used in `type` when creating a payment method"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable type name"
+          },
+          "settings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Settings keys accepted for this type"
+          },
+          "supports_subscription": {
+            "type": "boolean",
+            "description": "Whether the type supports recurring payments"
+          }
+        }
+      },
+      "ManualPaymentRequisite": {
+        "type": "object",
+        "required": [
+          "name",
+          "value"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Requisite label, e.g. `IBAN`"
+          },
+          "value": {
+            "type": "string",
+            "description": "Requisite value the subscriber copies"
+          }
+        }
+      },
+      "PaymentSystemSettingsInput": {
+        "type": "object",
+        "additionalProperties": true,
+        "description": "Settings for the payment method type. Allowed keys depend on `type` — see [List payment method types](/api-reference/payment-systems/types). Unknown keys are dropped, text values are trimmed, and every credential key of the type is required.\n\n| Type | Keys |\n|---|---|\n| `wayforpay` | `domain`, `seller_id`, `seller_secret` |\n| `fondy` | `merchant_id`, `secret_key` |\n| `monobank` | `api_token` |\n| `paypal` | `client_id`, `client_secret`, `webhook_id` |\n| `stripe` | `secret_key` |\n| `mollie` | `api_key` |\n| `nowpayments` | `api_key`, `ipn_secret_key` |\n| `whitepay` | `api_key`, `slug`, `webhook_token` |\n| `liqpay` | `public_key`, `private_key` |\n| `telegramstars` | `bot_only` (boolean, defaults to `true` on create) |\n| `manually` | `manualIcon`, `manualTextIntro`, `manualTextIntroShop`, `manualTextRequisites`, `manualTextPaymentProof`, `manualTextPaymentDone`, `manualTextButton`, `manualAppWaitingHeading`, `manualAppWaitingText`, `manualAppWaitingButton` |\n\nFor `manually`, every text key except `manualIcon` and `manualTextIntroShop` is required, and `manualTextRequisites` must contain at least one row with both `name` and `value` filled. The resulting bot message must fit into 4000 characters.",
+        "properties": {
+          "manualTextRequisites": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ManualPaymentRequisite"
+            },
+            "description": "Only for `manually`. Replaces the whole list on update."
+          },
+          "bot_only": {
+            "type": "boolean",
+            "description": "Only for `telegramstars`: show the method only in the bot"
+          }
+        }
+      },
+      "PaymentSystemInput": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Internal name, unique within the account (case-insensitive)"
+          },
+          "public_name": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Name shown to subscribers; empty or `null` shows the type name"
+          },
+          "type": {
+            "type": "string",
+            "description": "Payment method type, see [List payment method types](/api-reference/payment-systems/types)"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/PaymentSystemSettingsInput"
+          },
+          "attach_to_all_offers": {
+            "type": "boolean",
+            "default": false,
+            "description": "Attach the new method to every offer whose currency and minimum amount it supports"
+          }
+        }
+      },
+      "PaymentSystemUpdateInput": {
+        "type": "object",
+        "description": "Partial update: only sent fields change. `type` cannot be changed and is ignored.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Internal name, unique within the account (case-insensitive)"
+          },
+          "public_name": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 255,
+            "description": "Name shown to subscribers; empty or `null` resets it to the type name"
+          },
+          "settings": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaymentSystemSettingsInput"
+              }
+            ],
+            "description": "Merged over the stored settings by key: omitted keys keep their values."
+          }
+        }
+      },
+      "PaymentSystemOrderInput": {
+        "type": "object",
+        "required": [
+          "payment_system_ids"
+        ],
+        "properties": {
+          "payment_system_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "integer"
+            },
+            "description": "Payment method IDs of this account in the new order, without duplicates"
           }
         }
       }

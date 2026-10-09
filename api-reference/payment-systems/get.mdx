@@ -1,0 +1,9 @@
+---
+title: "Get payment method"
+description: "Returns a single payment method by ID"
+openapi: "GET /api/v1/payment-systems/{paymentSystem}"
+---
+
+Returns a single payment method of the account. A payment method of another account returns `404`.
+
+Credentials are never returned: automatic types report only `credentials_set`.

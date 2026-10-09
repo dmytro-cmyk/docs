@@ -1,0 +1,9 @@
+---
+title: "List payment methods"
+description: "Returns all payment methods of the account"
+openapi: "GET /api/v1/payment-systems"
+---
+
+Returns all payment methods of the account in display order.
+
+Credentials are never returned: automatic types report only `credentials_set`. Full `settings` are returned for `manually` (texts and requisites) and `telegramstars` (`bot_only`); an empty set comes as an empty array `[]`.

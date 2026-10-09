@@ -1,0 +1,10 @@
+---
+title: "Delete payment method"
+description: "Deletes a payment method"
+openapi: "DELETE /api/v1/payment-systems/{paymentSystem}"
+---
+
+Deletes a payment method.
+
+- Offers for which it was the only payment method are stopped.
+- For `stripe`, the webhook is removed from Stripe.

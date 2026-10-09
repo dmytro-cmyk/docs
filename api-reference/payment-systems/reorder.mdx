@@ -1,0 +1,7 @@
+---
+title: "Reorder payment methods"
+description: "Sets the display order of payment methods"
+openapi: "PUT /api/v1/payment-systems/order"
+---
+
+Sets the display order of payment methods and returns the reordered list. Every ID must belong to this account, otherwise `422` is returned and the order does not change.
