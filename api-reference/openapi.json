@@ -33692,7 +33692,7 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "Laravel Sanctum API token"
+        "description": "API token from the Zenedu dashboard"
       }
     },
     "schemas": {
