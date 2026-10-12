@@ -16436,7 +16436,7 @@
       "post": {
         "operationId": "createProductStepButton",
         "summary": "Create step button",
-        "description": "Adds an inline button to the end of the step's button list. Returns the updated step.",
+        "description": "Adds an inline button to the end of the step's button list. Returns the updated step. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
         "tags": [
           "Products"
         ],
@@ -16542,7 +16542,7 @@
       "patch": {
         "operationId": "updateProductStepButton",
         "summary": "Update step button",
-        "description": "Replaces the button's fields. All fields are saved, so pass the full button. Returns the updated step.",
+        "description": "Replaces the button and returns the updated step. Pass the full button, including type, name and all settings you want to retain. Omitted settings are reset; omitting link_mode selects the tracked default. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
         "tags": [
           "Products"
         ],
@@ -18632,7 +18632,7 @@
       "post": {
         "operationId": "createFunnelStepButton",
         "summary": "Create step button",
-        "description": "Adds an inline button to the end of the step's button list. Returns the updated step.",
+        "description": "Adds an inline button to the end of the step's button list. Returns the updated step. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
         "tags": [
           "Funnels"
         ],
@@ -18738,7 +18738,7 @@
       "patch": {
         "operationId": "updateFunnelStepButton",
         "summary": "Update step button",
-        "description": "Replaces the button's fields. All fields are saved, so pass the full button. Returns the updated step.",
+        "description": "Replaces the button and returns the updated step. Pass the full button, including type, name and all settings you want to retain. Omitted settings are reset; omitting link_mode selects the tracked default. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
         "tags": [
           "Funnels"
         ],
@@ -24267,7 +24267,7 @@
       "post": {
         "operationId": "createBroadcastButton",
         "summary": "Create broadcast button",
-        "description": "Adds a button to the broadcast.",
+        "description": "Adds a button to the broadcast. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
         "tags": [
           "Broadcasts"
         ],
@@ -24353,46 +24353,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Button label"
-                  },
-                  "type": {
-                    "type": "string",
-                    "description": "Button type",
-                    "enum": [
-                      "link",
-                      "task",
-                      "action",
-                      "offer",
-                      "affiliate",
-                      "app"
-                    ]
-                  },
-                  "link": {
-                    "type": "string",
-                    "nullable": true,
-                    "description": "URL for link buttons"
-                  },
-                  "offer_id": {
-                    "type": "integer",
-                    "nullable": true,
-                    "description": "Offer ID for offer buttons"
-                  },
-                  "actions": {
-                    "type": "array",
-                    "items": {
-                      "type": "object"
-                    },
-                    "description": "Button actions"
-                  },
-                  "settings": {
-                    "type": "object",
-                    "description": "Button settings"
-                  }
-                }
+                "$ref": "#/components/schemas/StepButtonInput"
               }
             }
           }
@@ -24403,7 +24364,7 @@
       "patch": {
         "operationId": "updateBroadcastButton",
         "summary": "Update broadcast button",
-        "description": "Updates a broadcast button.",
+        "description": "Replaces the broadcast button and returns the updated broadcast. Pass the full button, including type, name and all settings you want to retain. Omitted settings are reset; omitting link_mode selects the tracked default. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
         "tags": [
           "Broadcasts"
         ],
@@ -24494,50 +24455,11 @@
           }
         },
         "requestBody": {
-          "required": false,
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Button label"
-                  },
-                  "type": {
-                    "type": "string",
-                    "description": "Button type",
-                    "enum": [
-                      "link",
-                      "task",
-                      "action",
-                      "offer",
-                      "affiliate",
-                      "app"
-                    ]
-                  },
-                  "link": {
-                    "type": "string",
-                    "nullable": true,
-                    "description": "URL for link buttons"
-                  },
-                  "offer_id": {
-                    "type": "integer",
-                    "nullable": true,
-                    "description": "Offer ID for offer buttons"
-                  },
-                  "actions": {
-                    "type": "array",
-                    "items": {
-                      "type": "object"
-                    },
-                    "description": "Button actions"
-                  },
-                  "settings": {
-                    "type": "object",
-                    "description": "Button settings"
-                  }
-                }
+                "$ref": "#/components/schemas/StepButtonInput"
               }
             }
           }
@@ -35659,17 +35581,25 @@
                 ]
               },
               "web_app": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "Protect from copying: opens a website as a Telegram Web App to make copying the link harder. Available with either link mode. Cannot be enabled for t.me, telegram.me or tg:// destinations; the API returns 422."
               },
-              "direct_link": {
-                "type": "boolean"
+              "link_mode": {
+                "type": "string",
+                "enum": [
+                  "direct",
+                  "tracked"
+                ],
+                "default": "tracked",
+                "description": "Applies to link buttons. tracked (With click tracking) routes through Zenedu to record clicks, apply selected tags and trigger click automations. direct (Direct link) opens the destination directly, without recording clicks or applying tags. Recommended for links to Telegram channels, chats and bots. Direct links do not produce click events, but do not disable or delete automation settings. Button-not-clicked automations remain active and may run even when a subscriber follows a direct link. Routing is determined only by this mode, never by the destination or automation conditions. The tracked default is omitted from saved settings; only direct is stored."
               },
               "tags": {
                 "type": "array",
                 "items": {
                   "type": "string",
                   "maxLength": 255
-                }
+                },
+                "description": "Tag names assigned to the subscriber when following a tracked link. Selections are retained in direct mode but are not assigned when following a direct link. A Telegram link click does not confirm that the subscriber joined a channel or group."
               },
               "task_message": {
                 "type": [
@@ -35707,7 +35637,8 @@
                   "null"
                 ]
               }
-            }
+            },
+            "description": "Button settings. For link buttons, an absent link_mode means tracked. The legacy direct_link field is ignored and does not enable a direct link. When replacing a button, send all settings you want to retain; omitted settings are reset."
           }
         }
       },
@@ -35750,7 +35681,26 @@
             }
           },
           "settings": {
-            "type": "object"
+            "description": "Stored button settings. For link buttons, an absent link_mode means tracked; only the direct override is stored. Empty settings are returned as [].",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "link_mode": {
+                    "type": "string",
+                    "enum": [
+                      "direct",
+                      "tracked"
+                    ],
+                    "description": "For link buttons, direct is the saved override. An absent field means tracked; the tracked default is omitted from saved link-button settings."
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "maxItems": 0
+              }
+            ]
           },
           "sort": {
             "type": "integer"
@@ -36504,48 +36454,7 @@
           "buttons": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "description": "Button ID"
-                },
-                "type": {
-                  "type": "string",
-                  "description": "Button type"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "Button label"
-                },
-                "link": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "description": "Button URL"
-                },
-                "offer_id": {
-                  "type": [
-                    "integer",
-                    "null"
-                  ],
-                  "description": "Offer ID"
-                },
-                "actions": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                },
-                "settings": {
-                  "type": "object"
-                },
-                "sort": {
-                  "type": "integer",
-                  "description": "Sort order"
-                }
-              }
+              "$ref": "#/components/schemas/StepButton"
             }
           },
           "created_at": {
