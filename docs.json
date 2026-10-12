@@ -2044,7 +2044,7 @@
     ]
   },
   "api": {
-    "baseUrl": "https://app.zenedu.com",
+    "baseUrl": "https://app.zenedu.io",
     "auth": {
       "method": "bearer"
     }

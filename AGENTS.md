@@ -121,7 +121,7 @@ Affiliate, Mini-app, Web, Folders.
 
 ## OpenAPI spec conventions (match the existing entries)
 
-- OpenAPI **3.1**, a single spec file. `servers` is `https://app.zenedu.com`. Bearer auth (Laravel Sanctum);
+- OpenAPI **3.1**, a single spec file. `servers` is `https://app.zenedu.io` (the docs site itself lives on `api.zenedu.io` — never use it as the API host). Bearer auth (Laravel Sanctum);
   every request needs `Accept: application/json`.
 - **Responses:** list endpoints use `allOf` of `#/components/schemas/PaginatedResponse` + `{ data: [Item] }`;
   a single item is `{ data: Item }`. Error responses reference `#/components/schemas/Error` **inline**
