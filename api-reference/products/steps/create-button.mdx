@@ -1,5 +1,5 @@
 ---
 title: "Create step button"
-description: "Adds an inline button to the end of the step's button list. Returns the updated step."
+description: "Adds an inline button to the end of the step's button list. Returns the updated step. Link buttons default to With click tracking. Use settings.link_mode=direct for a direct link; tags are retained but not applied, and direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying is unavailable for Telegram links (422). The legacy direct_link field is ignored."
 openapi: "POST /api/v1/bot/{bot}/products/{product}/steps/{step}/buttons"
 ---
