@@ -233,7 +233,7 @@ Length limits:
 The submission button is created automatically, named in the bot's language — don't add it yourself. The subscriber presses it and sends their work to the chat.
 
 - `task_autocheck: true` — the assignment is accepted on submission, and the course continues right away.
-- `task_autocheck: false` — the assignment waits for review in [Tasks](/api-reference/tasks/list); the course continues after you [approve it](/api-reference/tasks/approve).
+- `task_autocheck: false` — the assignment waits for review in [Assignments](/api-reference/tasks/list); the course continues after you [approve it](/api-reference/tasks/approve).
 
 ## 4. Set when each step is sent
 
@@ -359,7 +359,7 @@ The step is skipped in the course: subscribers don't get it after the previous s
 
 ### Time zone
 
-Schedules are calculated in the time zone of your workspace (set in the dashboard, workspace settings; UTC if not set): the time of day for `time`, and the hours and days of `delay_limit`.
+Schedules are calculated in the time zone of your workspace (**Settings → Workspace → General → Time Zone** in the dashboard; UTC if not set): the time of day for `time`, and the hours and days of `delay_limit`.
 
 `delay_at` and `delay_time` are date-time values. A value without an offset is read as UTC, so pass the offset of your workspace time zone — for example, `10:00:00+02:00` for 10:00 in Kyiv in winter. For `time`, the time of day stays fixed in the workspace time zone all year.
 
@@ -374,5 +374,5 @@ When the product is active, give subscribers access to it — see [Give access t
 
 ## Things to keep in mind
 
-- **Language of default texts.** The task button, its messages, and the default question errors are created in the **bot's language**. API responses and error messages are always in English.
+- **Language of default texts.** The assignment button, its messages, and the default question errors are created in the **bot's language**. API responses and error messages are always in English.
 - **Files are per user.** Files registered with one API token can't be attached by another user's token.

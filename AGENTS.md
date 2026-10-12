@@ -43,21 +43,33 @@ Rules:
   There is **one** `openapi.json`, in English — parameter and schema descriptions are not translated.
 - Internal links point to the same language (`/uk/...`, `/ru/...`). Anchors are generated from the translated headings
   (e.g. `/uk/guides/bot-course#перед-початком`, `/ru/guides/bot-course#перед-началом`).
-- Terms follow the Zenedu dashboard (`resources/lang/ua`, `resources/lang/ru` in the app repo):
+- **All names must match the Zenedu dashboard** in every language, English included. Source of truth in the app repo:
+  sidebar menu `app/View/Components/V2/Layout/Main.php`, workspace tabs `Account/Http/Livewire/Traits/WorkspaceTabs.php`,
+  translations `resources/lang/{en,ua}.json` and `resources/lang/{ru,ua,en}/*.php`. Check there before naming anything.
+  API codes and paths (`/offers`, `/sections`, `/mini-app`, `platform: "miniApp"`) are a contract and stay as they are.
 
-  | English | Ukrainian | Russian |
-  |---|---|---|
-  | offer | тариф | тариф |
-  | coupon | промокод | промокод |
-  | section | модуль | модуль |
-  | payment method | платіжна система | платёжная система |
-  | mini app | міні-застосунок | мини-приложение |
-  | web app | веб-версія | веб-версия |
-  | subscriber | підписник | подписчик |
-  | step | крок | шаг |
-  | broadcast | розсилка | рассылка |
-  | task | завдання | задание |
+  Section names (navigation groups):
 
+  | API resource | English | Ukrainian | Russian |
+  |---|---|---|---|
+  | mini-app | Mini App | Додаток | Приложение |
+  | web | Web Platform | Веб-платформа | Веб-платформа |
+  | orders | Payments | Платежі | Платежи |
+  | affiliate | Affiliates | Партнерка | Партнёрка |
+  | payment-systems | Payment methods | Способи оплати | Способы оплаты |
+  | custom-fields | Additional fields | Додаткові поля | Дополнительные поля |
+  | tasks | Assignments | Завдання | Задания |
+  | shop | Store | Магазин | Магазин |
+  | sections | Modules | Модулі | Модули |
+  | offers / coupons | Offers / Coupons | Тарифи / Промокоди | Тарифы / Промокоды |
+
+  Single items keep their dashboard noun: an order is «order / замовлення / заказ» (section is «Payments»),
+  an offer is «тариф», a coupon is «промокод», a step is «крок / шаг», a subscriber is «підписник / подписчик».
+  In guide prose, mention the mini app once as «Додаток / приложение (Telegram Mini App)», then just «додаток / приложение».
+
+- Dashboard paths are written as menu clicks, e.g. **Settings → Workspace → API & Webhooks**,
+  **Налаштування → Проєкт → API та вебхуки**, **Настройки → Проект → API и вебхуки** (the workspace is «Проект/Проєкт» in the UI,
+  never «рабочее пространство»).
 - Ukrainian: use the typographic apostrophe `’` (U+2019), not ASCII `'`. Russian: always write «ё».
 
 ---

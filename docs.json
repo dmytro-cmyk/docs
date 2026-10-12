@@ -143,7 +143,7 @@
                 ]
               },
               {
-                "group": "Orders",
+                "group": "Payments",
                 "pages": [
                   "api-reference/orders/list",
                   "api-reference/orders/get",
@@ -212,7 +212,7 @@
                     ]
                   },
                   {
-                    "group": "Sections",
+                    "group": "Modules",
                     "pages": [
                       "api-reference/products/sections/list",
                       "api-reference/products/sections/create",
@@ -276,7 +276,7 @@
                     ]
                   },
                   {
-                    "group": "Sections",
+                    "group": "Modules",
                     "pages": [
                       "api-reference/funnels/sections/list",
                       "api-reference/funnels/sections/create",
@@ -345,7 +345,7 @@
                 ]
               },
               {
-                "group": "Payment systems",
+                "group": "Payment methods",
                 "pages": [
                   "api-reference/payment-systems/list",
                   "api-reference/payment-systems/types",
@@ -364,7 +364,7 @@
                 ]
               },
               {
-                "group": "Shop",
+                "group": "Store",
                 "pages": [
                   "api-reference/shop/get",
                   "api-reference/shop/publish",
@@ -376,7 +376,7 @@
                 ]
               },
               {
-                "group": "Mini-app",
+                "group": "Mini App",
                 "pages": [
                   "api-reference/mini-app/get",
                   "api-reference/mini-app/update-logo",
@@ -417,7 +417,7 @@
                 ]
               },
               {
-                "group": "Web",
+                "group": "Web Platform",
                 "pages": [
                   "api-reference/web/get",
                   "api-reference/web/update-logo",
@@ -470,7 +470,7 @@
                 ]
               },
               {
-                "group": "Tasks",
+                "group": "Assignments",
                 "pages": [
                   "api-reference/tasks/list",
                   "api-reference/tasks/approve",
@@ -515,7 +515,7 @@
                 ]
               },
               {
-                "group": "Affiliate",
+                "group": "Affiliates",
                 "pages": [
                   "api-reference/affiliate/get",
                   "api-reference/affiliate/create",
@@ -609,7 +609,7 @@
                 ]
               },
               {
-                "group": "Custom fields",
+                "group": "Additional fields",
                 "pages": [
                   "api-reference/custom-fields/list",
                   "api-reference/custom-fields/create",
@@ -816,7 +816,7 @@
                 ]
               },
               {
-                "group": "Замовлення",
+                "group": "Платежі",
                 "pages": [
                   "uk/api-reference/orders/list",
                   "uk/api-reference/orders/get",
@@ -1018,7 +1018,7 @@
                 ]
               },
               {
-                "group": "Платіжні системи",
+                "group": "Способи оплати",
                 "pages": [
                   "uk/api-reference/payment-systems/list",
                   "uk/api-reference/payment-systems/types",
@@ -1049,7 +1049,7 @@
                 ]
               },
               {
-                "group": "Міні-застосунок",
+                "group": "Додаток",
                 "pages": [
                   "uk/api-reference/mini-app/get",
                   "uk/api-reference/mini-app/update-logo",
@@ -1090,7 +1090,7 @@
                 ]
               },
               {
-                "group": "Веб-версія",
+                "group": "Веб-платформа",
                 "pages": [
                   "uk/api-reference/web/get",
                   "uk/api-reference/web/update-logo",
@@ -1188,7 +1188,7 @@
                 ]
               },
               {
-                "group": "Партнерська програма",
+                "group": "Партнерка",
                 "pages": [
                   "uk/api-reference/affiliate/get",
                   "uk/api-reference/affiliate/create",
@@ -1489,7 +1489,7 @@
                 ]
               },
               {
-                "group": "Заказы",
+                "group": "Платежи",
                 "pages": [
                   "ru/api-reference/orders/list",
                   "ru/api-reference/orders/get",
@@ -1691,7 +1691,7 @@
                 ]
               },
               {
-                "group": "Платёжные системы",
+                "group": "Способы оплаты",
                 "pages": [
                   "ru/api-reference/payment-systems/list",
                   "ru/api-reference/payment-systems/types",
@@ -1722,7 +1722,7 @@
                 ]
               },
               {
-                "group": "Мини-приложение",
+                "group": "Приложение",
                 "pages": [
                   "ru/api-reference/mini-app/get",
                   "ru/api-reference/mini-app/update-logo",
@@ -1763,7 +1763,7 @@
                 ]
               },
               {
-                "group": "Веб-версия",
+                "group": "Веб-платформа",
                 "pages": [
                   "ru/api-reference/web/get",
                   "ru/api-reference/web/update-logo",
@@ -1861,7 +1861,7 @@
                 ]
               },
               {
-                "group": "Партнёрская программа",
+                "group": "Партнёрка",
                 "pages": [
                   "ru/api-reference/affiliate/get",
                   "ru/api-reference/affiliate/create",

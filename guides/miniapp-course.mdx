@@ -1,9 +1,9 @@
 ---
-title: "Build a course in the miniApp"
-description: "Create a lesson-based course for the miniApp and the web version: lessons, videos, materials, sections, and opening schedule"
+title: "Build a course in the Mini App"
+description: "Create a lesson-based course for the Mini App and the Web Platform: lessons, videos, materials, modules, and opening schedule"
 ---
 
-A miniApp product is a course made of **lessons**, not bot steps. Subscribers study it in the miniApp of your bot (opens inside Telegram), in the web version, or both. Both platforms show the same products and lessons; each platform is published separately (see [Publish the miniApp and the web version](#9-publish-the-miniapp-and-the-web-version)).
+A Mini App product is a course made of **lessons**, not bot steps. Subscribers study it in the Mini App of your bot (opens inside Telegram), in the Web Platform, or both. Both platforms show the same products and lessons; each platform is published separately (see [Publish the Mini App and the Web Platform](#9-publish-the-mini-app-and-the-web-platform)).
 
 The flow is:
 
@@ -13,16 +13,16 @@ The flow is:
 4. Add images
 5. Add materials
 6. Add videos
-7. Group lessons into sections
+7. Group lessons into modules
 8. Activate the product
-9. Publish the miniApp and the web version
+9. Publish the Mini App and the Web Platform
 
 ## Before you start
 
 You need:
 
 - **An API token** — see [Authentication](/authentication).
-- **The bot ID** — from [List bots](/api-reference/bots/list). The miniApp and the web version belong to a bot.
+- **The bot ID** — from [List bots](/api-reference/bots/list). The Mini App and the Web Platform belong to a bot.
 - **Your files:**
   - images (covers, notification pictures) — JPG, PNG, or WebP, up to 20 MB;
   - lesson materials — up to 50 MB: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, CSV, MP3, MP4, WAV, OGG, ZIP, RAR, JPG, JPEG, PNG, WebP;
@@ -49,13 +49,13 @@ curl -X POST $API/products \
   -d '{"name": "Fun geometry for kids. Part 2", "platform": "miniApp"}'
 ```
 
-Save `data.id` as `PRODUCT_ID`. `platform` must be `miniApp` — that's the miniApp product (the same product works in the web version). Product names are unique within a bot: a duplicate name returns `422` `name`. A new product is **inactive**; you activate it in [step 8](#8-activate-the-product).
+Save `data.id` as `PRODUCT_ID`. `platform` must be `miniApp` — that's the Mini App product (the same product works in the Web Platform). Product names are unique within a bot: a duplicate name returns `422` `name`. A new product is **inactive**; you activate it in [step 8](#8-activate-the-product).
 
 Optional product settings:
 
 - **Description** — [Update product](/api-reference/products/update) with `description`.
 - **Cover** — [Update product cover](/api-reference/products/update-cover), multipart `file`: JPG, PNG, or WebP up to 20 MB.
-- **Invite message** — the message a subscriber gets in the bot when they get access to the product. Set it with [Update product invite](/api-reference/products/update-invite): `invite_text` and `invite_button` (required), `invite_web_button` (optional), button styles `primary`, `success`, or `danger`. The message has a button that opens the miniApp; the web button is added only while the web version is published. A picture for it — [Update invite image](/api-reference/products/update-invite-image).
+- **Invite message** — the message a subscriber gets in the bot when they get access to the product. Set it with [Update product invite](/api-reference/products/update-invite): `invite_text` and `invite_button` (required), `invite_web_button` (optional), button styles `primary`, `success`, or `danger`. The message has a button that opens the Mini App; the web button is added only while the Web Platform is published. A picture for it — [Update invite image](/api-reference/products/update-invite-image).
 
 ## 2. Create lessons
 
@@ -75,7 +75,7 @@ curl -X POST $API/products/$PRODUCT_ID/lessons \
 Save `data.id` as `LESSON_ID`.
 
 <Warning>
-  Pass `"active": true`. A lesson is created **inactive** by default, and subscribers don't see inactive lessons — the miniApp and the web version show "0 lessons". You can also activate a lesson later with [Activate lesson](/api-reference/products/lessons/activate).
+  Pass `"active": true`. A lesson is created **inactive** by default, and subscribers don't see inactive lessons — the Mini App and the Web Platform show "0 lessons". You can also activate a lesson later with [Activate lesson](/api-reference/products/lessons/activate).
 </Warning>
 
 - `name` — up to 255 characters, shown in the lesson list.
@@ -104,7 +104,7 @@ Each subscriber has their own schedule. It starts when the subscriber **gets acc
 {"access_time": {"type": "after_previous"}}
 ```
 
-The subscriber completes a lesson in the miniApp or the web version; then the next lesson opens. Use `immediately` for the first lesson and `after_previous` for the rest to make a course that goes one lesson at a time.
+The subscriber completes a lesson in the Mini App or the Web Platform; then the next lesson opens. Use `immediately` for the first lesson and `after_previous` for the rest to make a course that goes one lesson at a time.
 
 ### After a delay: `duration`
 
@@ -169,7 +169,7 @@ The bot can send a message when a lesson opens for a subscriber. Pass `settings`
 ```
 
 - `lesson_open_text` — Telegram HTML; `{{lesson_name}}` and `{{product_name}}` are replaced with the lesson and product names. If empty, a default text in the bot's language is used.
-- `lesson_open_button` opens the miniApp. `lesson_open_web_button` is added only while the web version is published.
+- `lesson_open_button` opens the Mini App. `lesson_open_web_button` is added only while the Web Platform is published.
 - `lesson_open_button_style`, `lesson_open_web_button_style` — `primary`, `success`, or `danger`.
 - The picture for the message is the lesson's notification image, see [step 4](#4-add-images).
 
@@ -181,7 +181,7 @@ Both are multipart uploads of one `file`: JPG, PNG, or WebP up to 20 MB.
 
 | Image | Endpoint | Where it's shown |
 |---|---|---|
-| Cover | [Update lesson cover](/api-reference/products/lessons/update-cover) | the lesson card in the miniApp and the web version, 16:9 |
+| Cover | [Update lesson cover](/api-reference/products/lessons/update-cover) | the lesson card in the Mini App and the Web Platform, 16:9 |
 | Notification image | [Update lesson open image](/api-reference/products/lessons/update-open-image) | the message sent when the lesson opens |
 
 ```bash
@@ -295,9 +295,9 @@ A lesson has at most one video. Adding a video replaces the current one.
 
 Remove a video with [Delete lesson video](/api-reference/products/lessons/video/delete).
 
-## 7. Group lessons into sections
+## 7. Group lessons into modules
 
-Sections are optional headings that group lessons in the miniApp and the web version. Create one with [Create section](/api-reference/products/sections/create):
+Modules are optional headings that group lessons in the Mini App and the Web Platform. Create one with [Create module](/api-reference/products/sections/create):
 
 ```bash
 curl -X POST $API/products/$PRODUCT_ID/sections \
@@ -307,9 +307,9 @@ curl -X POST $API/products/$PRODUCT_ID/sections \
 EOF
 ```
 
-- [Update section](/api-reference/products/sections/update) — `name` and `lesson_ids`. The `lesson_ids` you pass **replace** the section's lessons.
-- [Reorder sections](/api-reference/products/sections/reorder) — `section_ids` in the new order.
-- [Delete section](/api-reference/products/sections/delete).
+- [Update module](/api-reference/products/sections/update) — `name` and `lesson_ids`. The `lesson_ids` you pass **replace** the module's lessons.
+- [Reorder modules](/api-reference/products/sections/reorder) — `section_ids` in the new order.
+- [Delete module](/api-reference/products/sections/delete).
 
 ## 8. Activate the product
 
@@ -320,69 +320,69 @@ curl -X PUT $API/products/$PRODUCT_ID/active \
 
 Subscribers see only active products. Then give subscribers access — see [Give access to a product](/guides/product-access). The schedule from [step 3](#3-set-when-lessons-open) starts at that moment, and the subscriber gets the invite message.
 
-## 9. Publish the miniApp and the web version
+## 9. Publish the Mini App and the Web Platform
 
 Products and lessons are shown on two platforms:
 
 | Platform | Path prefix | Where subscribers open it |
 |---|---|---|
-| miniApp | `/mini-app` | the bot's menu button in Telegram |
-| Web version | `/web` | a website in the browser |
+| Mini App | `/mini-app` | the bot's menu button in Telegram |
+| Web Platform | `/web` | a website in the browser |
 
-**Both platforms show the same products and lessons**, and you don't add products to them: the **Content** section of each lists every active miniApp product the subscriber has access to. Bot products are listed too only if `show_bot_products` is on in the platform settings.
+**Both platforms show the same products and lessons**, and you don't add products to them: the **Content** section of each lists every active Mini App product the subscriber has access to. Bot products are listed too only if `show_bot_products` is on in the platform settings.
 
-Each platform is configured and published **separately**: you can run only the miniApp, only the web version, or both.
+Each platform is configured and published **separately**: you can run only the Mini App, only the Web Platform, or both.
 
 ### Draft and published version
 
 Each platform has a draft and a published version. Settings, menu, profile, logo, and onboarding changes go to the draft; subscribers see them only after you publish. Products, lessons, and their content are not part of the draft — they change for subscribers right away.
 
-1. Call [Get miniApp](/api-reference/mini-app/get) or [Get web version](/api-reference/web/get) first: it prepares the platform if it hasn't been set up yet and returns `is_published`, `has_changes` (the draft differs from the published version), `app_url`, and the settings.
+1. Call [Get Mini App](/api-reference/mini-app/get) or [Get Web Platform](/api-reference/web/get) first: it prepares the platform if it hasn't been set up yet and returns `is_published`, `has_changes` (the draft differs from the published version), `app_url`, and the settings.
 2. Change the draft.
-3. Publish: [Publish miniApp](/api-reference/mini-app/publish) or [Publish web version](/api-reference/web/publish).
+3. Publish: [Publish Mini App](/api-reference/mini-app/publish) or [Publish Web Platform](/api-reference/web/publish).
 
 ```bash
 curl -X POST $API/mini-app/publish -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
 curl -X POST $API/web/publish -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
 ```
 
-Turn a platform off with [Unpublish miniApp](/api-reference/mini-app/unpublish) or [Unpublish web version](/api-reference/web/unpublish) (`DELETE …/publish`). The draft stays; subscribers who open an unpublished platform see it as disabled.
+Turn a platform off with [Unpublish Mini App](/api-reference/mini-app/unpublish) or [Unpublish Web Platform](/api-reference/web/unpublish) (`DELETE …/publish`). The draft stays; subscribers who open an unpublished platform see it as disabled.
 
 <Warning>
-  Publishing the **miniApp** changes the bot: the bot's command menu is turned off, and the bot's menu button opens the miniApp. Unpublishing the miniApp returns the standard menu button. Publishing the web version doesn't change the bot.
+  Publishing the **Mini App** changes the bot: the bot's command menu is turned off, and the bot's menu button opens the Mini App. Unpublishing the Mini App returns the standard menu button. Publishing the Web Platform doesn't change the bot.
 </Warning>
 
 ### Settings
 
-[Update miniApp settings](/api-reference/mini-app/update-settings) and [Update web settings](/api-reference/web/update-settings) take the same fields, set per platform:
+[Update Mini App settings](/api-reference/mini-app/update-settings) and [Update web settings](/api-reference/web/update-settings) take the same fields, set per platform:
 
 - `brand_name`, `open_button_name`, `appearance` (`system`, `light`, `dark`), `brand_color` (`#RRGGBB`), `disable_branding`;
 - `show_bot_products` — also list bot products in Content;
 - `support_type` (`bot` or `link`) and `support_text` — the Support item;
-- `phone_login_enabled` — web version only: sign-in with a phone number.
+- `phone_login_enabled` — Web Platform only: sign-in with a phone number.
 
-The logo is set per platform ([miniApp logo](/api-reference/mini-app/update-logo), [web logo](/api-reference/web/update-logo)); the favicon only for the web version ([Update web favicon](/api-reference/web/update-favicon)).
+The logo is set per platform ([Mini App logo](/api-reference/mini-app/update-logo), [web logo](/api-reference/web/update-logo)); the favicon only for the Web Platform ([Update web favicon](/api-reference/web/update-favicon)).
 
 ### Menu and profile
 
-Each platform has its own menu and profile items: Content, Shop, Subscriptions, Support, and others. You can add your own **links** and a **Shop** item ([create menu item](/api-reference/mini-app/create-menu-item), [create profile item](/api-reference/mini-app/create-profile-item), the same under `/web`), reorder, update, move between menu and profile, and delete links. A subscriber without products opens the Shop first if it has offers; otherwise Content.
+Each platform has its own menu and profile items: Content, Store, Subscriptions, Support, and others. You can add your own **links** and a **Store** item ([create menu item](/api-reference/mini-app/create-menu-item), [create profile item](/api-reference/mini-app/create-profile-item), the same under `/web`), reorder, update, move between menu and profile, and delete links. A subscriber without products opens the Store first if it has offers; otherwise Content.
 
 ### Onboarding
 
-Onboarding screens are shown on the first open of the **miniApp** only — see [Create onboarding screen](/api-reference/mini-app/create-onboarding). The web version has no onboarding.
+Onboarding screens are shown on the first open of the **Mini App** only — see [Create onboarding screen](/api-reference/mini-app/create-onboarding). The Web Platform has no onboarding.
 
 ### Web address
 
-The web version has an address on a Zenedu subdomain. Change it with [Update web address](/api-reference/web/update-address):
+The Web Platform has an address on a Zenedu subdomain. Change it with [Update web address](/api-reference/web/update-address):
 
 ```json
 {"web_handle": "fun-geometry"}
 ```
 
 - `web_handle` — 3–32 characters: lowercase letters, digits, and hyphens, not at the start or end. It must be unique; some names are reserved.
-- `custom_domain_enabled` — serve the web version on your own domain. Requires a paid Pro plan, otherwise the request fails; the domain itself is set in the dashboard.
+- `custom_domain_enabled` — serve the Web Platform on your own domain. Requires a paid Pro plan, otherwise the request fails. The domain itself is connected by support: contact [@zenedusupportbot](https://t.me/zenedusupportbot).
 
-The current link is `app_url` in [Get web version](/api-reference/web/get).
+The current link is `app_url` in [Get Web Platform](/api-reference/web/get).
 
 ## Things to keep in mind
 
