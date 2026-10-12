@@ -9,671 +9,2022 @@
   },
   "favicon": "/favicon.ico",
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "Guides",
-        "groups": [
+        "language": "en",
+        "tabs": [
           {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "authentication",
-              "errors"
+            "tab": "Guides",
+            "groups": [
+              {
+                "group": "Getting started",
+                "pages": [
+                  "index",
+                  "authentication",
+                  "errors"
+                ]
+              },
+              {
+                "group": "How-to",
+                "pages": [
+                  "guides/miniapp-course",
+                  "guides/bot-course",
+                  "guides/product-access"
+                ]
+              }
             ]
           },
           {
-            "group": "How-to",
-            "pages": [
-              "guides/miniapp-course",
-              "guides/bot-course",
-              "guides/product-access"
+            "tab": "API v1",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "api-reference/introduction"
+                ]
+              },
+              {
+                "group": "User",
+                "pages": [
+                  "api-reference/user/me"
+                ]
+              },
+              {
+                "group": "Bots",
+                "pages": [
+                  "api-reference/bots/list",
+                  "api-reference/bots/get",
+                  "api-reference/bots/create",
+                  "api-reference/bots/activate",
+                  "api-reference/bots/enable-menu",
+                  "api-reference/bots/update",
+                  "api-reference/bots/deactivate",
+                  "api-reference/bots/disable-menu"
+                ]
+              },
+              {
+                "group": "Bot settings",
+                "pages": [
+                  "api-reference/bot-settings/get",
+                  "api-reference/bot-settings/upload-email-logo",
+                  "api-reference/bot-settings/save-legal",
+                  "api-reference/bot-settings/update-email",
+                  "api-reference/bot-settings/update-branding",
+                  "api-reference/bot-settings/update-integrations",
+                  "api-reference/bot-settings/delete-email-logo",
+                  "api-reference/bot-settings/disconnect-google-sheets",
+                  "api-reference/bot-settings/remove-google-sheets-spreadsheet"
+                ]
+              },
+              {
+                "group": "Subscribers",
+                "pages": [
+                  "api-reference/subscribers/list",
+                  "api-reference/subscribers/get",
+                  "api-reference/subscribers/update-notes",
+                  "api-reference/subscribers/add-tags",
+                  "api-reference/subscribers/send-message",
+                  "api-reference/subscribers/block",
+                  "api-reference/subscribers/set-custom-field",
+                  "api-reference/subscribers/set-tags",
+                  "api-reference/subscribers/update",
+                  "api-reference/subscribers/unblock",
+                  "api-reference/subscribers/delete",
+                  {
+                    "group": "Offers",
+                    "pages": [
+                      "api-reference/subscribers/add-offer",
+                      "api-reference/subscribers/grant-offer",
+                      "api-reference/subscribers/revoke-offer"
+                    ]
+                  },
+                  {
+                    "group": "Product access",
+                    "pages": [
+                      "api-reference/subscribers/list-products",
+                      "api-reference/subscribers/update-product-access",
+                      "api-reference/subscribers/activate-product",
+                      "api-reference/subscribers/set-product-lessons",
+                      "api-reference/subscribers/set-product-menu",
+                      "api-reference/subscribers/stop-product",
+                      "api-reference/subscribers/delete-product-progress-step",
+                      "api-reference/subscribers/remove-product"
+                    ]
+                  },
+                  {
+                    "group": "Funnel access",
+                    "pages": [
+                      "api-reference/subscribers/list-funnels",
+                      "api-reference/subscribers/add-funnel",
+                      "api-reference/subscribers/join-funnel",
+                      "api-reference/subscribers/update-funnel-access",
+                      "api-reference/subscribers/activate-funnel",
+                      "api-reference/subscribers/set-funnel-lessons",
+                      "api-reference/subscribers/set-funnel-menu",
+                      "api-reference/subscribers/stop-funnel",
+                      "api-reference/subscribers/delete-funnel-progress-step",
+                      "api-reference/subscribers/remove-funnel"
+                    ]
+                  },
+                  {
+                    "group": "Channel access",
+                    "pages": [
+                      "api-reference/subscribers/update-channel-access",
+                      "api-reference/subscribers/remove-channel"
+                    ]
+                  },
+                  {
+                    "group": "Group access",
+                    "pages": [
+                      "api-reference/subscribers/update-group-access",
+                      "api-reference/subscribers/remove-group"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Orders",
+                "pages": [
+                  "api-reference/orders/list",
+                  "api-reference/orders/get",
+                  "api-reference/orders/cancel",
+                  "api-reference/orders/refund",
+                  "api-reference/orders/confirm",
+                  "api-reference/orders/delete"
+                ]
+              },
+              {
+                "group": "Products",
+                "pages": [
+                  "api-reference/products/list",
+                  "api-reference/products/get",
+                  "api-reference/products/subscribers",
+                  "api-reference/products/create",
+                  "api-reference/products/duplicate",
+                  "api-reference/products/update-cover",
+                  "api-reference/products/update-invite-image",
+                  "api-reference/products/attach-offer",
+                  "api-reference/products/resume-subscribers",
+                  "api-reference/products/activate",
+                  "api-reference/products/update-invite",
+                  "api-reference/products/update",
+                  "api-reference/products/stop",
+                  "api-reference/products/delete-cover",
+                  "api-reference/products/delete-invite-image",
+                  "api-reference/products/detach-offer",
+                  "api-reference/products/delete",
+                  {
+                    "group": "Lessons",
+                    "pages": [
+                      "api-reference/products/lessons/list",
+                      "api-reference/products/lessons/get",
+                      "api-reference/products/lessons/create",
+                      "api-reference/products/lessons/duplicate",
+                      "api-reference/products/lessons/update-cover",
+                      "api-reference/products/lessons/update-open-image",
+                      "api-reference/products/lessons/reorder",
+                      "api-reference/products/lessons/activate",
+                      "api-reference/products/lessons/update",
+                      "api-reference/products/lessons/deactivate",
+                      "api-reference/products/lessons/delete-cover",
+                      "api-reference/products/lessons/delete-open-image",
+                      "api-reference/products/lessons/delete"
+                    ]
+                  },
+                  {
+                    "group": "Lesson materials",
+                    "pages": [
+                      "api-reference/products/lessons/materials/list",
+                      "api-reference/products/lessons/materials/create",
+                      "api-reference/products/lessons/materials/reorder",
+                      "api-reference/products/lessons/materials/update",
+                      "api-reference/products/lessons/materials/delete"
+                    ]
+                  },
+                  {
+                    "group": "Lesson video",
+                    "pages": [
+                      "api-reference/products/lessons/video/get",
+                      "api-reference/products/lessons/video/create-upload",
+                      "api-reference/products/lessons/video/complete-upload",
+                      "api-reference/products/lessons/video/attach-external",
+                      "api-reference/products/lessons/video/delete"
+                    ]
+                  },
+                  {
+                    "group": "Sections",
+                    "pages": [
+                      "api-reference/products/sections/list",
+                      "api-reference/products/sections/create",
+                      "api-reference/products/sections/reorder",
+                      "api-reference/products/sections/update",
+                      "api-reference/products/sections/delete"
+                    ]
+                  },
+                  {
+                    "group": "Steps",
+                    "pages": [
+                      "api-reference/products/steps/list",
+                      "api-reference/products/steps/get",
+                      "api-reference/products/steps/create",
+                      "api-reference/products/steps/duplicate",
+                      "api-reference/products/steps/update-cover",
+                      "api-reference/products/steps/create-button",
+                      "api-reference/products/steps/reorder",
+                      "api-reference/products/steps/activate",
+                      "api-reference/products/steps/reorder-buttons",
+                      "api-reference/products/steps/update",
+                      "api-reference/products/steps/update-menu-time",
+                      "api-reference/products/steps/update-sending-time",
+                      "api-reference/products/steps/update-button",
+                      "api-reference/products/steps/deactivate",
+                      "api-reference/products/steps/delete-cover",
+                      "api-reference/products/steps/delete-button",
+                      "api-reference/products/steps/delete",
+                      "api-reference/products/steps/delete-attachment"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Funnels",
+                "pages": [
+                  "api-reference/funnels/list",
+                  "api-reference/funnels/get",
+                  "api-reference/funnels/subscribers",
+                  "api-reference/funnels/create",
+                  "api-reference/funnels/convert",
+                  "api-reference/funnels/duplicate",
+                  "api-reference/funnels/update-cover",
+                  "api-reference/funnels/attach-offer",
+                  "api-reference/funnels/resume-subscribers",
+                  "api-reference/funnels/activate",
+                  "api-reference/funnels/set-start",
+                  "api-reference/funnels/update",
+                  "api-reference/funnels/stop",
+                  "api-reference/funnels/delete-cover",
+                  "api-reference/funnels/detach-offer",
+                  "api-reference/funnels/unset-start",
+                  "api-reference/funnels/delete",
+                  {
+                    "group": "Funnel links",
+                    "pages": [
+                      "api-reference/funnels/links/list",
+                      "api-reference/funnels/links/create",
+                      "api-reference/funnels/links/update",
+                      "api-reference/funnels/links/delete"
+                    ]
+                  },
+                  {
+                    "group": "Sections",
+                    "pages": [
+                      "api-reference/funnels/sections/list",
+                      "api-reference/funnels/sections/create",
+                      "api-reference/funnels/sections/reorder",
+                      "api-reference/funnels/sections/update",
+                      "api-reference/funnels/sections/delete"
+                    ]
+                  },
+                  {
+                    "group": "Steps",
+                    "pages": [
+                      "api-reference/funnels/steps/list",
+                      "api-reference/funnels/steps/get",
+                      "api-reference/funnels/steps/create",
+                      "api-reference/funnels/steps/duplicate",
+                      "api-reference/funnels/steps/update-cover",
+                      "api-reference/funnels/steps/create-button",
+                      "api-reference/funnels/steps/reorder",
+                      "api-reference/funnels/steps/activate",
+                      "api-reference/funnels/steps/reorder-buttons",
+                      "api-reference/funnels/steps/update",
+                      "api-reference/funnels/steps/update-menu-time",
+                      "api-reference/funnels/steps/update-sending-time",
+                      "api-reference/funnels/steps/update-button",
+                      "api-reference/funnels/steps/deactivate",
+                      "api-reference/funnels/steps/delete-cover",
+                      "api-reference/funnels/steps/delete-button",
+                      "api-reference/funnels/steps/delete",
+                      "api-reference/funnels/steps/delete-attachment"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Offers",
+                "pages": [
+                  "api-reference/offers/list",
+                  "api-reference/offers/get",
+                  "api-reference/offers/subscribers",
+                  "api-reference/offers/create",
+                  "api-reference/offers/duplicate",
+                  "api-reference/offers/activate",
+                  "api-reference/offers/update",
+                  "api-reference/offers/deactivate",
+                  "api-reference/offers/delete",
+                  {
+                    "group": "Images",
+                    "pages": [
+                      "api-reference/offers/update-cover",
+                      "api-reference/offers/update-bot-image",
+                      "api-reference/offers/update-thankyou-image",
+                      "api-reference/offers/delete-cover",
+                      "api-reference/offers/delete-bot-image",
+                      "api-reference/offers/delete-thankyou-image"
+                    ]
+                  },
+                  {
+                    "group": "Offer links",
+                    "pages": [
+                      "api-reference/offers/links/list",
+                      "api-reference/offers/links/create",
+                      "api-reference/offers/links/update",
+                      "api-reference/offers/links/delete"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Payment systems",
+                "pages": [
+                  "api-reference/payment-systems/list",
+                  "api-reference/payment-systems/types",
+                  "api-reference/payment-systems/get",
+                  "api-reference/payment-systems/create",
+                  "api-reference/payment-systems/update",
+                  "api-reference/payment-systems/reorder",
+                  "api-reference/payment-systems/delete"
+                ]
+              },
+              {
+                "group": "Links",
+                "pages": [
+                  "api-reference/links/offer-link",
+                  "api-reference/links/funnel-link"
+                ]
+              },
+              {
+                "group": "Shop",
+                "pages": [
+                  "api-reference/shop/get",
+                  "api-reference/shop/publish",
+                  "api-reference/shop/set-offers",
+                  "api-reference/shop/reorder",
+                  "api-reference/shop/enable-offer",
+                  "api-reference/shop/disable-offer",
+                  "api-reference/shop/unpublish"
+                ]
+              },
+              {
+                "group": "Mini-app",
+                "pages": [
+                  "api-reference/mini-app/get",
+                  "api-reference/mini-app/update-logo",
+                  "api-reference/mini-app/publish",
+                  "api-reference/mini-app/update-settings",
+                  "api-reference/mini-app/delete-logo",
+                  "api-reference/mini-app/unpublish",
+                  {
+                    "group": "Menu items",
+                    "pages": [
+                      "api-reference/mini-app/create-menu-item",
+                      "api-reference/mini-app/move-menu-item",
+                      "api-reference/mini-app/reorder-menu-items",
+                      "api-reference/mini-app/update-menu-item",
+                      "api-reference/mini-app/delete-menu-item"
+                    ]
+                  },
+                  {
+                    "group": "Profile items",
+                    "pages": [
+                      "api-reference/mini-app/create-profile-item",
+                      "api-reference/mini-app/move-profile-item",
+                      "api-reference/mini-app/reorder-profile-items",
+                      "api-reference/mini-app/update-profile-item",
+                      "api-reference/mini-app/delete-profile-item"
+                    ]
+                  },
+                  {
+                    "group": "Onboarding",
+                    "pages": [
+                      "api-reference/mini-app/create-onboarding",
+                      "api-reference/mini-app/update-onboarding-image",
+                      "api-reference/mini-app/reorder-onboarding",
+                      "api-reference/mini-app/update-onboarding",
+                      "api-reference/mini-app/delete-onboarding"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Web",
+                "pages": [
+                  "api-reference/web/get",
+                  "api-reference/web/update-logo",
+                  "api-reference/web/update-favicon",
+                  "api-reference/web/publish",
+                  "api-reference/web/update-settings",
+                  "api-reference/web/update-address",
+                  "api-reference/web/delete-logo",
+                  "api-reference/web/unpublish",
+                  {
+                    "group": "Menu items",
+                    "pages": [
+                      "api-reference/web/create-menu-item",
+                      "api-reference/web/move-menu-item",
+                      "api-reference/web/reorder-menu-items",
+                      "api-reference/web/update-menu-item",
+                      "api-reference/web/delete-menu-item"
+                    ]
+                  },
+                  {
+                    "group": "Profile items",
+                    "pages": [
+                      "api-reference/web/create-profile-item",
+                      "api-reference/web/move-profile-item",
+                      "api-reference/web/reorder-profile-items",
+                      "api-reference/web/update-profile-item",
+                      "api-reference/web/delete-profile-item"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Subscriptions",
+                "pages": [
+                  "api-reference/subscriptions/list",
+                  "api-reference/subscriptions/get",
+                  "api-reference/subscriptions/cancel"
+                ]
+              },
+              {
+                "group": "Coupons",
+                "pages": [
+                  "api-reference/coupons/list",
+                  "api-reference/coupons/get",
+                  "api-reference/coupons/create",
+                  "api-reference/coupons/update",
+                  "api-reference/coupons/activate",
+                  "api-reference/coupons/deactivate",
+                  "api-reference/coupons/delete"
+                ]
+              },
+              {
+                "group": "Tasks",
+                "pages": [
+                  "api-reference/tasks/list",
+                  "api-reference/tasks/approve",
+                  "api-reference/tasks/delete"
+                ]
+              },
+              {
+                "group": "Broadcasts",
+                "pages": [
+                  "api-reference/broadcasts/list",
+                  "api-reference/broadcasts/get",
+                  "api-reference/broadcasts/create",
+                  "api-reference/broadcasts/send",
+                  "api-reference/broadcasts/duplicate",
+                  "api-reference/broadcasts/update",
+                  "api-reference/broadcasts/cancel",
+                  "api-reference/broadcasts/delete-messages",
+                  "api-reference/broadcasts/delete",
+                  "api-reference/broadcasts/delete-attachment",
+                  {
+                    "group": "Buttons",
+                    "pages": [
+                      "api-reference/broadcasts/create-button",
+                      "api-reference/broadcasts/reorder-buttons",
+                      "api-reference/broadcasts/update-button",
+                      "api-reference/broadcasts/delete-button"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Automations",
+                "pages": [
+                  "api-reference/automations/list",
+                  "api-reference/automations/get",
+                  "api-reference/automations/catalog",
+                  "api-reference/automations/create",
+                  "api-reference/automations/update",
+                  "api-reference/automations/activate",
+                  "api-reference/automations/deactivate",
+                  "api-reference/automations/delete"
+                ]
+              },
+              {
+                "group": "Affiliate",
+                "pages": [
+                  "api-reference/affiliate/get",
+                  "api-reference/affiliate/create",
+                  "api-reference/affiliate/update",
+                  {
+                    "group": "Links",
+                    "pages": [
+                      "api-reference/affiliate/list-links",
+                      "api-reference/affiliate/create-link",
+                      "api-reference/affiliate/update-link",
+                      "api-reference/affiliate/delete-link"
+                    ]
+                  },
+                  {
+                    "group": "Partners",
+                    "pages": [
+                      "api-reference/affiliate/list-partners",
+                      "api-reference/affiliate/payout"
+                    ]
+                  },
+                  {
+                    "group": "Payments",
+                    "pages": [
+                      "api-reference/affiliate/payments"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Channels",
+                "pages": [
+                  "api-reference/channels/list",
+                  "api-reference/channels/get",
+                  "api-reference/channels/confirm",
+                  "api-reference/channels/activate",
+                  "api-reference/channels/deactivate",
+                  "api-reference/channels/delete",
+                  {
+                    "group": "Invite",
+                    "pages": [
+                      "api-reference/channels/update-invite-image",
+                      "api-reference/channels/update-invite",
+                      "api-reference/channels/delete-invite-image"
+                    ]
+                  },
+                  {
+                    "group": "Offers",
+                    "pages": [
+                      "api-reference/channels/attach-offer",
+                      "api-reference/channels/detach-offer"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Groups",
+                "pages": [
+                  "api-reference/groups/list",
+                  "api-reference/groups/get",
+                  "api-reference/groups/confirm",
+                  "api-reference/groups/activate",
+                  "api-reference/groups/deactivate",
+                  "api-reference/groups/delete",
+                  {
+                    "group": "Invite",
+                    "pages": [
+                      "api-reference/groups/update-invite-image",
+                      "api-reference/groups/update-invite",
+                      "api-reference/groups/delete-invite-image"
+                    ]
+                  },
+                  {
+                    "group": "Offers",
+                    "pages": [
+                      "api-reference/groups/attach-offer",
+                      "api-reference/groups/detach-offer"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Commands",
+                "pages": [
+                  "api-reference/commands/list",
+                  "api-reference/commands/create",
+                  "api-reference/commands/reorder",
+                  "api-reference/commands/update",
+                  "api-reference/commands/activate",
+                  "api-reference/commands/deactivate",
+                  "api-reference/commands/delete"
+                ]
+              },
+              {
+                "group": "Custom fields",
+                "pages": [
+                  "api-reference/custom-fields/list",
+                  "api-reference/custom-fields/create",
+                  "api-reference/custom-fields/update",
+                  "api-reference/custom-fields/delete"
+                ]
+              },
+              {
+                "group": "Folders",
+                "pages": [
+                  "api-reference/folders/list",
+                  "api-reference/folders/create",
+                  "api-reference/folders/update",
+                  "api-reference/folders/delete",
+                  {
+                    "group": "Move to folder",
+                    "pages": [
+                      "api-reference/folders/move-product",
+                      "api-reference/folders/move-funnel",
+                      "api-reference/folders/move-channel",
+                      "api-reference/folders/move-group"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Slugs",
+                "pages": [
+                  "api-reference/slugs/update-product",
+                  "api-reference/slugs/update-funnel",
+                  "api-reference/slugs/update-offer",
+                  "api-reference/slugs/update-funnel-link"
+                ]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "api-reference/webhooks/list",
+                  "api-reference/webhooks/get",
+                  "api-reference/webhooks/events",
+                  "api-reference/webhooks/create",
+                  "api-reference/webhooks/test",
+                  "api-reference/webhooks/update",
+                  "api-reference/webhooks/activate",
+                  "api-reference/webhooks/deactivate",
+                  "api-reference/webhooks/delete"
+                ]
+              },
+              {
+                "group": "Zapier",
+                "pages": [
+                  "api-reference/zapier/create-webhook",
+                  "api-reference/zapier/delete-webhook"
+                ]
+              },
+              {
+                "group": "Telegram files",
+                "pages": [
+                  "api-reference/telegram-files/list",
+                  "api-reference/telegram-files/register",
+                  "api-reference/telegram-files/delete"
+                ]
+              },
+              {
+                "group": "Files",
+                "pages": [
+                  "api-reference/files/download"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "tab": "API v1",
-        "groups": [
+        "language": "uk",
+        "tabs": [
           {
-            "group": "Overview",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "User",
-            "pages": [
-              "api-reference/user/me"
-            ]
-          },
-          {
-            "group": "Bots",
-            "pages": [
-              "api-reference/bots/list",
-              "api-reference/bots/get",
-              "api-reference/bots/create",
-              "api-reference/bots/activate",
-              "api-reference/bots/enable-menu",
-              "api-reference/bots/update",
-              "api-reference/bots/deactivate",
-              "api-reference/bots/disable-menu"
-            ]
-          },
-          {
-            "group": "Bot settings",
-            "pages": [
-              "api-reference/bot-settings/get",
-              "api-reference/bot-settings/upload-email-logo",
-              "api-reference/bot-settings/save-legal",
-              "api-reference/bot-settings/update-email",
-              "api-reference/bot-settings/update-branding",
-              "api-reference/bot-settings/update-integrations",
-              "api-reference/bot-settings/delete-email-logo",
-              "api-reference/bot-settings/disconnect-google-sheets",
-              "api-reference/bot-settings/remove-google-sheets-spreadsheet"
-            ]
-          },
-          {
-            "group": "Subscribers",
-            "pages": [
-              "api-reference/subscribers/list",
-              "api-reference/subscribers/get",
-              "api-reference/subscribers/update-notes",
-              "api-reference/subscribers/add-tags",
-              "api-reference/subscribers/send-message",
-              "api-reference/subscribers/block",
-              "api-reference/subscribers/set-custom-field",
-              "api-reference/subscribers/set-tags",
-              "api-reference/subscribers/update",
-              "api-reference/subscribers/unblock",
-              "api-reference/subscribers/delete",
+            "tab": "Посібники",
+            "groups": [
               {
-                "group": "Offers",
+                "group": "Початок роботи",
                 "pages": [
-                  "api-reference/subscribers/add-offer",
-                  "api-reference/subscribers/grant-offer",
-                  "api-reference/subscribers/revoke-offer"
+                  "uk/index",
+                  "uk/authentication",
+                  "uk/errors"
                 ]
               },
               {
-                "group": "Product access",
+                "group": "Інструкції",
                 "pages": [
-                  "api-reference/subscribers/list-products",
-                  "api-reference/subscribers/update-product-access",
-                  "api-reference/subscribers/activate-product",
-                  "api-reference/subscribers/set-product-lessons",
-                  "api-reference/subscribers/set-product-menu",
-                  "api-reference/subscribers/stop-product",
-                  "api-reference/subscribers/delete-product-progress-step",
-                  "api-reference/subscribers/remove-product"
-                ]
-              },
-              {
-                "group": "Funnel access",
-                "pages": [
-                  "api-reference/subscribers/list-funnels",
-                  "api-reference/subscribers/add-funnel",
-                  "api-reference/subscribers/join-funnel",
-                  "api-reference/subscribers/update-funnel-access",
-                  "api-reference/subscribers/activate-funnel",
-                  "api-reference/subscribers/set-funnel-lessons",
-                  "api-reference/subscribers/set-funnel-menu",
-                  "api-reference/subscribers/stop-funnel",
-                  "api-reference/subscribers/delete-funnel-progress-step",
-                  "api-reference/subscribers/remove-funnel"
-                ]
-              },
-              {
-                "group": "Channel access",
-                "pages": [
-                  "api-reference/subscribers/update-channel-access",
-                  "api-reference/subscribers/remove-channel"
-                ]
-              },
-              {
-                "group": "Group access",
-                "pages": [
-                  "api-reference/subscribers/update-group-access",
-                  "api-reference/subscribers/remove-group"
+                  "uk/guides/miniapp-course",
+                  "uk/guides/bot-course",
+                  "uk/guides/product-access"
                 ]
               }
             ]
           },
           {
-            "group": "Orders",
-            "pages": [
-              "api-reference/orders/list",
-              "api-reference/orders/get",
-              "api-reference/orders/cancel",
-              "api-reference/orders/refund",
-              "api-reference/orders/confirm",
-              "api-reference/orders/delete"
+            "tab": "API v1",
+            "groups": [
+              {
+                "group": "Огляд",
+                "pages": [
+                  "uk/api-reference/introduction"
+                ]
+              },
+              {
+                "group": "Користувач",
+                "pages": [
+                  "uk/api-reference/user/me"
+                ]
+              },
+              {
+                "group": "Боти",
+                "pages": [
+                  "uk/api-reference/bots/list",
+                  "uk/api-reference/bots/get",
+                  "uk/api-reference/bots/create",
+                  "uk/api-reference/bots/activate",
+                  "uk/api-reference/bots/enable-menu",
+                  "uk/api-reference/bots/update",
+                  "uk/api-reference/bots/deactivate",
+                  "uk/api-reference/bots/disable-menu"
+                ]
+              },
+              {
+                "group": "Налаштування бота",
+                "pages": [
+                  "uk/api-reference/bot-settings/get",
+                  "uk/api-reference/bot-settings/upload-email-logo",
+                  "uk/api-reference/bot-settings/save-legal",
+                  "uk/api-reference/bot-settings/update-email",
+                  "uk/api-reference/bot-settings/update-branding",
+                  "uk/api-reference/bot-settings/update-integrations",
+                  "uk/api-reference/bot-settings/delete-email-logo",
+                  "uk/api-reference/bot-settings/disconnect-google-sheets",
+                  "uk/api-reference/bot-settings/remove-google-sheets-spreadsheet"
+                ]
+              },
+              {
+                "group": "Підписники",
+                "pages": [
+                  "uk/api-reference/subscribers/list",
+                  "uk/api-reference/subscribers/get",
+                  "uk/api-reference/subscribers/update-notes",
+                  "uk/api-reference/subscribers/add-tags",
+                  "uk/api-reference/subscribers/send-message",
+                  "uk/api-reference/subscribers/block",
+                  "uk/api-reference/subscribers/set-custom-field",
+                  "uk/api-reference/subscribers/set-tags",
+                  "uk/api-reference/subscribers/update",
+                  "uk/api-reference/subscribers/unblock",
+                  "uk/api-reference/subscribers/delete",
+                  {
+                    "group": "Тарифи",
+                    "pages": [
+                      "uk/api-reference/subscribers/add-offer",
+                      "uk/api-reference/subscribers/grant-offer",
+                      "uk/api-reference/subscribers/revoke-offer"
+                    ]
+                  },
+                  {
+                    "group": "Доступ до продуктів",
+                    "pages": [
+                      "uk/api-reference/subscribers/list-products",
+                      "uk/api-reference/subscribers/update-product-access",
+                      "uk/api-reference/subscribers/activate-product",
+                      "uk/api-reference/subscribers/set-product-lessons",
+                      "uk/api-reference/subscribers/set-product-menu",
+                      "uk/api-reference/subscribers/stop-product",
+                      "uk/api-reference/subscribers/delete-product-progress-step",
+                      "uk/api-reference/subscribers/remove-product"
+                    ]
+                  },
+                  {
+                    "group": "Доступ до воронок",
+                    "pages": [
+                      "uk/api-reference/subscribers/list-funnels",
+                      "uk/api-reference/subscribers/add-funnel",
+                      "uk/api-reference/subscribers/join-funnel",
+                      "uk/api-reference/subscribers/update-funnel-access",
+                      "uk/api-reference/subscribers/activate-funnel",
+                      "uk/api-reference/subscribers/set-funnel-lessons",
+                      "uk/api-reference/subscribers/set-funnel-menu",
+                      "uk/api-reference/subscribers/stop-funnel",
+                      "uk/api-reference/subscribers/delete-funnel-progress-step",
+                      "uk/api-reference/subscribers/remove-funnel"
+                    ]
+                  },
+                  {
+                    "group": "Доступ до каналів",
+                    "pages": [
+                      "uk/api-reference/subscribers/update-channel-access",
+                      "uk/api-reference/subscribers/remove-channel"
+                    ]
+                  },
+                  {
+                    "group": "Доступ до груп",
+                    "pages": [
+                      "uk/api-reference/subscribers/update-group-access",
+                      "uk/api-reference/subscribers/remove-group"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Замовлення",
+                "pages": [
+                  "uk/api-reference/orders/list",
+                  "uk/api-reference/orders/get",
+                  "uk/api-reference/orders/cancel",
+                  "uk/api-reference/orders/refund",
+                  "uk/api-reference/orders/confirm",
+                  "uk/api-reference/orders/delete"
+                ]
+              },
+              {
+                "group": "Продукти",
+                "pages": [
+                  "uk/api-reference/products/list",
+                  "uk/api-reference/products/get",
+                  "uk/api-reference/products/subscribers",
+                  "uk/api-reference/products/create",
+                  "uk/api-reference/products/duplicate",
+                  "uk/api-reference/products/update-cover",
+                  "uk/api-reference/products/update-invite-image",
+                  "uk/api-reference/products/attach-offer",
+                  "uk/api-reference/products/resume-subscribers",
+                  "uk/api-reference/products/activate",
+                  "uk/api-reference/products/update-invite",
+                  "uk/api-reference/products/update",
+                  "uk/api-reference/products/stop",
+                  "uk/api-reference/products/delete-cover",
+                  "uk/api-reference/products/delete-invite-image",
+                  "uk/api-reference/products/detach-offer",
+                  "uk/api-reference/products/delete",
+                  {
+                    "group": "Уроки",
+                    "pages": [
+                      "uk/api-reference/products/lessons/list",
+                      "uk/api-reference/products/lessons/get",
+                      "uk/api-reference/products/lessons/create",
+                      "uk/api-reference/products/lessons/duplicate",
+                      "uk/api-reference/products/lessons/update-cover",
+                      "uk/api-reference/products/lessons/update-open-image",
+                      "uk/api-reference/products/lessons/reorder",
+                      "uk/api-reference/products/lessons/activate",
+                      "uk/api-reference/products/lessons/update",
+                      "uk/api-reference/products/lessons/deactivate",
+                      "uk/api-reference/products/lessons/delete-cover",
+                      "uk/api-reference/products/lessons/delete-open-image",
+                      "uk/api-reference/products/lessons/delete"
+                    ]
+                  },
+                  {
+                    "group": "Матеріали уроку",
+                    "pages": [
+                      "uk/api-reference/products/lessons/materials/list",
+                      "uk/api-reference/products/lessons/materials/create",
+                      "uk/api-reference/products/lessons/materials/reorder",
+                      "uk/api-reference/products/lessons/materials/update",
+                      "uk/api-reference/products/lessons/materials/delete"
+                    ]
+                  },
+                  {
+                    "group": "Відео уроку",
+                    "pages": [
+                      "uk/api-reference/products/lessons/video/get",
+                      "uk/api-reference/products/lessons/video/create-upload",
+                      "uk/api-reference/products/lessons/video/complete-upload",
+                      "uk/api-reference/products/lessons/video/attach-external",
+                      "uk/api-reference/products/lessons/video/delete"
+                    ]
+                  },
+                  {
+                    "group": "Модулі",
+                    "pages": [
+                      "uk/api-reference/products/sections/list",
+                      "uk/api-reference/products/sections/create",
+                      "uk/api-reference/products/sections/reorder",
+                      "uk/api-reference/products/sections/update",
+                      "uk/api-reference/products/sections/delete"
+                    ]
+                  },
+                  {
+                    "group": "Кроки",
+                    "pages": [
+                      "uk/api-reference/products/steps/list",
+                      "uk/api-reference/products/steps/get",
+                      "uk/api-reference/products/steps/create",
+                      "uk/api-reference/products/steps/duplicate",
+                      "uk/api-reference/products/steps/update-cover",
+                      "uk/api-reference/products/steps/create-button",
+                      "uk/api-reference/products/steps/reorder",
+                      "uk/api-reference/products/steps/activate",
+                      "uk/api-reference/products/steps/reorder-buttons",
+                      "uk/api-reference/products/steps/update",
+                      "uk/api-reference/products/steps/update-menu-time",
+                      "uk/api-reference/products/steps/update-sending-time",
+                      "uk/api-reference/products/steps/update-button",
+                      "uk/api-reference/products/steps/deactivate",
+                      "uk/api-reference/products/steps/delete-cover",
+                      "uk/api-reference/products/steps/delete-button",
+                      "uk/api-reference/products/steps/delete",
+                      "uk/api-reference/products/steps/delete-attachment"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Воронки",
+                "pages": [
+                  "uk/api-reference/funnels/list",
+                  "uk/api-reference/funnels/get",
+                  "uk/api-reference/funnels/subscribers",
+                  "uk/api-reference/funnels/create",
+                  "uk/api-reference/funnels/convert",
+                  "uk/api-reference/funnels/duplicate",
+                  "uk/api-reference/funnels/update-cover",
+                  "uk/api-reference/funnels/attach-offer",
+                  "uk/api-reference/funnels/resume-subscribers",
+                  "uk/api-reference/funnels/activate",
+                  "uk/api-reference/funnels/set-start",
+                  "uk/api-reference/funnels/update",
+                  "uk/api-reference/funnels/stop",
+                  "uk/api-reference/funnels/delete-cover",
+                  "uk/api-reference/funnels/detach-offer",
+                  "uk/api-reference/funnels/unset-start",
+                  "uk/api-reference/funnels/delete",
+                  {
+                    "group": "Посилання воронки",
+                    "pages": [
+                      "uk/api-reference/funnels/links/list",
+                      "uk/api-reference/funnels/links/create",
+                      "uk/api-reference/funnels/links/update",
+                      "uk/api-reference/funnels/links/delete"
+                    ]
+                  },
+                  {
+                    "group": "Модулі",
+                    "pages": [
+                      "uk/api-reference/funnels/sections/list",
+                      "uk/api-reference/funnels/sections/create",
+                      "uk/api-reference/funnels/sections/reorder",
+                      "uk/api-reference/funnels/sections/update",
+                      "uk/api-reference/funnels/sections/delete"
+                    ]
+                  },
+                  {
+                    "group": "Кроки",
+                    "pages": [
+                      "uk/api-reference/funnels/steps/list",
+                      "uk/api-reference/funnels/steps/get",
+                      "uk/api-reference/funnels/steps/create",
+                      "uk/api-reference/funnels/steps/duplicate",
+                      "uk/api-reference/funnels/steps/update-cover",
+                      "uk/api-reference/funnels/steps/create-button",
+                      "uk/api-reference/funnels/steps/reorder",
+                      "uk/api-reference/funnels/steps/activate",
+                      "uk/api-reference/funnels/steps/reorder-buttons",
+                      "uk/api-reference/funnels/steps/update",
+                      "uk/api-reference/funnels/steps/update-menu-time",
+                      "uk/api-reference/funnels/steps/update-sending-time",
+                      "uk/api-reference/funnels/steps/update-button",
+                      "uk/api-reference/funnels/steps/deactivate",
+                      "uk/api-reference/funnels/steps/delete-cover",
+                      "uk/api-reference/funnels/steps/delete-button",
+                      "uk/api-reference/funnels/steps/delete",
+                      "uk/api-reference/funnels/steps/delete-attachment"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Тарифи",
+                "pages": [
+                  "uk/api-reference/offers/list",
+                  "uk/api-reference/offers/get",
+                  "uk/api-reference/offers/subscribers",
+                  "uk/api-reference/offers/create",
+                  "uk/api-reference/offers/duplicate",
+                  "uk/api-reference/offers/activate",
+                  "uk/api-reference/offers/update",
+                  "uk/api-reference/offers/deactivate",
+                  "uk/api-reference/offers/delete",
+                  {
+                    "group": "Зображення",
+                    "pages": [
+                      "uk/api-reference/offers/update-cover",
+                      "uk/api-reference/offers/update-bot-image",
+                      "uk/api-reference/offers/update-thankyou-image",
+                      "uk/api-reference/offers/delete-cover",
+                      "uk/api-reference/offers/delete-bot-image",
+                      "uk/api-reference/offers/delete-thankyou-image"
+                    ]
+                  },
+                  {
+                    "group": "Посилання тарифу",
+                    "pages": [
+                      "uk/api-reference/offers/links/list",
+                      "uk/api-reference/offers/links/create",
+                      "uk/api-reference/offers/links/update",
+                      "uk/api-reference/offers/links/delete"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Платіжні системи",
+                "pages": [
+                  "uk/api-reference/payment-systems/list",
+                  "uk/api-reference/payment-systems/types",
+                  "uk/api-reference/payment-systems/get",
+                  "uk/api-reference/payment-systems/create",
+                  "uk/api-reference/payment-systems/update",
+                  "uk/api-reference/payment-systems/reorder",
+                  "uk/api-reference/payment-systems/delete"
+                ]
+              },
+              {
+                "group": "Посилання",
+                "pages": [
+                  "uk/api-reference/links/offer-link",
+                  "uk/api-reference/links/funnel-link"
+                ]
+              },
+              {
+                "group": "Магазин",
+                "pages": [
+                  "uk/api-reference/shop/get",
+                  "uk/api-reference/shop/publish",
+                  "uk/api-reference/shop/set-offers",
+                  "uk/api-reference/shop/reorder",
+                  "uk/api-reference/shop/enable-offer",
+                  "uk/api-reference/shop/disable-offer",
+                  "uk/api-reference/shop/unpublish"
+                ]
+              },
+              {
+                "group": "Міні-застосунок",
+                "pages": [
+                  "uk/api-reference/mini-app/get",
+                  "uk/api-reference/mini-app/update-logo",
+                  "uk/api-reference/mini-app/publish",
+                  "uk/api-reference/mini-app/update-settings",
+                  "uk/api-reference/mini-app/delete-logo",
+                  "uk/api-reference/mini-app/unpublish",
+                  {
+                    "group": "Пункти меню",
+                    "pages": [
+                      "uk/api-reference/mini-app/create-menu-item",
+                      "uk/api-reference/mini-app/move-menu-item",
+                      "uk/api-reference/mini-app/reorder-menu-items",
+                      "uk/api-reference/mini-app/update-menu-item",
+                      "uk/api-reference/mini-app/delete-menu-item"
+                    ]
+                  },
+                  {
+                    "group": "Пункти профілю",
+                    "pages": [
+                      "uk/api-reference/mini-app/create-profile-item",
+                      "uk/api-reference/mini-app/move-profile-item",
+                      "uk/api-reference/mini-app/reorder-profile-items",
+                      "uk/api-reference/mini-app/update-profile-item",
+                      "uk/api-reference/mini-app/delete-profile-item"
+                    ]
+                  },
+                  {
+                    "group": "Онбординг",
+                    "pages": [
+                      "uk/api-reference/mini-app/create-onboarding",
+                      "uk/api-reference/mini-app/update-onboarding-image",
+                      "uk/api-reference/mini-app/reorder-onboarding",
+                      "uk/api-reference/mini-app/update-onboarding",
+                      "uk/api-reference/mini-app/delete-onboarding"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Веб-версія",
+                "pages": [
+                  "uk/api-reference/web/get",
+                  "uk/api-reference/web/update-logo",
+                  "uk/api-reference/web/update-favicon",
+                  "uk/api-reference/web/publish",
+                  "uk/api-reference/web/update-settings",
+                  "uk/api-reference/web/update-address",
+                  "uk/api-reference/web/delete-logo",
+                  "uk/api-reference/web/unpublish",
+                  {
+                    "group": "Пункти меню",
+                    "pages": [
+                      "uk/api-reference/web/create-menu-item",
+                      "uk/api-reference/web/move-menu-item",
+                      "uk/api-reference/web/reorder-menu-items",
+                      "uk/api-reference/web/update-menu-item",
+                      "uk/api-reference/web/delete-menu-item"
+                    ]
+                  },
+                  {
+                    "group": "Пункти профілю",
+                    "pages": [
+                      "uk/api-reference/web/create-profile-item",
+                      "uk/api-reference/web/move-profile-item",
+                      "uk/api-reference/web/reorder-profile-items",
+                      "uk/api-reference/web/update-profile-item",
+                      "uk/api-reference/web/delete-profile-item"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Підписки",
+                "pages": [
+                  "uk/api-reference/subscriptions/list",
+                  "uk/api-reference/subscriptions/get",
+                  "uk/api-reference/subscriptions/cancel"
+                ]
+              },
+              {
+                "group": "Промокоди",
+                "pages": [
+                  "uk/api-reference/coupons/list",
+                  "uk/api-reference/coupons/get",
+                  "uk/api-reference/coupons/create",
+                  "uk/api-reference/coupons/update",
+                  "uk/api-reference/coupons/activate",
+                  "uk/api-reference/coupons/deactivate",
+                  "uk/api-reference/coupons/delete"
+                ]
+              },
+              {
+                "group": "Завдання",
+                "pages": [
+                  "uk/api-reference/tasks/list",
+                  "uk/api-reference/tasks/approve",
+                  "uk/api-reference/tasks/delete"
+                ]
+              },
+              {
+                "group": "Розсилки",
+                "pages": [
+                  "uk/api-reference/broadcasts/list",
+                  "uk/api-reference/broadcasts/get",
+                  "uk/api-reference/broadcasts/create",
+                  "uk/api-reference/broadcasts/send",
+                  "uk/api-reference/broadcasts/duplicate",
+                  "uk/api-reference/broadcasts/update",
+                  "uk/api-reference/broadcasts/cancel",
+                  "uk/api-reference/broadcasts/delete-messages",
+                  "uk/api-reference/broadcasts/delete",
+                  "uk/api-reference/broadcasts/delete-attachment",
+                  {
+                    "group": "Кнопки",
+                    "pages": [
+                      "uk/api-reference/broadcasts/create-button",
+                      "uk/api-reference/broadcasts/reorder-buttons",
+                      "uk/api-reference/broadcasts/update-button",
+                      "uk/api-reference/broadcasts/delete-button"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Автоматизації",
+                "pages": [
+                  "uk/api-reference/automations/list",
+                  "uk/api-reference/automations/get",
+                  "uk/api-reference/automations/catalog",
+                  "uk/api-reference/automations/create",
+                  "uk/api-reference/automations/update",
+                  "uk/api-reference/automations/activate",
+                  "uk/api-reference/automations/deactivate",
+                  "uk/api-reference/automations/delete"
+                ]
+              },
+              {
+                "group": "Партнерська програма",
+                "pages": [
+                  "uk/api-reference/affiliate/get",
+                  "uk/api-reference/affiliate/create",
+                  "uk/api-reference/affiliate/update",
+                  {
+                    "group": "Посилання",
+                    "pages": [
+                      "uk/api-reference/affiliate/list-links",
+                      "uk/api-reference/affiliate/create-link",
+                      "uk/api-reference/affiliate/update-link",
+                      "uk/api-reference/affiliate/delete-link"
+                    ]
+                  },
+                  {
+                    "group": "Партнери",
+                    "pages": [
+                      "uk/api-reference/affiliate/list-partners",
+                      "uk/api-reference/affiliate/payout"
+                    ]
+                  },
+                  {
+                    "group": "Нарахування",
+                    "pages": [
+                      "uk/api-reference/affiliate/payments"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Канали",
+                "pages": [
+                  "uk/api-reference/channels/list",
+                  "uk/api-reference/channels/get",
+                  "uk/api-reference/channels/confirm",
+                  "uk/api-reference/channels/activate",
+                  "uk/api-reference/channels/deactivate",
+                  "uk/api-reference/channels/delete",
+                  {
+                    "group": "Запрошення",
+                    "pages": [
+                      "uk/api-reference/channels/update-invite-image",
+                      "uk/api-reference/channels/update-invite",
+                      "uk/api-reference/channels/delete-invite-image"
+                    ]
+                  },
+                  {
+                    "group": "Тарифи",
+                    "pages": [
+                      "uk/api-reference/channels/attach-offer",
+                      "uk/api-reference/channels/detach-offer"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Групи",
+                "pages": [
+                  "uk/api-reference/groups/list",
+                  "uk/api-reference/groups/get",
+                  "uk/api-reference/groups/confirm",
+                  "uk/api-reference/groups/activate",
+                  "uk/api-reference/groups/deactivate",
+                  "uk/api-reference/groups/delete",
+                  {
+                    "group": "Запрошення",
+                    "pages": [
+                      "uk/api-reference/groups/update-invite-image",
+                      "uk/api-reference/groups/update-invite",
+                      "uk/api-reference/groups/delete-invite-image"
+                    ]
+                  },
+                  {
+                    "group": "Тарифи",
+                    "pages": [
+                      "uk/api-reference/groups/attach-offer",
+                      "uk/api-reference/groups/detach-offer"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Команди",
+                "pages": [
+                  "uk/api-reference/commands/list",
+                  "uk/api-reference/commands/create",
+                  "uk/api-reference/commands/reorder",
+                  "uk/api-reference/commands/update",
+                  "uk/api-reference/commands/activate",
+                  "uk/api-reference/commands/deactivate",
+                  "uk/api-reference/commands/delete"
+                ]
+              },
+              {
+                "group": "Додаткові поля",
+                "pages": [
+                  "uk/api-reference/custom-fields/list",
+                  "uk/api-reference/custom-fields/create",
+                  "uk/api-reference/custom-fields/update",
+                  "uk/api-reference/custom-fields/delete"
+                ]
+              },
+              {
+                "group": "Папки",
+                "pages": [
+                  "uk/api-reference/folders/list",
+                  "uk/api-reference/folders/create",
+                  "uk/api-reference/folders/update",
+                  "uk/api-reference/folders/delete",
+                  {
+                    "group": "Переміщення в папку",
+                    "pages": [
+                      "uk/api-reference/folders/move-product",
+                      "uk/api-reference/folders/move-funnel",
+                      "uk/api-reference/folders/move-channel",
+                      "uk/api-reference/folders/move-group"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Слаги",
+                "pages": [
+                  "uk/api-reference/slugs/update-product",
+                  "uk/api-reference/slugs/update-funnel",
+                  "uk/api-reference/slugs/update-offer",
+                  "uk/api-reference/slugs/update-funnel-link"
+                ]
+              },
+              {
+                "group": "Вебхуки",
+                "pages": [
+                  "uk/api-reference/webhooks/list",
+                  "uk/api-reference/webhooks/get",
+                  "uk/api-reference/webhooks/events",
+                  "uk/api-reference/webhooks/create",
+                  "uk/api-reference/webhooks/test",
+                  "uk/api-reference/webhooks/update",
+                  "uk/api-reference/webhooks/activate",
+                  "uk/api-reference/webhooks/deactivate",
+                  "uk/api-reference/webhooks/delete"
+                ]
+              },
+              {
+                "group": "Zapier",
+                "pages": [
+                  "uk/api-reference/zapier/create-webhook",
+                  "uk/api-reference/zapier/delete-webhook"
+                ]
+              },
+              {
+                "group": "Telegram-файли",
+                "pages": [
+                  "uk/api-reference/telegram-files/list",
+                  "uk/api-reference/telegram-files/register",
+                  "uk/api-reference/telegram-files/delete"
+                ]
+              },
+              {
+                "group": "Файли",
+                "pages": [
+                  "uk/api-reference/files/download"
+                ]
+              }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "language": "ru",
+        "tabs": [
           {
-            "group": "Products",
-            "pages": [
-              "api-reference/products/list",
-              "api-reference/products/get",
-              "api-reference/products/subscribers",
-              "api-reference/products/create",
-              "api-reference/products/duplicate",
-              "api-reference/products/update-cover",
-              "api-reference/products/update-invite-image",
-              "api-reference/products/attach-offer",
-              "api-reference/products/resume-subscribers",
-              "api-reference/products/activate",
-              "api-reference/products/update-invite",
-              "api-reference/products/update",
-              "api-reference/products/stop",
-              "api-reference/products/delete-cover",
-              "api-reference/products/delete-invite-image",
-              "api-reference/products/detach-offer",
-              "api-reference/products/delete",
+            "tab": "Руководства",
+            "groups": [
               {
-                "group": "Lessons",
+                "group": "Начало работы",
                 "pages": [
-                  "api-reference/products/lessons/list",
-                  "api-reference/products/lessons/get",
-                  "api-reference/products/lessons/create",
-                  "api-reference/products/lessons/duplicate",
-                  "api-reference/products/lessons/update-cover",
-                  "api-reference/products/lessons/update-open-image",
-                  "api-reference/products/lessons/reorder",
-                  "api-reference/products/lessons/activate",
-                  "api-reference/products/lessons/update",
-                  "api-reference/products/lessons/deactivate",
-                  "api-reference/products/lessons/delete-cover",
-                  "api-reference/products/lessons/delete-open-image",
-                  "api-reference/products/lessons/delete"
+                  "ru/index",
+                  "ru/authentication",
+                  "ru/errors"
                 ]
               },
               {
-                "group": "Lesson materials",
+                "group": "Инструкции",
                 "pages": [
-                  "api-reference/products/lessons/materials/list",
-                  "api-reference/products/lessons/materials/create",
-                  "api-reference/products/lessons/materials/reorder",
-                  "api-reference/products/lessons/materials/update",
-                  "api-reference/products/lessons/materials/delete"
-                ]
-              },
-              {
-                "group": "Lesson video",
-                "pages": [
-                  "api-reference/products/lessons/video/get",
-                  "api-reference/products/lessons/video/create-upload",
-                  "api-reference/products/lessons/video/complete-upload",
-                  "api-reference/products/lessons/video/attach-external",
-                  "api-reference/products/lessons/video/delete"
-                ]
-              },
-              {
-                "group": "Sections",
-                "pages": [
-                  "api-reference/products/sections/list",
-                  "api-reference/products/sections/create",
-                  "api-reference/products/sections/reorder",
-                  "api-reference/products/sections/update",
-                  "api-reference/products/sections/delete"
-                ]
-              },
-              {
-                "group": "Steps",
-                "pages": [
-                  "api-reference/products/steps/list",
-                  "api-reference/products/steps/get",
-                  "api-reference/products/steps/create",
-                  "api-reference/products/steps/duplicate",
-                  "api-reference/products/steps/update-cover",
-                  "api-reference/products/steps/create-button",
-                  "api-reference/products/steps/reorder",
-                  "api-reference/products/steps/activate",
-                  "api-reference/products/steps/reorder-buttons",
-                  "api-reference/products/steps/update",
-                  "api-reference/products/steps/update-menu-time",
-                  "api-reference/products/steps/update-sending-time",
-                  "api-reference/products/steps/update-button",
-                  "api-reference/products/steps/deactivate",
-                  "api-reference/products/steps/delete-cover",
-                  "api-reference/products/steps/delete-button",
-                  "api-reference/products/steps/delete",
-                  "api-reference/products/steps/delete-attachment"
+                  "ru/guides/miniapp-course",
+                  "ru/guides/bot-course",
+                  "ru/guides/product-access"
                 ]
               }
             ]
           },
           {
-            "group": "Funnels",
-            "pages": [
-              "api-reference/funnels/list",
-              "api-reference/funnels/get",
-              "api-reference/funnels/subscribers",
-              "api-reference/funnels/create",
-              "api-reference/funnels/convert",
-              "api-reference/funnels/duplicate",
-              "api-reference/funnels/update-cover",
-              "api-reference/funnels/attach-offer",
-              "api-reference/funnels/resume-subscribers",
-              "api-reference/funnels/activate",
-              "api-reference/funnels/set-start",
-              "api-reference/funnels/update",
-              "api-reference/funnels/stop",
-              "api-reference/funnels/delete-cover",
-              "api-reference/funnels/detach-offer",
-              "api-reference/funnels/unset-start",
-              "api-reference/funnels/delete",
+            "tab": "API v1",
+            "groups": [
               {
-                "group": "Funnel links",
+                "group": "Обзор",
                 "pages": [
-                  "api-reference/funnels/links/list",
-                  "api-reference/funnels/links/create",
-                  "api-reference/funnels/links/update",
-                  "api-reference/funnels/links/delete"
+                  "ru/api-reference/introduction"
                 ]
               },
               {
-                "group": "Sections",
+                "group": "Пользователь",
                 "pages": [
-                  "api-reference/funnels/sections/list",
-                  "api-reference/funnels/sections/create",
-                  "api-reference/funnels/sections/reorder",
-                  "api-reference/funnels/sections/update",
-                  "api-reference/funnels/sections/delete"
+                  "ru/api-reference/user/me"
                 ]
               },
               {
-                "group": "Steps",
+                "group": "Боты",
                 "pages": [
-                  "api-reference/funnels/steps/list",
-                  "api-reference/funnels/steps/get",
-                  "api-reference/funnels/steps/create",
-                  "api-reference/funnels/steps/duplicate",
-                  "api-reference/funnels/steps/update-cover",
-                  "api-reference/funnels/steps/create-button",
-                  "api-reference/funnels/steps/reorder",
-                  "api-reference/funnels/steps/activate",
-                  "api-reference/funnels/steps/reorder-buttons",
-                  "api-reference/funnels/steps/update",
-                  "api-reference/funnels/steps/update-menu-time",
-                  "api-reference/funnels/steps/update-sending-time",
-                  "api-reference/funnels/steps/update-button",
-                  "api-reference/funnels/steps/deactivate",
-                  "api-reference/funnels/steps/delete-cover",
-                  "api-reference/funnels/steps/delete-button",
-                  "api-reference/funnels/steps/delete",
-                  "api-reference/funnels/steps/delete-attachment"
+                  "ru/api-reference/bots/list",
+                  "ru/api-reference/bots/get",
+                  "ru/api-reference/bots/create",
+                  "ru/api-reference/bots/activate",
+                  "ru/api-reference/bots/enable-menu",
+                  "ru/api-reference/bots/update",
+                  "ru/api-reference/bots/deactivate",
+                  "ru/api-reference/bots/disable-menu"
+                ]
+              },
+              {
+                "group": "Настройки бота",
+                "pages": [
+                  "ru/api-reference/bot-settings/get",
+                  "ru/api-reference/bot-settings/upload-email-logo",
+                  "ru/api-reference/bot-settings/save-legal",
+                  "ru/api-reference/bot-settings/update-email",
+                  "ru/api-reference/bot-settings/update-branding",
+                  "ru/api-reference/bot-settings/update-integrations",
+                  "ru/api-reference/bot-settings/delete-email-logo",
+                  "ru/api-reference/bot-settings/disconnect-google-sheets",
+                  "ru/api-reference/bot-settings/remove-google-sheets-spreadsheet"
+                ]
+              },
+              {
+                "group": "Подписчики",
+                "pages": [
+                  "ru/api-reference/subscribers/list",
+                  "ru/api-reference/subscribers/get",
+                  "ru/api-reference/subscribers/update-notes",
+                  "ru/api-reference/subscribers/add-tags",
+                  "ru/api-reference/subscribers/send-message",
+                  "ru/api-reference/subscribers/block",
+                  "ru/api-reference/subscribers/set-custom-field",
+                  "ru/api-reference/subscribers/set-tags",
+                  "ru/api-reference/subscribers/update",
+                  "ru/api-reference/subscribers/unblock",
+                  "ru/api-reference/subscribers/delete",
+                  {
+                    "group": "Тарифы",
+                    "pages": [
+                      "ru/api-reference/subscribers/add-offer",
+                      "ru/api-reference/subscribers/grant-offer",
+                      "ru/api-reference/subscribers/revoke-offer"
+                    ]
+                  },
+                  {
+                    "group": "Доступ к продуктам",
+                    "pages": [
+                      "ru/api-reference/subscribers/list-products",
+                      "ru/api-reference/subscribers/update-product-access",
+                      "ru/api-reference/subscribers/activate-product",
+                      "ru/api-reference/subscribers/set-product-lessons",
+                      "ru/api-reference/subscribers/set-product-menu",
+                      "ru/api-reference/subscribers/stop-product",
+                      "ru/api-reference/subscribers/delete-product-progress-step",
+                      "ru/api-reference/subscribers/remove-product"
+                    ]
+                  },
+                  {
+                    "group": "Доступ к воронкам",
+                    "pages": [
+                      "ru/api-reference/subscribers/list-funnels",
+                      "ru/api-reference/subscribers/add-funnel",
+                      "ru/api-reference/subscribers/join-funnel",
+                      "ru/api-reference/subscribers/update-funnel-access",
+                      "ru/api-reference/subscribers/activate-funnel",
+                      "ru/api-reference/subscribers/set-funnel-lessons",
+                      "ru/api-reference/subscribers/set-funnel-menu",
+                      "ru/api-reference/subscribers/stop-funnel",
+                      "ru/api-reference/subscribers/delete-funnel-progress-step",
+                      "ru/api-reference/subscribers/remove-funnel"
+                    ]
+                  },
+                  {
+                    "group": "Доступ к каналам",
+                    "pages": [
+                      "ru/api-reference/subscribers/update-channel-access",
+                      "ru/api-reference/subscribers/remove-channel"
+                    ]
+                  },
+                  {
+                    "group": "Доступ к группам",
+                    "pages": [
+                      "ru/api-reference/subscribers/update-group-access",
+                      "ru/api-reference/subscribers/remove-group"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Заказы",
+                "pages": [
+                  "ru/api-reference/orders/list",
+                  "ru/api-reference/orders/get",
+                  "ru/api-reference/orders/cancel",
+                  "ru/api-reference/orders/refund",
+                  "ru/api-reference/orders/confirm",
+                  "ru/api-reference/orders/delete"
+                ]
+              },
+              {
+                "group": "Продукты",
+                "pages": [
+                  "ru/api-reference/products/list",
+                  "ru/api-reference/products/get",
+                  "ru/api-reference/products/subscribers",
+                  "ru/api-reference/products/create",
+                  "ru/api-reference/products/duplicate",
+                  "ru/api-reference/products/update-cover",
+                  "ru/api-reference/products/update-invite-image",
+                  "ru/api-reference/products/attach-offer",
+                  "ru/api-reference/products/resume-subscribers",
+                  "ru/api-reference/products/activate",
+                  "ru/api-reference/products/update-invite",
+                  "ru/api-reference/products/update",
+                  "ru/api-reference/products/stop",
+                  "ru/api-reference/products/delete-cover",
+                  "ru/api-reference/products/delete-invite-image",
+                  "ru/api-reference/products/detach-offer",
+                  "ru/api-reference/products/delete",
+                  {
+                    "group": "Уроки",
+                    "pages": [
+                      "ru/api-reference/products/lessons/list",
+                      "ru/api-reference/products/lessons/get",
+                      "ru/api-reference/products/lessons/create",
+                      "ru/api-reference/products/lessons/duplicate",
+                      "ru/api-reference/products/lessons/update-cover",
+                      "ru/api-reference/products/lessons/update-open-image",
+                      "ru/api-reference/products/lessons/reorder",
+                      "ru/api-reference/products/lessons/activate",
+                      "ru/api-reference/products/lessons/update",
+                      "ru/api-reference/products/lessons/deactivate",
+                      "ru/api-reference/products/lessons/delete-cover",
+                      "ru/api-reference/products/lessons/delete-open-image",
+                      "ru/api-reference/products/lessons/delete"
+                    ]
+                  },
+                  {
+                    "group": "Материалы урока",
+                    "pages": [
+                      "ru/api-reference/products/lessons/materials/list",
+                      "ru/api-reference/products/lessons/materials/create",
+                      "ru/api-reference/products/lessons/materials/reorder",
+                      "ru/api-reference/products/lessons/materials/update",
+                      "ru/api-reference/products/lessons/materials/delete"
+                    ]
+                  },
+                  {
+                    "group": "Видео урока",
+                    "pages": [
+                      "ru/api-reference/products/lessons/video/get",
+                      "ru/api-reference/products/lessons/video/create-upload",
+                      "ru/api-reference/products/lessons/video/complete-upload",
+                      "ru/api-reference/products/lessons/video/attach-external",
+                      "ru/api-reference/products/lessons/video/delete"
+                    ]
+                  },
+                  {
+                    "group": "Модули",
+                    "pages": [
+                      "ru/api-reference/products/sections/list",
+                      "ru/api-reference/products/sections/create",
+                      "ru/api-reference/products/sections/reorder",
+                      "ru/api-reference/products/sections/update",
+                      "ru/api-reference/products/sections/delete"
+                    ]
+                  },
+                  {
+                    "group": "Шаги",
+                    "pages": [
+                      "ru/api-reference/products/steps/list",
+                      "ru/api-reference/products/steps/get",
+                      "ru/api-reference/products/steps/create",
+                      "ru/api-reference/products/steps/duplicate",
+                      "ru/api-reference/products/steps/update-cover",
+                      "ru/api-reference/products/steps/create-button",
+                      "ru/api-reference/products/steps/reorder",
+                      "ru/api-reference/products/steps/activate",
+                      "ru/api-reference/products/steps/reorder-buttons",
+                      "ru/api-reference/products/steps/update",
+                      "ru/api-reference/products/steps/update-menu-time",
+                      "ru/api-reference/products/steps/update-sending-time",
+                      "ru/api-reference/products/steps/update-button",
+                      "ru/api-reference/products/steps/deactivate",
+                      "ru/api-reference/products/steps/delete-cover",
+                      "ru/api-reference/products/steps/delete-button",
+                      "ru/api-reference/products/steps/delete",
+                      "ru/api-reference/products/steps/delete-attachment"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Воронки",
+                "pages": [
+                  "ru/api-reference/funnels/list",
+                  "ru/api-reference/funnels/get",
+                  "ru/api-reference/funnels/subscribers",
+                  "ru/api-reference/funnels/create",
+                  "ru/api-reference/funnels/convert",
+                  "ru/api-reference/funnels/duplicate",
+                  "ru/api-reference/funnels/update-cover",
+                  "ru/api-reference/funnels/attach-offer",
+                  "ru/api-reference/funnels/resume-subscribers",
+                  "ru/api-reference/funnels/activate",
+                  "ru/api-reference/funnels/set-start",
+                  "ru/api-reference/funnels/update",
+                  "ru/api-reference/funnels/stop",
+                  "ru/api-reference/funnels/delete-cover",
+                  "ru/api-reference/funnels/detach-offer",
+                  "ru/api-reference/funnels/unset-start",
+                  "ru/api-reference/funnels/delete",
+                  {
+                    "group": "Ссылки воронки",
+                    "pages": [
+                      "ru/api-reference/funnels/links/list",
+                      "ru/api-reference/funnels/links/create",
+                      "ru/api-reference/funnels/links/update",
+                      "ru/api-reference/funnels/links/delete"
+                    ]
+                  },
+                  {
+                    "group": "Модули",
+                    "pages": [
+                      "ru/api-reference/funnels/sections/list",
+                      "ru/api-reference/funnels/sections/create",
+                      "ru/api-reference/funnels/sections/reorder",
+                      "ru/api-reference/funnels/sections/update",
+                      "ru/api-reference/funnels/sections/delete"
+                    ]
+                  },
+                  {
+                    "group": "Шаги",
+                    "pages": [
+                      "ru/api-reference/funnels/steps/list",
+                      "ru/api-reference/funnels/steps/get",
+                      "ru/api-reference/funnels/steps/create",
+                      "ru/api-reference/funnels/steps/duplicate",
+                      "ru/api-reference/funnels/steps/update-cover",
+                      "ru/api-reference/funnels/steps/create-button",
+                      "ru/api-reference/funnels/steps/reorder",
+                      "ru/api-reference/funnels/steps/activate",
+                      "ru/api-reference/funnels/steps/reorder-buttons",
+                      "ru/api-reference/funnels/steps/update",
+                      "ru/api-reference/funnels/steps/update-menu-time",
+                      "ru/api-reference/funnels/steps/update-sending-time",
+                      "ru/api-reference/funnels/steps/update-button",
+                      "ru/api-reference/funnels/steps/deactivate",
+                      "ru/api-reference/funnels/steps/delete-cover",
+                      "ru/api-reference/funnels/steps/delete-button",
+                      "ru/api-reference/funnels/steps/delete",
+                      "ru/api-reference/funnels/steps/delete-attachment"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Тарифы",
+                "pages": [
+                  "ru/api-reference/offers/list",
+                  "ru/api-reference/offers/get",
+                  "ru/api-reference/offers/subscribers",
+                  "ru/api-reference/offers/create",
+                  "ru/api-reference/offers/duplicate",
+                  "ru/api-reference/offers/activate",
+                  "ru/api-reference/offers/update",
+                  "ru/api-reference/offers/deactivate",
+                  "ru/api-reference/offers/delete",
+                  {
+                    "group": "Картинки",
+                    "pages": [
+                      "ru/api-reference/offers/update-cover",
+                      "ru/api-reference/offers/update-bot-image",
+                      "ru/api-reference/offers/update-thankyou-image",
+                      "ru/api-reference/offers/delete-cover",
+                      "ru/api-reference/offers/delete-bot-image",
+                      "ru/api-reference/offers/delete-thankyou-image"
+                    ]
+                  },
+                  {
+                    "group": "Ссылки тарифа",
+                    "pages": [
+                      "ru/api-reference/offers/links/list",
+                      "ru/api-reference/offers/links/create",
+                      "ru/api-reference/offers/links/update",
+                      "ru/api-reference/offers/links/delete"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Платёжные системы",
+                "pages": [
+                  "ru/api-reference/payment-systems/list",
+                  "ru/api-reference/payment-systems/types",
+                  "ru/api-reference/payment-systems/get",
+                  "ru/api-reference/payment-systems/create",
+                  "ru/api-reference/payment-systems/update",
+                  "ru/api-reference/payment-systems/reorder",
+                  "ru/api-reference/payment-systems/delete"
+                ]
+              },
+              {
+                "group": "Ссылки",
+                "pages": [
+                  "ru/api-reference/links/offer-link",
+                  "ru/api-reference/links/funnel-link"
+                ]
+              },
+              {
+                "group": "Магазин",
+                "pages": [
+                  "ru/api-reference/shop/get",
+                  "ru/api-reference/shop/publish",
+                  "ru/api-reference/shop/set-offers",
+                  "ru/api-reference/shop/reorder",
+                  "ru/api-reference/shop/enable-offer",
+                  "ru/api-reference/shop/disable-offer",
+                  "ru/api-reference/shop/unpublish"
+                ]
+              },
+              {
+                "group": "Мини-приложение",
+                "pages": [
+                  "ru/api-reference/mini-app/get",
+                  "ru/api-reference/mini-app/update-logo",
+                  "ru/api-reference/mini-app/publish",
+                  "ru/api-reference/mini-app/update-settings",
+                  "ru/api-reference/mini-app/delete-logo",
+                  "ru/api-reference/mini-app/unpublish",
+                  {
+                    "group": "Пункты меню",
+                    "pages": [
+                      "ru/api-reference/mini-app/create-menu-item",
+                      "ru/api-reference/mini-app/move-menu-item",
+                      "ru/api-reference/mini-app/reorder-menu-items",
+                      "ru/api-reference/mini-app/update-menu-item",
+                      "ru/api-reference/mini-app/delete-menu-item"
+                    ]
+                  },
+                  {
+                    "group": "Пункты профиля",
+                    "pages": [
+                      "ru/api-reference/mini-app/create-profile-item",
+                      "ru/api-reference/mini-app/move-profile-item",
+                      "ru/api-reference/mini-app/reorder-profile-items",
+                      "ru/api-reference/mini-app/update-profile-item",
+                      "ru/api-reference/mini-app/delete-profile-item"
+                    ]
+                  },
+                  {
+                    "group": "Онбординг",
+                    "pages": [
+                      "ru/api-reference/mini-app/create-onboarding",
+                      "ru/api-reference/mini-app/update-onboarding-image",
+                      "ru/api-reference/mini-app/reorder-onboarding",
+                      "ru/api-reference/mini-app/update-onboarding",
+                      "ru/api-reference/mini-app/delete-onboarding"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Веб-версия",
+                "pages": [
+                  "ru/api-reference/web/get",
+                  "ru/api-reference/web/update-logo",
+                  "ru/api-reference/web/update-favicon",
+                  "ru/api-reference/web/publish",
+                  "ru/api-reference/web/update-settings",
+                  "ru/api-reference/web/update-address",
+                  "ru/api-reference/web/delete-logo",
+                  "ru/api-reference/web/unpublish",
+                  {
+                    "group": "Пункты меню",
+                    "pages": [
+                      "ru/api-reference/web/create-menu-item",
+                      "ru/api-reference/web/move-menu-item",
+                      "ru/api-reference/web/reorder-menu-items",
+                      "ru/api-reference/web/update-menu-item",
+                      "ru/api-reference/web/delete-menu-item"
+                    ]
+                  },
+                  {
+                    "group": "Пункты профиля",
+                    "pages": [
+                      "ru/api-reference/web/create-profile-item",
+                      "ru/api-reference/web/move-profile-item",
+                      "ru/api-reference/web/reorder-profile-items",
+                      "ru/api-reference/web/update-profile-item",
+                      "ru/api-reference/web/delete-profile-item"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Подписки",
+                "pages": [
+                  "ru/api-reference/subscriptions/list",
+                  "ru/api-reference/subscriptions/get",
+                  "ru/api-reference/subscriptions/cancel"
+                ]
+              },
+              {
+                "group": "Промокоды",
+                "pages": [
+                  "ru/api-reference/coupons/list",
+                  "ru/api-reference/coupons/get",
+                  "ru/api-reference/coupons/create",
+                  "ru/api-reference/coupons/update",
+                  "ru/api-reference/coupons/activate",
+                  "ru/api-reference/coupons/deactivate",
+                  "ru/api-reference/coupons/delete"
+                ]
+              },
+              {
+                "group": "Задания",
+                "pages": [
+                  "ru/api-reference/tasks/list",
+                  "ru/api-reference/tasks/approve",
+                  "ru/api-reference/tasks/delete"
+                ]
+              },
+              {
+                "group": "Рассылки",
+                "pages": [
+                  "ru/api-reference/broadcasts/list",
+                  "ru/api-reference/broadcasts/get",
+                  "ru/api-reference/broadcasts/create",
+                  "ru/api-reference/broadcasts/send",
+                  "ru/api-reference/broadcasts/duplicate",
+                  "ru/api-reference/broadcasts/update",
+                  "ru/api-reference/broadcasts/cancel",
+                  "ru/api-reference/broadcasts/delete-messages",
+                  "ru/api-reference/broadcasts/delete",
+                  "ru/api-reference/broadcasts/delete-attachment",
+                  {
+                    "group": "Кнопки",
+                    "pages": [
+                      "ru/api-reference/broadcasts/create-button",
+                      "ru/api-reference/broadcasts/reorder-buttons",
+                      "ru/api-reference/broadcasts/update-button",
+                      "ru/api-reference/broadcasts/delete-button"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Автоматизации",
+                "pages": [
+                  "ru/api-reference/automations/list",
+                  "ru/api-reference/automations/get",
+                  "ru/api-reference/automations/catalog",
+                  "ru/api-reference/automations/create",
+                  "ru/api-reference/automations/update",
+                  "ru/api-reference/automations/activate",
+                  "ru/api-reference/automations/deactivate",
+                  "ru/api-reference/automations/delete"
+                ]
+              },
+              {
+                "group": "Партнёрская программа",
+                "pages": [
+                  "ru/api-reference/affiliate/get",
+                  "ru/api-reference/affiliate/create",
+                  "ru/api-reference/affiliate/update",
+                  {
+                    "group": "Ссылки",
+                    "pages": [
+                      "ru/api-reference/affiliate/list-links",
+                      "ru/api-reference/affiliate/create-link",
+                      "ru/api-reference/affiliate/update-link",
+                      "ru/api-reference/affiliate/delete-link"
+                    ]
+                  },
+                  {
+                    "group": "Партнёры",
+                    "pages": [
+                      "ru/api-reference/affiliate/list-partners",
+                      "ru/api-reference/affiliate/payout"
+                    ]
+                  },
+                  {
+                    "group": "Начисления",
+                    "pages": [
+                      "ru/api-reference/affiliate/payments"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Каналы",
+                "pages": [
+                  "ru/api-reference/channels/list",
+                  "ru/api-reference/channels/get",
+                  "ru/api-reference/channels/confirm",
+                  "ru/api-reference/channels/activate",
+                  "ru/api-reference/channels/deactivate",
+                  "ru/api-reference/channels/delete",
+                  {
+                    "group": "Приглашение",
+                    "pages": [
+                      "ru/api-reference/channels/update-invite-image",
+                      "ru/api-reference/channels/update-invite",
+                      "ru/api-reference/channels/delete-invite-image"
+                    ]
+                  },
+                  {
+                    "group": "Тарифы",
+                    "pages": [
+                      "ru/api-reference/channels/attach-offer",
+                      "ru/api-reference/channels/detach-offer"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Группы",
+                "pages": [
+                  "ru/api-reference/groups/list",
+                  "ru/api-reference/groups/get",
+                  "ru/api-reference/groups/confirm",
+                  "ru/api-reference/groups/activate",
+                  "ru/api-reference/groups/deactivate",
+                  "ru/api-reference/groups/delete",
+                  {
+                    "group": "Приглашение",
+                    "pages": [
+                      "ru/api-reference/groups/update-invite-image",
+                      "ru/api-reference/groups/update-invite",
+                      "ru/api-reference/groups/delete-invite-image"
+                    ]
+                  },
+                  {
+                    "group": "Тарифы",
+                    "pages": [
+                      "ru/api-reference/groups/attach-offer",
+                      "ru/api-reference/groups/detach-offer"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Команды",
+                "pages": [
+                  "ru/api-reference/commands/list",
+                  "ru/api-reference/commands/create",
+                  "ru/api-reference/commands/reorder",
+                  "ru/api-reference/commands/update",
+                  "ru/api-reference/commands/activate",
+                  "ru/api-reference/commands/deactivate",
+                  "ru/api-reference/commands/delete"
+                ]
+              },
+              {
+                "group": "Дополнительные поля",
+                "pages": [
+                  "ru/api-reference/custom-fields/list",
+                  "ru/api-reference/custom-fields/create",
+                  "ru/api-reference/custom-fields/update",
+                  "ru/api-reference/custom-fields/delete"
+                ]
+              },
+              {
+                "group": "Папки",
+                "pages": [
+                  "ru/api-reference/folders/list",
+                  "ru/api-reference/folders/create",
+                  "ru/api-reference/folders/update",
+                  "ru/api-reference/folders/delete",
+                  {
+                    "group": "Перемещение в папку",
+                    "pages": [
+                      "ru/api-reference/folders/move-product",
+                      "ru/api-reference/folders/move-funnel",
+                      "ru/api-reference/folders/move-channel",
+                      "ru/api-reference/folders/move-group"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Слаги",
+                "pages": [
+                  "ru/api-reference/slugs/update-product",
+                  "ru/api-reference/slugs/update-funnel",
+                  "ru/api-reference/slugs/update-offer",
+                  "ru/api-reference/slugs/update-funnel-link"
+                ]
+              },
+              {
+                "group": "Вебхуки",
+                "pages": [
+                  "ru/api-reference/webhooks/list",
+                  "ru/api-reference/webhooks/get",
+                  "ru/api-reference/webhooks/events",
+                  "ru/api-reference/webhooks/create",
+                  "ru/api-reference/webhooks/test",
+                  "ru/api-reference/webhooks/update",
+                  "ru/api-reference/webhooks/activate",
+                  "ru/api-reference/webhooks/deactivate",
+                  "ru/api-reference/webhooks/delete"
+                ]
+              },
+              {
+                "group": "Zapier",
+                "pages": [
+                  "ru/api-reference/zapier/create-webhook",
+                  "ru/api-reference/zapier/delete-webhook"
+                ]
+              },
+              {
+                "group": "Telegram-файлы",
+                "pages": [
+                  "ru/api-reference/telegram-files/list",
+                  "ru/api-reference/telegram-files/register",
+                  "ru/api-reference/telegram-files/delete"
+                ]
+              },
+              {
+                "group": "Файлы",
+                "pages": [
+                  "ru/api-reference/files/download"
                 ]
               }
-            ]
-          },
-          {
-            "group": "Offers",
-            "pages": [
-              "api-reference/offers/list",
-              "api-reference/offers/get",
-              "api-reference/offers/subscribers",
-              "api-reference/offers/create",
-              "api-reference/offers/duplicate",
-              "api-reference/offers/activate",
-              "api-reference/offers/update",
-              "api-reference/offers/deactivate",
-              "api-reference/offers/delete",
-              {
-                "group": "Images",
-                "pages": [
-                  "api-reference/offers/update-cover",
-                  "api-reference/offers/update-bot-image",
-                  "api-reference/offers/update-thankyou-image",
-                  "api-reference/offers/delete-cover",
-                  "api-reference/offers/delete-bot-image",
-                  "api-reference/offers/delete-thankyou-image"
-                ]
-              },
-              {
-                "group": "Offer links",
-                "pages": [
-                  "api-reference/offers/links/list",
-                  "api-reference/offers/links/create",
-                  "api-reference/offers/links/update",
-                  "api-reference/offers/links/delete"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Payment systems",
-            "pages": [
-              "api-reference/payment-systems/list",
-              "api-reference/payment-systems/types",
-              "api-reference/payment-systems/get",
-              "api-reference/payment-systems/create",
-              "api-reference/payment-systems/update",
-              "api-reference/payment-systems/reorder",
-              "api-reference/payment-systems/delete"
-            ]
-          },
-          {
-            "group": "Links",
-            "pages": [
-              "api-reference/links/offer-link",
-              "api-reference/links/funnel-link"
-            ]
-          },
-          {
-            "group": "Shop",
-            "pages": [
-              "api-reference/shop/get",
-              "api-reference/shop/publish",
-              "api-reference/shop/set-offers",
-              "api-reference/shop/reorder",
-              "api-reference/shop/enable-offer",
-              "api-reference/shop/disable-offer",
-              "api-reference/shop/unpublish"
-            ]
-          },
-          {
-            "group": "Mini-app",
-            "pages": [
-              "api-reference/mini-app/get",
-              "api-reference/mini-app/update-logo",
-              "api-reference/mini-app/publish",
-              "api-reference/mini-app/update-settings",
-              "api-reference/mini-app/delete-logo",
-              "api-reference/mini-app/unpublish",
-              {
-                "group": "Menu items",
-                "pages": [
-                  "api-reference/mini-app/create-menu-item",
-                  "api-reference/mini-app/move-menu-item",
-                  "api-reference/mini-app/reorder-menu-items",
-                  "api-reference/mini-app/update-menu-item",
-                  "api-reference/mini-app/delete-menu-item"
-                ]
-              },
-              {
-                "group": "Profile items",
-                "pages": [
-                  "api-reference/mini-app/create-profile-item",
-                  "api-reference/mini-app/move-profile-item",
-                  "api-reference/mini-app/reorder-profile-items",
-                  "api-reference/mini-app/update-profile-item",
-                  "api-reference/mini-app/delete-profile-item"
-                ]
-              },
-              {
-                "group": "Onboarding",
-                "pages": [
-                  "api-reference/mini-app/create-onboarding",
-                  "api-reference/mini-app/update-onboarding-image",
-                  "api-reference/mini-app/reorder-onboarding",
-                  "api-reference/mini-app/update-onboarding",
-                  "api-reference/mini-app/delete-onboarding"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Web",
-            "pages": [
-              "api-reference/web/get",
-              "api-reference/web/update-logo",
-              "api-reference/web/update-favicon",
-              "api-reference/web/publish",
-              "api-reference/web/update-settings",
-              "api-reference/web/update-address",
-              "api-reference/web/delete-logo",
-              "api-reference/web/unpublish",
-              {
-                "group": "Menu items",
-                "pages": [
-                  "api-reference/web/create-menu-item",
-                  "api-reference/web/move-menu-item",
-                  "api-reference/web/reorder-menu-items",
-                  "api-reference/web/update-menu-item",
-                  "api-reference/web/delete-menu-item"
-                ]
-              },
-              {
-                "group": "Profile items",
-                "pages": [
-                  "api-reference/web/create-profile-item",
-                  "api-reference/web/move-profile-item",
-                  "api-reference/web/reorder-profile-items",
-                  "api-reference/web/update-profile-item",
-                  "api-reference/web/delete-profile-item"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Subscriptions",
-            "pages": [
-              "api-reference/subscriptions/list",
-              "api-reference/subscriptions/get",
-              "api-reference/subscriptions/cancel"
-            ]
-          },
-          {
-            "group": "Coupons",
-            "pages": [
-              "api-reference/coupons/list",
-              "api-reference/coupons/get",
-              "api-reference/coupons/create",
-              "api-reference/coupons/update",
-              "api-reference/coupons/activate",
-              "api-reference/coupons/deactivate",
-              "api-reference/coupons/delete"
-            ]
-          },
-          {
-            "group": "Tasks",
-            "pages": [
-              "api-reference/tasks/list",
-              "api-reference/tasks/approve",
-              "api-reference/tasks/delete"
-            ]
-          },
-          {
-            "group": "Broadcasts",
-            "pages": [
-              "api-reference/broadcasts/list",
-              "api-reference/broadcasts/get",
-              "api-reference/broadcasts/create",
-              "api-reference/broadcasts/send",
-              "api-reference/broadcasts/duplicate",
-              "api-reference/broadcasts/update",
-              "api-reference/broadcasts/cancel",
-              "api-reference/broadcasts/delete-messages",
-              "api-reference/broadcasts/delete",
-              "api-reference/broadcasts/delete-attachment",
-              {
-                "group": "Buttons",
-                "pages": [
-                  "api-reference/broadcasts/create-button",
-                  "api-reference/broadcasts/reorder-buttons",
-                  "api-reference/broadcasts/update-button",
-                  "api-reference/broadcasts/delete-button"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Automations",
-            "pages": [
-              "api-reference/automations/list",
-              "api-reference/automations/get",
-              "api-reference/automations/catalog",
-              "api-reference/automations/create",
-              "api-reference/automations/update",
-              "api-reference/automations/activate",
-              "api-reference/automations/deactivate",
-              "api-reference/automations/delete"
-            ]
-          },
-          {
-            "group": "Affiliate",
-            "pages": [
-              "api-reference/affiliate/get",
-              "api-reference/affiliate/create",
-              "api-reference/affiliate/update",
-              {
-                "group": "Links",
-                "pages": [
-                  "api-reference/affiliate/list-links",
-                  "api-reference/affiliate/create-link",
-                  "api-reference/affiliate/update-link",
-                  "api-reference/affiliate/delete-link"
-                ]
-              },
-              {
-                "group": "Partners",
-                "pages": [
-                  "api-reference/affiliate/list-partners",
-                  "api-reference/affiliate/payout"
-                ]
-              },
-              {
-                "group": "Payments",
-                "pages": [
-                  "api-reference/affiliate/payments"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Channels",
-            "pages": [
-              "api-reference/channels/list",
-              "api-reference/channels/get",
-              "api-reference/channels/confirm",
-              "api-reference/channels/activate",
-              "api-reference/channels/deactivate",
-              "api-reference/channels/delete",
-              {
-                "group": "Invite",
-                "pages": [
-                  "api-reference/channels/update-invite-image",
-                  "api-reference/channels/update-invite",
-                  "api-reference/channels/delete-invite-image"
-                ]
-              },
-              {
-                "group": "Offers",
-                "pages": [
-                  "api-reference/channels/attach-offer",
-                  "api-reference/channels/detach-offer"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Groups",
-            "pages": [
-              "api-reference/groups/list",
-              "api-reference/groups/get",
-              "api-reference/groups/confirm",
-              "api-reference/groups/activate",
-              "api-reference/groups/deactivate",
-              "api-reference/groups/delete",
-              {
-                "group": "Invite",
-                "pages": [
-                  "api-reference/groups/update-invite-image",
-                  "api-reference/groups/update-invite",
-                  "api-reference/groups/delete-invite-image"
-                ]
-              },
-              {
-                "group": "Offers",
-                "pages": [
-                  "api-reference/groups/attach-offer",
-                  "api-reference/groups/detach-offer"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Commands",
-            "pages": [
-              "api-reference/commands/list",
-              "api-reference/commands/create",
-              "api-reference/commands/reorder",
-              "api-reference/commands/update",
-              "api-reference/commands/activate",
-              "api-reference/commands/deactivate",
-              "api-reference/commands/delete"
-            ]
-          },
-          {
-            "group": "Custom fields",
-            "pages": [
-              "api-reference/custom-fields/list",
-              "api-reference/custom-fields/create",
-              "api-reference/custom-fields/update",
-              "api-reference/custom-fields/delete"
-            ]
-          },
-          {
-            "group": "Folders",
-            "pages": [
-              "api-reference/folders/list",
-              "api-reference/folders/create",
-              "api-reference/folders/update",
-              "api-reference/folders/delete",
-              {
-                "group": "Move to folder",
-                "pages": [
-                  "api-reference/folders/move-product",
-                  "api-reference/folders/move-funnel",
-                  "api-reference/folders/move-channel",
-                  "api-reference/folders/move-group"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Slugs",
-            "pages": [
-              "api-reference/slugs/update-product",
-              "api-reference/slugs/update-funnel",
-              "api-reference/slugs/update-offer",
-              "api-reference/slugs/update-funnel-link"
-            ]
-          },
-          {
-            "group": "Webhooks",
-            "pages": [
-              "api-reference/webhooks/list",
-              "api-reference/webhooks/get",
-              "api-reference/webhooks/events",
-              "api-reference/webhooks/create",
-              "api-reference/webhooks/test",
-              "api-reference/webhooks/update",
-              "api-reference/webhooks/activate",
-              "api-reference/webhooks/deactivate",
-              "api-reference/webhooks/delete"
-            ]
-          },
-          {
-            "group": "Zapier",
-            "pages": [
-              "api-reference/zapier/create-webhook",
-              "api-reference/zapier/delete-webhook"
-            ]
-          },
-          {
-            "group": "Telegram files",
-            "pages": [
-              "api-reference/telegram-files/list",
-              "api-reference/telegram-files/register",
-              "api-reference/telegram-files/delete"
-            ]
-          },
-          {
-            "group": "Files",
-            "pages": [
-              "api-reference/files/download"
             ]
           }
         ]
@@ -688,7 +2039,7 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@zenedu.com"
+        "href": "https://t.me/zenedusupportbot"
       }
     ]
   },

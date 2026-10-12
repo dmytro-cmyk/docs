@@ -27,6 +27,41 @@ These conventions apply to **any agent or human** editing this repo (Claude, Cha
 
 ---
 
+## Languages (English, Ukrainian, Russian)
+
+The site has three languages. `docs.json` → `navigation.languages` holds them in this order, all with the **same tree**:
+
+- `en` — pages at the repo root (`index`, `api-reference/...`, `guides/...`). URLs stay unprefixed. Default language.
+- `uk` — mirror pages under **`uk/`** (Mintlify locale code is `uk`, not `ua`), group/tab names in Ukrainian.
+- `ru` — mirror pages under **`ru/`**, group/tab names in Russian.
+
+Rules:
+
+- **Every page exists in all languages.** A new or changed English page needs its `uk/` and `ru/` counterparts in the
+  same change, and the `uk`/`ru` navigation must mirror the `en` one (same order, same nesting).
+- Translated endpoint pages copy `openapi:` from the English page and only translate `title`/`description` (and any MDX body).
+  There is **one** `openapi.json`, in English — parameter and schema descriptions are not translated.
+- Internal links point to the same language (`/uk/...`, `/ru/...`). Anchors are generated from the translated headings
+  (e.g. `/uk/guides/bot-course#перед-початком`, `/ru/guides/bot-course#перед-началом`).
+- Terms follow the Zenedu dashboard (`resources/lang/ua`, `resources/lang/ru` in the app repo):
+
+  | English | Ukrainian | Russian |
+  |---|---|---|
+  | offer | тариф | тариф |
+  | coupon | промокод | промокод |
+  | section | модуль | модуль |
+  | payment method | платіжна система | платёжная система |
+  | mini app | міні-застосунок | мини-приложение |
+  | web app | веб-версія | веб-версия |
+  | subscriber | підписник | подписчик |
+  | step | крок | шаг |
+  | broadcast | розсилка | рассылка |
+  | task | завдання | задание |
+
+- Ukrainian: use the typographic apostrophe `’` (U+2019), not ASCII `'`. Russian: always write «ё».
+
+---
+
 ## Navigation ordering rules (`docs.json`) — the important part
 
 The sidebar must stay consistent and tidy. **Two hard rules:**
@@ -75,7 +110,9 @@ Affiliate, Mini-app, Web, Folders.
    (path + method + parameters + requestBody + responses + any new `components/schemas`).
 2. Create `api-reference/<resource>/<action>.mdx` with the frontmatter shown above.
 3. Add the page to `docs.json` navigation **in its method-sorted position (Rule 1)** and **at the correct level (Rule 2)**.
-4. Verify: `npx mint validate` and `npx mint broken-links`. Preview locally with `npx mint dev` (http://localhost:3000).
+4. Create `uk/api-reference/<resource>/<action>.mdx` and `ru/api-reference/<resource>/<action>.mdx`
+   (same `openapi:`, translated `title`/`description`) and add them to the `uk` and `ru` navigation at the same position.
+5. Verify: `npx mint validate` and `npx mint broken-links`. Preview locally with `npx mint dev` (http://localhost:3000).
 
 > Note: `mint validate` always prints one warning — `Error validating OpenAPI file /docs.json … version must be a string`.
 > It is a harmless CLI quirk (it mis-scans `docs.json`); it is unrelated to your changes. The live site is built from git on push.

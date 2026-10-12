@@ -1,0 +1,65 @@
+---
+title: "API v1"
+description: "REST API Zenedu для управления ботами, подписчиками, продуктами, воронками, тарифами и заказами"
+---
+
+## Базовый URL
+
+Все эндпоинты API v1 используют базовый URL:
+
+```
+https://app.zenedu.com/api/v1
+```
+
+## Авторизация
+
+API v1 использует авторизацию по Bearer-токену. Передавайте токен в каждом запросе:
+
+```bash
+curl -X GET https://app.zenedu.com/api/v1/bots \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Accept: application/json"
+```
+
+<Warning>
+  Заголовок `Accept: application/json` обязателен для всех запросов к API v1.
+</Warning>
+
+Создайте API-токен в личном кабинете Zenedu в настройках аккаунта. Токен показывается только один раз — сохраните его в надёжном месте.
+
+## Эндпоинты Pro
+
+Некоторые эндпоинты требуют активной подписки Pro. В документации они отмечены пометкой **(Pro)**. Вызов Pro-эндпоинта без активной подписки возвращает `403 Forbidden`.
+
+## Пагинация
+
+Эндпоинты-списки возвращают постраничные ответы с полями `data`, `links` и `meta`. Размер страницы задаётся параметром `per_page` (по умолчанию 30).
+
+## Доступные ресурсы
+
+<CardGroup cols={2}>
+  <Card title="Пользователь" icon="user" href="/ru/api-reference/user/me">
+    Получить свой профиль
+  </Card>
+  <Card title="Боты" icon="robot" href="/ru/api-reference/bots/list">
+    Список ваших ботов
+  </Card>
+  <Card title="Подписчики" icon="users" href="/ru/api-reference/subscribers/list">
+    Управление подписчиками бота
+  </Card>
+  <Card title="Заказы" icon="receipt" href="/ru/api-reference/orders/list">
+    Просмотр заказов
+  </Card>
+  <Card title="Продукты" icon="box" href="/ru/api-reference/products/list">
+    Список продуктов
+  </Card>
+  <Card title="Воронки" icon="filter" href="/ru/api-reference/funnels/list">
+    Список воронок
+  </Card>
+  <Card title="Тарифы" icon="tag" href="/ru/api-reference/offers/list">
+    Список тарифов
+  </Card>
+  <Card title="Ссылки" icon="link" href="/ru/api-reference/links/offer-link">
+    Ссылки на оплату и приглашения
+  </Card>
+</CardGroup>

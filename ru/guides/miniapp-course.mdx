@@ -1,0 +1,391 @@
+---
+title: "Курс в мини-приложении"
+description: "Создайте курс из уроков для мини-приложения и веб-версии: уроки, видео, материалы, модули и расписание открытия"
+---
+
+Продукт мини-приложения — это курс из **уроков**, а не из шагов бота. Подписчики проходят его в мини-приложении вашего бота (открывается внутри Telegram), в веб-версии или и там и там. На обеих платформах одни и те же продукты и уроки, а публикуется каждая платформа отдельно (см. [Опубликуйте мини-приложение и веб-версию](#9-опубликуйте-мини-приложение-и-веб-версию)).
+
+Порядок действий:
+
+1. Создайте продукт
+2. Создайте уроки
+3. Настройте, когда открываются уроки
+4. Добавьте картинки
+5. Добавьте материалы
+6. Добавьте видео
+7. Сгруппируйте уроки в модули
+8. Включите продукт
+9. Опубликуйте мини-приложение и веб-версию
+
+## Перед началом
+
+Понадобится:
+
+- **API-токен** — см. [Авторизация](/ru/authentication).
+- **ID бота** — из [Список ботов](/ru/api-reference/bots/list). Мини-приложение и веб-версия принадлежат боту.
+- **Ваши файлы:**
+  - картинки (обложки, картинки уведомлений) — JPG, PNG или WebP, до 20 МБ;
+  - материалы уроков — до 50 МБ: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, CSV, MP3, MP4, WAV, OGG, ZIP, RAR, JPG, JPEG, PNG, WebP;
+  - видео — файлы MP4 для загрузки или ссылки на видео YouTube, Vimeo или Bunny.
+
+В отличие от [курса в боте](/ru/guides/bot-course), здесь не нужны токен бота и загрузка в Telegram: картинки и материалы отправляются прямо в API, видео — на видеохостинг.
+
+Примеры — это команды для терминала. Сначала задайте переменные; дальше в шагах сказано, какие из полученных ID сохранить в новые переменные:
+
+```bash
+API=https://app.zenedu.com/api/v1/bot/BOT_ID
+TOKEN=YOUR_API_TOKEN
+```
+
+<Warning>
+  Отправляйте из скриптов обычный `User-Agent`. Запросы со стандартным user agent Python `urllib` блокируются Cloudflare с `403` (error 1010) ещё до API. `curl` и большинство HTTP-библиотек работают как есть.
+</Warning>
+
+## 1. Создайте продукт
+
+```bash
+curl -X POST $API/products \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"name": "Fun geometry for kids. Part 2", "platform": "miniApp"}'
+```
+
+Сохраните `data.id` как `PRODUCT_ID`. `platform` должен быть `miniApp` — это продукт мини-приложения (тот же продукт работает и в веб-версии). Названия продуктов уникальны в пределах бота: на повторяющееся название вернётся `422` `name`. Новый продукт **выключен**, вы включите его на [шаге 8](#8-включите-продукт).
+
+Необязательные настройки продукта:
+
+- **Описание** — [Обновить продукт](/ru/api-reference/products/update) с `description`.
+- **Обложка** — [Загрузить обложку продукта](/ru/api-reference/products/update-cover), multipart `file`: JPG, PNG или WebP до 20 МБ.
+- **Сообщение-приглашение** — сообщение, которое подписчик получает в боте, когда получает доступ к продукту. Задаётся через [Обновить приглашение в продукт](/ru/api-reference/products/update-invite): `invite_text` и `invite_button` (обязательные), `invite_web_button` (необязательный), стили кнопок `primary`, `success` или `danger`. В сообщении есть кнопка, которая открывает мини-приложение; веб-кнопка добавляется, только пока веб-версия опубликована. Картинка для него — [Загрузить картинку приглашения](/ru/api-reference/products/update-invite-image).
+
+## 2. Создайте уроки
+
+Уроки создаются через [Создать урок](/ru/api-reference/products/lessons/create). Каждый новый урок добавляется в конец продукта.
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/lessons \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{
+    "name": "Lesson 1. Oval",
+    "text": "<p>An <strong>oval</strong> is a stretched circle.</p><ul><li>Watch the video.</li><li>Find oval things at home.</li></ul>",
+    "active": true,
+    "access_time": {"type": "immediately"}
+  }'
+```
+
+Сохраните `data.id` как `LESSON_ID`.
+
+<Warning>
+  Передавайте `"active": true`. По умолчанию урок создаётся **выключенным**, а выключенные уроки подписчики не видят — мини-приложение и веб-версия показывают «0 уроков». Включить урок можно и позже через [Включить урок](/ru/api-reference/products/lessons/activate).
+</Warning>
+
+- `name` — до 255 символов, показывается в списке уроков.
+- `text` — содержимое урока в HTML: абзацы, жирный, курсив, ссылки, списки. До 4000 символов текста без учёта тегов.
+- `access_time` — когда открывается урок, см. [шаг 3](#3-настройте-когда-открываются-уроки). Если не передать, урок открывается сразу.
+- `settings` — уведомление, которое отправляется при открытии урока, см. [Уведомление об открытии урока](#уведомление-об-открытии-урока).
+
+Изменить урок можно через [Обновить урок](/ru/api-reference/products/lessons/update) — меняются только переданные поля. Другие операции с уроками: [Изменить порядок уроков](/ru/api-reference/products/lessons/reorder) (`lesson_ids` в новом порядке), [Дублировать урок](/ru/api-reference/products/lessons/duplicate), [Выключить урок](/ru/api-reference/products/lessons/deactivate), [Удалить урок](/ru/api-reference/products/lessons/delete).
+
+## 3. Настройте, когда открываются уроки
+
+У каждого подписчика своё расписание. Оно начинается, когда подписчик **получает доступ к продукту**. Когда для него открывается каждый урок, решает `access_time.type`:
+
+| `type` | Урок открывается | Поля |
+|---|---|---|
+| `immediately` | когда подписчик получает доступ | — |
+| `after_previous` | когда подписчик проходит предыдущий урок | — |
+| `duration` | через заданное время после получения доступа | `delay_number`, `delay_type` |
+| `date` | в точную дату и время, одинаково для всех | `delay_at` |
+| `time` | в заданное время суток | `delay_time`, `delay_number` |
+| `never` | только когда вы откроете его вручную | — |
+
+### По порядку: `after_previous`
+
+```json
+{"access_time": {"type": "after_previous"}}
+```
+
+Подписчик проходит урок в мини-приложении или веб-версии, после этого открывается следующий. Поставьте `immediately` первому уроку и `after_previous` остальным, чтобы курс шёл по одному уроку.
+
+### Через время: `duration`
+
+```json
+{"access_time": {"type": "duration", "delay_number": 2, "delay_type": "days"}}
+```
+
+Отсчитывается от момента получения доступа, а не от предыдущего урока. `delay_type` — `seconds`, `minutes`, `hours` или `days`. Для «одного урока в день» дайте уроку N задержку N − 1 дней.
+
+### В дату: `date`
+
+```json
+{"access_time": {"type": "date", "delay_at": "2026-11-01T10:00:00+02:00"}}
+```
+
+Открывается для всех в этот момент — используйте для запусков. Подписчик, получивший доступ после этой даты, получает урок сразу. Значение без смещения читается как UTC, поэтому передавайте смещение.
+
+### В заданное время суток: `time`
+
+```json
+{"access_time": {"type": "time", "delay_time": "2026-01-01T09:00:00+02:00", "delay_number": 0}}
+```
+
+Открывается в ближайшее после получения доступа время суток из `delay_time`: сегодня, если это время ещё не прошло, иначе завтра. Используется только время суток; передавайте его со смещением (без него оно читается как UTC). `delay_number` для этого типа обязателен — передайте `0`.
+
+### Вручную: `never`
+
+Урок сам не открывается. Откройте его подписчику через [Открыть уроки продукта](/ru/api-reference/subscribers/set-product-lessons):
+
+```bash
+curl -X PUT $API/subscribers/$SUBSCRIBER_ID/products/$PRODUCT_ID/lessons \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"ids": [LESSON_ID_1, LESSON_ID_2]}'
+```
+
+<Warning>
+  `ids` — это **полный** список уроков, открытых этому подписчику: уроки из списка открываются сейчас, а все остальные уроки продукта для него закрываются. Чтобы открыть все уроки, передайте `{"ids": [], "all": true}`.
+</Warning>
+
+Это работает с любым типом `access_time` — например, чтобы выдать одному подписчику все уроки сразу.
+
+### Изменение расписания
+
+Когда вы меняете `access_time` или включаете и выключаете урок, расписание пересчитывается для подписчиков, у которых уже есть доступ. В идущий курс можно добавлять уроки и менять их порядок.
+
+Когда подписчик проходит все уроки, продукт для него завершается.
+
+### Уведомление об открытии урока
+
+Бот может отправлять сообщение, когда урок открывается подписчику. Передайте `settings` при создании или обновлении урока:
+
+```json
+{
+  "settings": {
+    "notify_on_open": true,
+    "lesson_open_text": "🔓 New lesson: <b>{{lesson_name}}</b>",
+    "lesson_open_button": "Open in the miniApp",
+    "lesson_open_web_button": "Open in the browser",
+    "lesson_open_button_style": "primary"
+  }
+}
+```
+
+- `lesson_open_text` — Telegram HTML; `{{lesson_name}}` и `{{product_name}}` заменяются названиями урока и продукта. Если пусто, используется стандартный текст на языке бота.
+- `lesson_open_button` открывает мини-приложение. `lesson_open_web_button` добавляется, только пока веб-версия опубликована.
+- `lesson_open_button_style`, `lesson_open_web_button_style` — `primary`, `success` или `danger`.
+- Картинка для сообщения — картинка уведомления урока, см. [шаг 4](#4-добавьте-картинки).
+
+Сообщение отправляется примерно в течение минуты после открытия урока. Не включайте его для урока, который открывается сразу вместе с доступом: подписчик и так получает [сообщение-приглашение](#1-создайте-продукт).
+
+## 4. Добавьте картинки
+
+Обе загружаются как multipart с одним `file`: JPG, PNG или WebP до 20 МБ.
+
+| Картинка | Эндпоинт | Где показывается |
+|---|---|---|
+| Обложка | [Загрузить обложку урока](/ru/api-reference/products/lessons/update-cover) | карточка урока в мини-приложении и веб-версии, 16:9 |
+| Картинка уведомления | [Загрузить картинку открытия урока](/ru/api-reference/products/lessons/update-open-image) | сообщение, которое отправляется при открытии урока |
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/lessons/$LESSON_ID/cover \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
+  -F "file=@lesson-1-cover.png"
+```
+
+Новая загрузка заменяет предыдущую картинку. Удалить можно через [Удалить обложку урока](/ru/api-reference/products/lessons/delete-cover) или [Удалить картинку открытия урока](/ru/api-reference/products/lessons/delete-open-image).
+
+## 5. Добавьте материалы
+
+Материалы — это файлы или ссылки, которые показываются под уроком. Добавляйте их через [Добавить материал урока](/ru/api-reference/products/lessons/materials/create), по одному за запрос.
+
+Файл — multipart `file` с необязательным отображаемым `name` (без него показывается имя файла):
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/lessons/$LESSON_ID/materials \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
+  -F "file=@worksheet.pdf;filename=Color the ovals.pdf" -F "name=Color the ovals"
+```
+
+Ссылка — `name` и `url` (`http` или `https`), без файла:
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/lessons/$LESSON_ID/materials \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
+  -F "name=Part 1 of the course" -F "url=https://t.me/YourBot?start=…"
+```
+
+Управляйте ими через [Список](/ru/api-reference/products/lessons/materials/list), [Обновить](/ru/api-reference/products/lessons/materials/update) (`name`, а для ссылок и `url`), [Изменить порядок](/ru/api-reference/products/lessons/materials/reorder) (`media_ids` в новом порядке) и [Удалить](/ru/api-reference/products/lessons/materials/delete).
+
+## 6. Добавьте видео
+
+У урока может быть не больше одного видео. Новое видео заменяет текущее.
+
+<Tabs>
+  <Tab title="Загрузить файл">
+    Файл загружается напрямую на видеохостинг по [tus](https://tus.io) — протоколу загрузки с докачкой, а не через Zenedu API.
+
+    **1. Запросите загрузку** через [Создать загрузку видео](/ru/api-reference/products/lessons/video/create-upload). `file_size` — точный размер файла в байтах:
+
+    ```bash
+    curl -X POST $API/products/$PRODUCT_ID/lessons/$LESSON_ID/video \
+      -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+      -d '{"title": "Lesson 1. Oval", "file_size": 909208}'
+    ```
+
+    ```json
+    {
+      "video_id": 123,
+      "status": "uploading",
+      "upload": {
+        "protocol": "tus",
+        "endpoint": "https://video.bunnycdn.com/tusupload",
+        "headers": {"AuthorizationSignature": "…", "AuthorizationExpire": "…", "VideoId": "…", "LibraryId": "…"},
+        "expires_at": "…"
+      }
+    }
+    ```
+
+    Загрузка должна завершиться до `expires_at`.
+
+    **2. Создайте tus-загрузку.** Отправляйте все заголовки из `upload.headers` в каждом запросе:
+
+    ```bash
+    curl -i -X POST "$ENDPOINT" \
+      -H "Tus-Resumable: 1.0.0" -H "Upload-Length: 909208" \
+      -H "Upload-Metadata: filetype dmlkZW8vbXA0,title TGVzc29uIDE=" \
+      -H "AuthorizationSignature: …" -H "AuthorizationExpire: …" -H "VideoId: …" -H "LibraryId: …"
+    ```
+
+    Ответ — `201` с заголовком `Location`. Это может быть путь (`/tusupload/…`) — тогда он относительно хоста из `endpoint`. Значения `Upload-Metadata` закодированы в base64 (`filetype video/mp4`, `title`).
+
+    **3. Отправьте файл:**
+
+    ```bash
+    curl -X PATCH "https://video.bunnycdn.com/tusupload/…" \
+      -H "Tus-Resumable: 1.0.0" -H "Upload-Offset: 0" -H "Content-Type: application/offset+octet-stream" \
+      -H "AuthorizationSignature: …" -H "AuthorizationExpire: …" -H "VideoId: …" -H "LibraryId: …" \
+      --data-binary @lesson-1.mp4
+    ```
+
+    `204` означает, что файл загружен. Любая tus-библиотека работает так же: передайте ей endpoint, заголовки и файл.
+
+    **4. Сообщите, что загрузка завершена,** через [Завершить загрузку видео](/ru/api-reference/products/lessons/video/complete-upload):
+
+    ```bash
+    curl -X POST $API/products/$PRODUCT_ID/lessons/$LESSON_ID/video/upload-complete \
+      -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+    ```
+
+    Видео переходит из `uploading` в `processing`.
+
+    <Warning>
+      Не пропускайте этот вызов. Без него видео остаётся в `uploading` и может быть удалено как брошенная загрузка.
+    </Warning>
+
+    **5. Дождитесь обработки.** Видео само проходит `uploading` → `processing` → `ready`, обычно за несколько минут. Проверяйте через [Получить видео урока](/ru/api-reference/products/lessons/video/get). `ready` — видео обработано и воспроизводится; `failed` — хостинг не смог обработать файл, загрузите его снова.
+  </Tab>
+  <Tab title="Ссылка на YouTube, Vimeo или Bunny">
+    ```bash
+    curl -X PUT $API/products/$PRODUCT_ID/lessons/$LESSON_ID/video/external \
+      -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+      -d '{"url": "https://www.youtube.com/watch?v=…"}'
+    ```
+
+    Видео сразу в статусе `ready`. На ссылку, которую API не распознал, вернётся `422` `url`.
+  </Tab>
+</Tabs>
+
+Удалить видео можно через [Удалить видео урока](/ru/api-reference/products/lessons/video/delete).
+
+## 7. Сгруппируйте уроки в модули
+
+Модули — необязательные заголовки, которые группируют уроки в мини-приложении и веб-версии. Создайте модуль через [Создать модуль продукта](/ru/api-reference/products/sections/create):
+
+```bash
+curl -X POST $API/products/$PRODUCT_ID/sections \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  --data @- <<EOF
+{"name": "New shapes", "lesson_ids": [$LESSON_ID_1, $LESSON_ID_2, $LESSON_ID_3]}
+EOF
+```
+
+- [Обновить модуль продукта](/ru/api-reference/products/sections/update) — `name` и `lesson_ids`. Переданные `lesson_ids` **заменяют** уроки модуля.
+- [Изменить порядок модулей продукта](/ru/api-reference/products/sections/reorder) — `section_ids` в новом порядке.
+- [Удалить модуль продукта](/ru/api-reference/products/sections/delete).
+
+## 8. Включите продукт
+
+```bash
+curl -X PUT $API/products/$PRODUCT_ID/active \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+```
+
+Подписчики видят только включённые продукты. Затем выдайте подписчикам доступ — см. [Выдать доступ к продукту](/ru/guides/product-access). С этого момента начинается расписание из [шага 3](#3-настройте-когда-открываются-уроки), и подписчик получает сообщение-приглашение.
+
+## 9. Опубликуйте мини-приложение и веб-версию
+
+Продукты и уроки показываются на двух платформах:
+
+| Платформа | Префикс пути | Где подписчики её открывают |
+|---|---|---|
+| Мини-приложение | `/mini-app` | кнопка меню бота в Telegram |
+| Веб-версия | `/web` | сайт в браузере |
+
+**На обеих платформах одни и те же продукты и уроки**, и добавлять в них продукты не нужно: в разделе **Контент** каждой платформы есть все включённые продукты мини-приложения, к которым у подписчика есть доступ. Продукты для бота показываются там, только если в настройках платформы включён `show_bot_products`.
+
+Каждая платформа настраивается и публикуется **отдельно**: можно запустить только мини-приложение, только веб-версию или обе.
+
+### Черновик и опубликованная версия
+
+У каждой платформы есть черновик и опубликованная версия. Изменения настроек, меню, профиля, логотипа и онбординга попадают в черновик, и подписчики видят их только после публикации. Продукты, уроки и их содержимое в черновик не входят — у подписчиков они меняются сразу.
+
+1. Сначала вызовите [Получить Telegram мини-приложение](/ru/api-reference/mini-app/get) или [Получить веб-версию](/ru/api-reference/web/get): вызов подготавливает платформу, если она ещё не настроена, и возвращает `is_published`, `has_changes` (черновик отличается от опубликованной версии), `app_url` и настройки.
+2. Измените черновик.
+3. Опубликуйте: [Опубликовать Telegram мини-приложение](/ru/api-reference/mini-app/publish) или [Опубликовать веб-версию](/ru/api-reference/web/publish).
+
+```bash
+curl -X POST $API/mini-app/publish -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+curl -X POST $API/web/publish -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+```
+
+Выключить платформу можно через [Снять с публикации Telegram мини-приложение](/ru/api-reference/mini-app/unpublish) или [Снять с публикации веб-версию](/ru/api-reference/web/unpublish) (`DELETE …/publish`). Черновик остаётся; подписчики, которые открывают неопубликованную платформу, видят её выключенной.
+
+<Warning>
+  Публикация **мини-приложения** меняет бота: меню команд бота выключается, а кнопка меню бота открывает мини-приложение. Снятие мини-приложения с публикации возвращает стандартную кнопку меню. Публикация веб-версии бота не меняет.
+</Warning>
+
+### Настройки
+
+[Обновить настройки](/ru/api-reference/mini-app/update-settings) мини-приложения и [веб-версии](/ru/api-reference/web/update-settings) принимают одни и те же поля, которые задаются для каждой платформы отдельно:
+
+- `brand_name`, `open_button_name`, `appearance` (`system`, `light`, `dark`), `brand_color` (`#RRGGBB`), `disable_branding`;
+- `show_bot_products` — показывать в Контенте и продукты для бота;
+- `support_type` (`bot` или `link`) и `support_text` — пункт «Поддержка»;
+- `phone_login_enabled` — только для веб-версии: вход по номеру телефона.
+
+Логотип задаётся для каждой платформы отдельно ([логотип мини-приложения](/ru/api-reference/mini-app/update-logo), [логотип веб-версии](/ru/api-reference/web/update-logo)), фавикон — только для веб-версии ([Загрузить фавикон](/ru/api-reference/web/update-favicon)).
+
+### Меню и профиль
+
+У каждой платформы свои пункты меню и профиля: Контент, Магазин, Подписки, Поддержка и другие. Можно добавлять свои **ссылки** и пункт **Магазин** ([создать пункт меню](/ru/api-reference/mini-app/create-menu-item), [создать пункт профиля](/ru/api-reference/mini-app/create-profile-item), то же самое под `/web`), менять порядок, обновлять, переносить между меню и профилем и удалять ссылки. Подписчик без продуктов сначала попадает в Магазин, если в нём есть тарифы, иначе — в Контент.
+
+### Онбординг
+
+Экраны онбординга показываются при первом открытии только **мини-приложения** — см. [Создать экран онбординга](/ru/api-reference/mini-app/create-onboarding). У веб-версии онбординга нет.
+
+### Веб-адрес
+
+У веб-версии есть адрес на поддомене Zenedu. Изменить его можно через [Обновить адрес](/ru/api-reference/web/update-address):
+
+```json
+{"web_handle": "fun-geometry"}
+```
+
+- `web_handle` — 3–32 символа: строчные латинские буквы, цифры и дефисы, но не в начале и не в конце. Должен быть уникальным; некоторые имена зарезервированы.
+- `custom_domain_enabled` — открывать веб-версию на своём домене. Нужна платная подписка Pro, иначе запрос завершится ошибкой; сам домен задаётся в личном кабинете.
+
+Текущая ссылка — `app_url` в [Получить веб-версию](/ru/api-reference/web/get).
+
+## Что нужно помнить
+
+- **Уроки создаются выключенными.** Передавайте `"active": true` или включайте их — иначе подписчики увидят пустой продукт.
+- **Расписание начинается с получения доступа.** `duration` и `time` отсчитываются от момента получения доступа, а не от предыдущего урока. Чтобы уроки шли один за другим, используйте `after_previous`.
+- **Видео готово не сразу.** Загруженное видео сначала в `uploading`, потом в `processing`, и воспроизводится, когда перейдёт в `ready`.

@@ -1,0 +1,38 @@
+---
+title: "Zenedu API"
+description: "Документация API образовательной платформы Zenedu"
+---
+
+## Обзор
+
+Zenedu предоставляет API для интеграции с платформой со стороны сервера:
+
+<Card title="API v1" icon="code" href="/ru/api-reference/introduction">
+  Управляйте ботами, подписчиками, заказами, продуктами и тарифами. Авторизация по Bearer-токену.
+</Card>
+
+## Быстрый старт
+
+<Steps>
+  <Step title="Получите API-токен">
+    Создайте API-токен в личном кабинете Zenedu в настройках аккаунта.
+  </Step>
+  <Step title="Отправьте первый запрос">
+    ```bash
+    curl -X GET https://app.zenedu.com/api/v1/me \
+      -H "Authorization: Bearer YOUR_API_TOKEN" \
+      -H "Accept: application/json"
+    ```
+  </Step>
+  <Step title="Изучите эндпоинты">
+    Все доступные эндпоинты — в [справочнике API v1](/ru/api-reference/introduction).
+  </Step>
+</Steps>
+
+## Базовый URL
+
+Все запросы к API v1 отправляйте на:
+
+```
+https://app.zenedu.com/api/v1
+```

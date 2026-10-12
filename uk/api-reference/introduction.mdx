@@ -1,0 +1,65 @@
+---
+title: "API v1"
+description: "REST API Zenedu для керування ботами, підписниками, продуктами, воронками, тарифами та замовленнями"
+---
+
+## Базовий URL
+
+Усі ендпоінти API v1 використовують базовий URL:
+
+```
+https://app.zenedu.com/api/v1
+```
+
+## Авторизація
+
+API v1 використовує авторизацію за Bearer-токеном. Передавайте токен у кожному запиті:
+
+```bash
+curl -X GET https://app.zenedu.com/api/v1/bots \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Accept: application/json"
+```
+
+<Warning>
+  Заголовок `Accept: application/json` обов’язковий для всіх запитів до API v1.
+</Warning>
+
+Створіть API-токен в особистому кабінеті Zenedu в налаштуваннях акаунта. Токен показується лише один раз — збережіть його в надійному місці.
+
+## Ендпоінти Pro
+
+Деякі ендпоінти потребують активної підписки Pro. У документації вони позначені позначкою **(Pro)**. Виклик Pro-ендпоінта без активної підписки повертає `403 Forbidden`.
+
+## Пагінація
+
+Ендпоінти-списки повертають посторінкові відповіді з полями `data`, `links` і `meta`. Розмір сторінки задається параметром `per_page` (за замовчуванням 30).
+
+## Доступні ресурси
+
+<CardGroup cols={2}>
+  <Card title="Користувач" icon="user" href="/uk/api-reference/user/me">
+    Отримати свій профіль
+  </Card>
+  <Card title="Боти" icon="robot" href="/uk/api-reference/bots/list">
+    Список ваших ботів
+  </Card>
+  <Card title="Підписники" icon="users" href="/uk/api-reference/subscribers/list">
+    Керування підписниками бота
+  </Card>
+  <Card title="Замовлення" icon="receipt" href="/uk/api-reference/orders/list">
+    Перегляд замовлень
+  </Card>
+  <Card title="Продукти" icon="box" href="/uk/api-reference/products/list">
+    Список продуктів
+  </Card>
+  <Card title="Воронки" icon="filter" href="/uk/api-reference/funnels/list">
+    Список воронок
+  </Card>
+  <Card title="Тарифи" icon="tag" href="/uk/api-reference/offers/list">
+    Список тарифів
+  </Card>
+  <Card title="Посилання" icon="link" href="/uk/api-reference/links/offer-link">
+    Посилання на оплату та запрошення
+  </Card>
+</CardGroup>

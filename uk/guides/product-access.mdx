@@ -1,0 +1,52 @@
+---
+title: "Видати доступ до продукту"
+description: "Видайте підписнику доступ до продукту через тариф, перевірте прогрес і почніть заново"
+---
+
+Доступ до продукту завжди видається через **тариф**. Ендпоінта, який додає підписника до продукту напряму, немає. Продукт має бути увімкнений — див. [Увімкнути продукт](/uk/api-reference/products/activate).
+
+У прикладах використовуються ті самі змінні, що й у посібнику [Курс у боті](/uk/guides/bot-course#перед-початком): `API`, `TOKEN` і `PRODUCT_ID`.
+
+## 1. Створіть тариф
+
+Створіть безплатний тариф для продукту або використайте наявний:
+
+```bash
+curl -X POST $API/offers \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json" \
+  --data @- <<EOF
+{"name": "Free access", "price": 0, "currency": "USD", "offerables": [{"type": "product", "id": $PRODUCT_ID}]}
+EOF
+```
+
+Збережіть `data.id` як `OFFER_ID`.
+
+## 2. Знайдіть підписника
+
+Підписник — це будь-хто, хто запустив бота. Щоб знайти ID підписника, викличте [Список підписників](/uk/api-reference/subscribers/list): для кожного підписника він повертає `user_id` (Telegram ID користувача) і `username`. Знайдіть потрібного за одним із них і збережіть його `id` як `SUBSCRIBER_ID`. Параметра пошуку немає, тому гортайте список посторінково (`per_page`, `links.next`).
+
+## 3. Видайте тариф
+
+```bash
+curl -X POST $API/subscribers/$SUBSCRIBER_ID/offers/$OFFER_ID \
+  -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+```
+
+Підписника додано до продукту. У продукті для бота він одразу отримує перший крок. Підписники можуть отримати доступ і самі, купивши або активувавши тариф за посиланням із [Згенерувати посилання на тариф](/uk/api-reference/links/offer-link).
+
+## Перевірте прогрес
+
+```bash
+curl $API/subscribers/$SUBSCRIBER_ID/products -H "Authorization: Bearer $TOKEN" -H "Accept: application/json"
+```
+
+```json
+{ "data": [ { "id": 123, "status": "active", "steps_total": 8, "steps_completed": 2, "access": true, "offer_id": 123 } ] }
+```
+
+- `status: "active"`, і `steps_completed` зростає в міру проходження — курс працює.
+- `status: "finished"` і `steps_completed` = `steps_total` одразу після додавання до курсу в боті — курс не чекав на підписника. Див. [Коли надсилається кожен крок](/uk/guides/bot-course#4-налаштуйте-коли-надсилається-кожен-крок).
+
+## Почати заново
+
+Щоб підписник пройшов продукт заново, [видаліть його з продукту](/uk/api-reference/subscribers/remove-product) і видайте тариф знову. Передайте `"delete_steps": true`, щоб видалити й уже надіслані ботом повідомлення, інакше вони залишаться в чаті.
