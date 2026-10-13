@@ -37279,7 +37279,7 @@
           "credentials_set": {
             "type": "boolean",
             "nullable": true,
-            "description": "For automatic types: whether every credential is filled. Credentials themselves are never returned. `null` for `manually` and `telegramstars`."
+            "description": "For automatic types: whether every credential is filled. Credentials themselves are never returned. `null` for `manually` and `telegramstars`. Optional automatic_tax and collect_billing_address flags do not affect this value."
           },
           "created_at": {
             "type": "string",
@@ -37333,7 +37333,7 @@
       "PaymentSystemSettingsInput": {
         "type": "object",
         "additionalProperties": true,
-        "description": "Settings for the payment method type. Allowed keys depend on `type` — see [List payment method types](/api-reference/payment-systems/types). Unknown keys are dropped, text values are trimmed, and every credential key of the type is required.\n\n| Type | Keys |\n|---|---|\n| `wayforpay` | `domain`, `seller_id`, `seller_secret` |\n| `fondy` | `merchant_id`, `secret_key` |\n| `monobank` | `api_token` |\n| `paypal` | `client_id`, `client_secret`, `webhook_id` |\n| `stripe` | `secret_key` |\n| `mollie` | `api_key` |\n| `nowpayments` | `api_key`, `ipn_secret_key` |\n| `whitepay` | `api_key`, `slug`, `webhook_token` |\n| `liqpay` | `public_key`, `private_key` |\n| `telegramstars` | `bot_only` (boolean, defaults to `true` on create) |\n| `manually` | `manualIcon`, `manualTextIntro`, `manualTextIntroShop`, `manualTextRequisites`, `manualTextPaymentProof`, `manualTextPaymentDone`, `manualTextButton`, `manualAppWaitingHeading`, `manualAppWaitingText`, `manualAppWaitingButton` |\n\nFor `manually`, every text key except `manualIcon` and `manualTextIntroShop` is required, and `manualTextRequisites` must contain at least one row with both `name` and `value` filled. The resulting bot message must fit into 4000 characters.",
+        "description": "Settings for the payment method type. Allowed keys depend on `type` — see [List payment method types](/api-reference/payment-systems/types). Unknown keys are dropped, text values are trimmed, and every credential key of the type is required.\n\n| Type | Keys |\n|---|---|\n| `wayforpay` | `domain`, `seller_id`, `seller_secret` |\n| `fondy` | `merchant_id`, `secret_key` |\n| `monobank` | `api_token` |\n| `paypal` | `client_id`, `client_secret`, `webhook_id` |\n| `stripe` | `secret_key`; optional `automatic_tax`, `collect_billing_address` (booleans, default `false`) |\n| `mollie` | `api_key` |\n| `nowpayments` | `api_key`, `ipn_secret_key` |\n| `whitepay` | `api_key`, `slug`, `webhook_token` |\n| `liqpay` | `public_key`, `private_key` |\n| `telegramstars` | `bot_only` (boolean, defaults to `true` on create) |\n| `manually` | `manualIcon`, `manualTextIntro`, `manualTextIntroShop`, `manualTextRequisites`, `manualTextPaymentProof`, `manualTextPaymentDone`, `manualTextButton`, `manualAppWaitingHeading`, `manualAppWaitingText`, `manualAppWaitingButton` |\n\nFor `manually`, every text key except `manualIcon` and `manualTextIntroShop` is required, and `manualTextRequisites` must contain at least one row with both `name` and `value` filled. The resulting bot message must fit into 4000 characters.",
         "properties": {
           "manualTextRequisites": {
             "type": "array",
@@ -37345,6 +37345,16 @@
           "bot_only": {
             "type": "boolean",
             "description": "Only for `telegramstars`: show the method only in the bot"
+          },
+          "automatic_tax": {
+            "type": "boolean",
+            "default": false,
+            "description": "Only for stripe. Adds Stripe Tax on top of the offer price at checkout and on renewals of subscriptions started with this option. Existing subscriptions keep their original terms. Configure Stripe Tax and tax registrations in the connected Stripe account first."
+          },
+          "collect_billing_address": {
+            "type": "boolean",
+            "default": false,
+            "description": "Only for stripe. Requires the full billing address at checkout independently of automatic_tax. The address is stored on the order and included in order exports, not in the subscriber profile."
           }
         }
       },
