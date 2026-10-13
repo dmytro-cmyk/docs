@@ -1945,7 +1945,7 @@
       "get": {
         "operationId": "listSubscribers",
         "summary": "List subscribers",
-        "description": "Returns a paginated list of subscribers for the specified bot, newest first. (Pro)",
+        "description": "Returns a paginated list of subscribers for the specified bot, newest first.",
         "tags": [
           "Subscribers"
         ],
@@ -2023,7 +2023,7 @@
       "get": {
         "operationId": "getSubscriber",
         "summary": "Get subscriber",
-        "description": "Returns a single subscriber by ID. (Pro)",
+        "description": "Returns a single subscriber by ID.",
         "tags": [
           "Subscribers"
         ],
@@ -2287,7 +2287,7 @@
       "post": {
         "operationId": "sendSubscriberMessage",
         "summary": "Send message",
-        "description": "Sends a text message to a subscriber via Telegram. Error bodies also carry a machine-readable `code`; a 429 includes `retry_after` and the Retry-After header. (Pro)",
+        "description": "Sends a text message to a subscriber via Telegram. Error bodies also carry a machine-readable `code`; a 429 includes `retry_after` and the Retry-After header.",
         "tags": [
           "Subscribers"
         ],
@@ -2430,7 +2430,7 @@
       "post": {
         "operationId": "addSubscriberFunnel",
         "summary": "Add to funnel (by body)",
-        "description": "Adds a subscriber to a funnel. A business refusal is returned with status 200 and a message instead of the subscriber. (Pro)",
+        "description": "Adds a subscriber to a funnel. A business refusal is returned with status 200 and a message instead of the subscriber.",
         "tags": [
           "Subscribers"
         ],
@@ -2621,7 +2621,7 @@
       "post": {
         "operationId": "addSubscriberTags",
         "summary": "Add tags",
-        "description": "Adds tags to a subscriber, creating missing tags in the bot. Existing tags are kept. (Pro)",
+        "description": "Adds tags to a subscriber, creating missing tags in the bot. Existing tags are kept.",
         "tags": [
           "Subscribers"
         ],
@@ -2828,7 +2828,7 @@
       "post": {
         "operationId": "addSubscriberOffer",
         "summary": "Add offer",
-        "description": "Grants an offer to a subscriber by running it in the API channel. Does nothing if the subscriber already has the offer. (Pro)",
+        "description": "Grants an offer to a subscriber by running it in the API channel. Does nothing if the subscriber already has the offer.",
         "tags": [
           "Subscribers"
         ],
@@ -2929,7 +2929,7 @@
       "post": {
         "operationId": "revokeSubscriberOffer",
         "summary": "Revoke offer access",
-        "description": "Removes the subscriber's active access to all products and resources granted by the offer. (Pro)",
+        "description": "Removes the subscriber's active access to all products and resources granted by the offer.",
         "tags": [
           "Subscribers"
         ],
@@ -3030,7 +3030,7 @@
       "post": {
         "operationId": "updateSubscriberNotes",
         "summary": "Update notes",
-        "description": "Replaces the notes of a subscriber. (Pro)",
+        "description": "Replaces the notes of a subscriber.",
         "tags": [
           "Subscribers"
         ],
@@ -3882,7 +3882,7 @@
       "post": {
         "operationId": "generateOfferLink",
         "summary": "Generate offer link",
-        "description": "Generates a payment link for an offer. (Pro) If the offer is not found in this bot, the response is 200 with status \"error\" and message \"Offer not found\".",
+        "description": "Generates a payment link for an offer. If the offer is not found in this bot, the response is 200 with status \"error\" and message \"Offer not found\".",
         "tags": [
           "Links"
         ],
@@ -3974,7 +3974,7 @@
             }
           },
           "403": {
-            "description": "Forbidden — requires Pro subscription",
+            "description": "Forbidden — lacks access to this bot",
             "content": {
               "application/json": {
                 "schema": {
@@ -4000,7 +4000,7 @@
       "post": {
         "operationId": "generateFunnelLink",
         "summary": "Generate funnel link",
-        "description": "Generates an invite link for a funnel. (Pro) If the funnel is not found in this bot, the response is 200 with status \"error\" and message \"Funnel not found\".",
+        "description": "Generates an invite link for a funnel. If the funnel is not found in this bot, the response is 200 with status \"error\" and message \"Funnel not found\".",
         "tags": [
           "Links"
         ],
@@ -4100,7 +4100,7 @@
             }
           },
           "403": {
-            "description": "Forbidden — requires Pro subscription",
+            "description": "Forbidden — lacks access to this bot",
             "content": {
               "application/json": {
                 "schema": {
@@ -4219,7 +4219,7 @@
       "post": {
         "operationId": "createZapierWebhook",
         "summary": "Create Zapier webhook",
-        "description": "Subscribes a Zapier webhook to an event for the specified bot. When the `trigger` event fires, the platform sends a POST request with the event data to `hookUrl`. This is the subscribe step Zapier calls when a Zap is turned on; keep the returned `id` to remove the subscription later. (Pro)",
+        "description": "Subscribes a Zapier webhook to an event for the specified bot. When the `trigger` event fires, the platform sends a POST request with the event data to `hookUrl`. This is the subscribe step Zapier calls when a Zap is turned on; keep the returned `id` to remove the subscription later.",
         "tags": [
           "Zapier"
         ],
@@ -4294,7 +4294,7 @@
             }
           },
           "403": {
-            "description": "Forbidden — requires Pro subscription",
+            "description": "Forbidden — lacks access to this bot",
             "content": {
               "application/json": {
                 "schema": {
@@ -4308,7 +4308,7 @@
       "delete": {
         "operationId": "deleteZapierWebhook",
         "summary": "Delete Zapier webhook",
-        "description": "Removes a Zapier webhook subscription so matching events stop being sent to its `hookUrl`. This is the unsubscribe step Zapier calls when a Zap is turned off. (Pro)",
+        "description": "Removes a Zapier webhook subscription so matching events stop being sent to its `hookUrl`. This is the unsubscribe step Zapier calls when a Zap is turned off.",
         "tags": [
           "Zapier"
         ],
@@ -4370,7 +4370,7 @@
             }
           },
           "403": {
-            "description": "Forbidden — requires Pro subscription",
+            "description": "Forbidden — lacks access to this bot",
             "content": {
               "application/json": {
                 "schema": {

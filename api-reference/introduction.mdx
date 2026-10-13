@@ -27,10 +27,6 @@ curl -X GET https://app.zenedu.io/api/v1/bots \
 
 Find your API token in the Zenedu dashboard: **Settings → Workspace → API & Webhooks**. You can view and copy it there at any time. Resetting the token invalidates the previous one.
 
-## Pro endpoints
-
-Some endpoints require an active Pro subscription. These are marked with **(Pro)** in the documentation. Calling a Pro endpoint without an active subscription returns `403 Forbidden`.
-
 ## Pagination
 
 List endpoints return paginated responses with `data`, `links`, and `meta` fields. Use the `per_page` query parameter to control page size (default: 30).
