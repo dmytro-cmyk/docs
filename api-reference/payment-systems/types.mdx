@@ -5,3 +5,5 @@ openapi: "GET /api/v1/payment-systems/types"
 ---
 
 Returns every payment method type with the `settings` keys it accepts. Use the `type` code when creating a payment method.
+
+For `stripe`, `settings.automatic_tax` and `settings.collect_billing_address` are independent optional booleans, both disabled by default. Tax is added on top of the price. Existing subscriptions keep their original terms. The address is available in order details and order exports, not in the subscriber profile. Configure Stripe Tax and tax registrations in Stripe before enabling automatic tax. Updating these options does not recreate the Stripe webhook; omitted keys keep their stored values.

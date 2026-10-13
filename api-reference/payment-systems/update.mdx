@@ -13,3 +13,5 @@ Partially updates a payment method: only sent fields change.
 <Warning>
 For `stripe`, the webhook is registered again only when `secret_key` changes. If Stripe rejects the new key, nothing is saved and `422` is returned with the error under `settings.secret_key`.
 </Warning>
+
+For `stripe`, `settings.automatic_tax` and `settings.collect_billing_address` are independent optional booleans, both disabled by default. Tax is added on top of the price. Existing subscriptions keep their original terms. The address is available in order details and order exports, not in the subscriber profile. Configure Stripe Tax and tax registrations in Stripe before enabling automatic tax. Updating these options does not recreate the Stripe webhook; omitted keys keep their stored values.
