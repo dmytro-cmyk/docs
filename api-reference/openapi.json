@@ -16436,7 +16436,7 @@
       "post": {
         "operationId": "createProductStepButton",
         "summary": "Create step button",
-        "description": "Adds an inline button to the end of the step's button list. Returns the updated step. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
+        "description": "Adds an inline button to the end of the step's button list. Returns the updated step. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422).",
         "tags": [
           "Products"
         ],
@@ -16542,7 +16542,7 @@
       "patch": {
         "operationId": "updateProductStepButton",
         "summary": "Update step button",
-        "description": "Replaces the button and returns the updated step. Pass the full button, including type, name and all settings you want to retain. Omitted settings are reset; omitting link_mode selects the tracked default. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
+        "description": "Replaces the button and returns the updated step. Pass the full button, including type, name and all settings you want to retain. Omitted settings are reset; omitting link_mode selects the tracked default. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422).",
         "tags": [
           "Products"
         ],
@@ -18632,7 +18632,7 @@
       "post": {
         "operationId": "createFunnelStepButton",
         "summary": "Create step button",
-        "description": "Adds an inline button to the end of the step's button list. Returns the updated step. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
+        "description": "Adds an inline button to the end of the step's button list. Returns the updated step. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422).",
         "tags": [
           "Funnels"
         ],
@@ -18738,7 +18738,7 @@
       "patch": {
         "operationId": "updateFunnelStepButton",
         "summary": "Update step button",
-        "description": "Replaces the button and returns the updated step. Pass the full button, including type, name and all settings you want to retain. Omitted settings are reset; omitting link_mode selects the tracked default. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
+        "description": "Replaces the button and returns the updated step. Pass the full button, including type, name and all settings you want to retain. Omitted settings are reset; omitting link_mode selects the tracked default. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422).",
         "tags": [
           "Funnels"
         ],
@@ -24267,7 +24267,7 @@
       "post": {
         "operationId": "createBroadcastButton",
         "summary": "Create broadcast button",
-        "description": "Adds a button to the broadcast. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
+        "description": "Adds a button to the broadcast. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422).",
         "tags": [
           "Broadcasts"
         ],
@@ -24364,7 +24364,7 @@
       "patch": {
         "operationId": "updateBroadcastButton",
         "summary": "Update broadcast button",
-        "description": "Replaces the broadcast button and returns the updated broadcast. Pass the full button, including type, name and all settings you want to retain. Omitted settings are reset; omitting link_mode selects the tracked default. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422). The legacy direct_link field is ignored.",
+        "description": "Replaces the broadcast button and returns the updated broadcast. Pass the full button, including type, name and all settings you want to retain. Omitted settings are reset; omitting link_mode selects the tracked default. Link buttons use With click tracking by default. Set settings.link_mode to direct for a direct link, or tracked to return to click tracking. Selected tags are retained in direct mode but are not applied; direct links do not produce click events for click automations. Button-not-clicked automations remain active. Protect from copying (settings.web_app) is unavailable for t.me, telegram.me and tg:// destinations (422).",
         "tags": [
           "Broadcasts"
         ],
@@ -35638,7 +35638,7 @@
                 ]
               }
             },
-            "description": "Button settings. For link buttons, an absent link_mode means tracked. The legacy direct_link field is ignored and does not enable a direct link. When replacing a button, send all settings you want to retain; omitted settings are reset."
+            "description": "Button settings. For link buttons, an absent link_mode means tracked. When replacing a button, send all settings you want to retain; omitted settings are reset."
           }
         }
       },
