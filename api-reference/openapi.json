@@ -37272,9 +37272,20 @@
           },
           "settings": {
             "type": "object",
-            "nullable": true,
             "additionalProperties": true,
-            "description": "Full settings for `manually` (texts and requisites) and `telegramstars` (`bot_only`); `null` for other types. An empty set is returned as an empty array `[]`."
+            "description": "Public settings only. Full settings for manually (texts and requisites) and telegramstars (bot_only). Automatic types return their applicable is_web_app and fast_payment_enabled flags; stripe also always returns automatic_tax and collect_billing_address as booleans. Missing Stripe values default to false. Credentials and webhook secrets are never returned. An empty set is returned as an empty array [].",
+            "properties": {
+              "automatic_tax": {
+                "type": "boolean",
+                "default": false,
+                "description": "Only for stripe. Whether automatic Stripe Tax is enabled. Always returned for stripe, including false for connections without a stored value."
+              },
+              "collect_billing_address": {
+                "type": "boolean",
+                "default": false,
+                "description": "Only for stripe. Whether full billing-address collection is enabled. Always returned for stripe, including false for connections without a stored value."
+              }
+            }
           },
           "credentials_set": {
             "type": "boolean",
