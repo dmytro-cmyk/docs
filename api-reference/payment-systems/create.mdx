@@ -17,3 +17,5 @@ For `stripe`, a webhook is registered in Stripe with the given `secret_key` befo
 </Warning>
 
 For `stripe`, `settings.automatic_tax` and `settings.collect_billing_address` are independent optional booleans, both disabled by default. Tax is added on top of the price. Existing subscriptions keep their original terms. The address is available in order details and order exports, not in the subscriber profile. Configure Stripe Tax and tax registrations in Stripe before enabling automatic tax. Updating these options does not recreate the Stripe webhook; omitted keys keep their stored values.
+
+The response includes both Stripe flags in `settings` as booleans. Omitted stored values are returned as `false`.

@@ -6,4 +6,6 @@ openapi: "GET /api/v1/payment-systems"
 
 Returns all payment methods of the account in display order.
 
-Credentials are never returned: automatic types report only `credentials_set`. Full `settings` are returned for `manually` (texts and requisites) and `telegramstars` (`bot_only`); an empty set comes as an empty array `[]`.
+Credentials are never returned. Automatic types expose `credentials_set` and applicable public payment settings. Full `settings` are returned for `manually` (texts and requisites) and `telegramstars` (`bot_only`); an empty set comes as an empty array `[]`.
+
+For `stripe`, `settings` always includes `automatic_tax` and `collect_billing_address` as booleans. If a connection has no stored values, both are `false`. Secret keys and webhook secrets are never included.
