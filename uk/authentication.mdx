@@ -15,10 +15,9 @@ API-токен знаходиться в особистому кабінеті Z
 
 ```bash
 curl -X GET https://app.zenedu.io/api/v1/bots \
-  -H "Authorization: Bearer YOUR_API_TOKEN" \
-  -H "Accept: application/json"
+  -H "Authorization: Bearer YOUR_API_TOKEN"
 ```
 
-<Warning>
-  Заголовок `Accept: application/json` обов’язковий для всіх запитів до API v1. Запити без нього відхиляються.
-</Warning>
+<Note>
+  API v1 за замовчуванням повертає JSON. Заголовок `Accept: application/json` необов’язковий. Завантаження файлів повертає вміст файлу, а відповіді `204` не мають тіла.
+</Note>

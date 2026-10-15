@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Zenedu API v1",
-    "description": "API for managing Telegram bots, subscribers, products, funnels, offers, and orders on the Zenedu platform.",
+    "description": "API for managing Telegram bots, subscribers, products, funnels, offers, and orders on the Zenedu platform. API v1 returns JSON by default; the Accept: application/json header is optional. File downloads return the file content, and 204 responses have no body. Errors returned by the application use JSON even when Accept is omitted.",
     "version": "1.0.0"
   },
   "servers": [

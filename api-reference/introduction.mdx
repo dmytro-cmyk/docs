@@ -17,13 +17,12 @@ API v1 uses Bearer token authentication. Include your token in every request:
 
 ```bash
 curl -X GET https://app.zenedu.io/api/v1/bots \
-  -H "Authorization: Bearer YOUR_API_TOKEN" \
-  -H "Accept: application/json"
+  -H "Authorization: Bearer YOUR_API_TOKEN"
 ```
 
-<Warning>
-  The `Accept: application/json` header is required for all API v1 requests.
-</Warning>
+<Note>
+  API v1 returns JSON by default. The `Accept: application/json` header is optional. File downloads return the file content, and `204` responses have no body.
+</Note>
 
 Find your API token in the Zenedu dashboard: **Settings → Workspace → API & Webhooks**. You can view and copy it there at any time. Resetting the token invalidates the previous one.
 

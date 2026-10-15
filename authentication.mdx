@@ -15,10 +15,9 @@ Include the token in the `Authorization` header of every request:
 
 ```bash
 curl -X GET https://app.zenedu.io/api/v1/bots \
-  -H "Authorization: Bearer YOUR_API_TOKEN" \
-  -H "Accept: application/json"
+  -H "Authorization: Bearer YOUR_API_TOKEN"
 ```
 
-<Warning>
-  The `Accept: application/json` header is required for all API v1 requests. Requests without this header will be rejected.
-</Warning>
+<Note>
+  API v1 returns JSON by default. The `Accept: application/json` header is optional. File downloads return the file content, and `204` responses have no body.
+</Note>

@@ -17,13 +17,12 @@ API v1 використовує авторизацію за Bearer-токено�
 
 ```bash
 curl -X GET https://app.zenedu.io/api/v1/bots \
-  -H "Authorization: Bearer YOUR_API_TOKEN" \
-  -H "Accept: application/json"
+  -H "Authorization: Bearer YOUR_API_TOKEN"
 ```
 
-<Warning>
-  Заголовок `Accept: application/json` обов’язковий для всіх запитів до API v1.
-</Warning>
+<Note>
+  API v1 за замовчуванням повертає JSON. Заголовок `Accept: application/json` необов’язковий. Завантаження файлів повертає вміст файлу, а відповіді `204` не мають тіла.
+</Note>
 
 API-токен знаходиться в особистому кабінеті Zenedu: **Налаштування → Проєкт → API та вебхуки**. Там його можна переглянути й скопіювати в будь-який момент. Якщо скинути токен, попередній перестане працювати.
 
