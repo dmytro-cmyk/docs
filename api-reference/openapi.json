@@ -7228,7 +7228,7 @@
       "put": {
         "operationId": "setSubscriberCustomField",
         "summary": "Set custom field value",
-        "description": "Sets the value of a custom field for a subscriber. A null or empty value clears the field; the format is checked against the field type.",
+        "description": "Sets the value of a custom field for a subscriber. A null or empty value clears the field; the format is checked against the field type. Values may contain up to 4096 characters; longer values return a 422 validation error.",
         "tags": [
           "Subscribers"
         ],
@@ -7273,7 +7273,7 @@
                       "string",
                       "null"
                     ],
-                    "maxLength": 65535,
+                    "maxLength": 4096,
                     "description": "Field value; the key must be present, null clears the field"
                   }
                 },
