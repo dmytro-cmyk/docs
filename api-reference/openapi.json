@@ -918,7 +918,7 @@
       "post": {
         "operationId": "createPaymentSystem",
         "summary": "Create payment method",
-        "description": "Creates a payment method. For `stripe`, a webhook is registered in Stripe with the given `secret_key` before saving; if Stripe rejects the key, nothing is saved and 422 is returned with the error under `settings.secret_key`. Only one `telegramstars` method is allowed per account.",
+        "description": "Creates a payment method. For `stripe`, a webhook is registered in Stripe with the given `secret_key` before saving; if Stripe rejects the key, nothing is saved and 422 is returned with the error under `settings.secret_key`. Only one `telegramstars` method is allowed per account. When creating a Stripe payment method or changing its `secret_key`, the trimmed key must start with `sk_` or `rk_`, contain a non-empty value after that prefix, and contain no whitespace. There is no fixed-length check. Malformed keys return `422` under `settings.secret_key` before contacting Stripe. Stripe still verifies the key and its permissions when registering the webhook. An unchanged stored key is not revalidated.",
         "tags": [
           "Payment systems"
         ],
@@ -1151,7 +1151,7 @@
       "patch": {
         "operationId": "updatePaymentSystem",
         "summary": "Update payment method",
-        "description": "Partially updates a payment method. Sent settings are merged over the stored ones, so a single key can be changed without resending credentials. For `stripe`, the webhook is registered again only when `secret_key` changes; if Stripe rejects the new key, nothing is saved and 422 is returned with the error under `settings.secret_key`.",
+        "description": "Partially updates a payment method. Sent settings are merged over the stored ones, so a single key can be changed without resending credentials. For `stripe`, the webhook is registered again only when `secret_key` changes; if Stripe rejects the new key, nothing is saved and 422 is returned with the error under `settings.secret_key`. When creating a Stripe payment method or changing its `secret_key`, the trimmed key must start with `sk_` or `rk_`, contain a non-empty value after that prefix, and contain no whitespace. There is no fixed-length check. Malformed keys return `422` under `settings.secret_key` before contacting Stripe. Stripe still verifies the key and its permissions when registering the webhook. An unchanged stored key is not revalidated.",
         "tags": [
           "Payment systems"
         ],

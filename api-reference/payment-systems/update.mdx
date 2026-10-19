@@ -14,6 +14,8 @@ Partially updates a payment method: only sent fields change.
 For `stripe`, the webhook is registered again only when `secret_key` changes. If Stripe rejects the new key, nothing is saved and `422` is returned with the error under `settings.secret_key`.
 </Warning>
 
+When creating a Stripe payment method or changing its `secret_key`, the trimmed key must start with `sk_` or `rk_`, contain a non-empty value after that prefix, and contain no whitespace. There is no fixed-length check. Malformed keys return `422` under `settings.secret_key` before contacting Stripe. Stripe still verifies the key and its permissions when registering the webhook. An unchanged stored key is not revalidated.
+
 For `stripe`, `settings.automatic_tax` and `settings.collect_billing_address` are independent optional booleans, both disabled by default. Tax is added on top of the price. Existing subscriptions keep their original terms. The address is available in order details and order exports, not in the subscriber profile. Configure Stripe Tax and tax registrations in Stripe before enabling automatic tax. Updating these options does not recreate the Stripe webhook; omitted keys keep their stored values.
 
 The response includes both Stripe flags in `settings` as booleans. Omitted stored values are returned as `false`.
