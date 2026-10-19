@@ -19,7 +19,7 @@ You need:
 
 - **An API token** — see [Authentication](/authentication).
 - **The bot ID** — from [List bots](/api-reference/bots/list).
-- **The bot token from @BotFather** — only for uploading files from a script. The API never returns it (only `token_hint`).
+- **The bot token from @BotFather** — only for uploading files from a script.
 - **You have started the bot** — the Telegram account linked to your Zenedu user (the owner of the API token) must have pressed **Start** in the bot at least once. The file endpoints check the file by sending it to that chat and return `409` otherwise.
 - **For files over 50 MB** — either an `api_id` and `api_hash` from [my.telegram.org](https://my.telegram.org) to upload them from a script, **or** a person who sends each such file to the bot once. See [Upload files](#2-upload-files).
 

@@ -21,6 +21,7 @@
                 "pages": [
                   "index",
                   "authentication",
+                  "mcp",
                   "errors"
                 ]
               },
@@ -694,6 +695,7 @@
                 "pages": [
                   "uk/index",
                   "uk/authentication",
+                  "uk/mcp",
                   "uk/errors"
                 ]
               },
@@ -1367,6 +1369,7 @@
                 "pages": [
                   "ru/index",
                   "ru/authentication",
+                  "ru/mcp",
                   "ru/errors"
                 ]
               },

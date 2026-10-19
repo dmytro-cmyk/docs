@@ -1,0 +1,100 @@
+---
+title: "MCP server"
+description: "Connect AI agents to your Zenedu account through the Model Context Protocol"
+---
+
+Zenedu provides an [MCP](https://modelcontextprotocol.io) server for AI agents. A connected agent can create courses and funnels, manage subscribers and access, offers, orders, broadcasts, automations and settings of your bots. The agent can do anything you used to do by hand in the dashboard.
+
+## Endpoint
+
+```
+https://app.zenedu.io/mcp
+```
+
+Transport: Streamable HTTP. Authentication: the same Bearer token as API v1, passed in the `Authorization` header. Get it in the Zenedu dashboard: **Settings → Workspace → API & Webhooks**. The token gives full access to the account, so give it only to clients you trust.
+
+## Connect a client
+
+<Tabs>
+  <Tab title="Claude">
+    **Claude Code**
+
+    ```bash
+    claude mcp add --transport http zenedu https://app.zenedu.io/mcp \
+      --header "Authorization: Bearer YOUR_API_TOKEN"
+    ```
+    Then ask Claude, for example: *"List my bots and create a funnel with three welcome messages in the first one."*
+
+    **Claude Desktop**
+
+    Claude Desktop connects to remote servers through a local bridge. Add to `claude_desktop_config.json`:
+
+    ```json
+    {
+      "mcpServers": {
+        "zenedu": {
+          "command": "npx",
+          "args": [
+            "-y", "mcp-remote", "https://app.zenedu.io/mcp",
+            "--header", "Authorization: Bearer YOUR_API_TOKEN"
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="ChatGPT">
+    Connect through **Codex**, the ChatGPT agent for the terminal and IDE, which talks to the server with your token. One command:
+
+    ```bash
+    export ZENEDU_API_TOKEN=YOUR_API_TOKEN
+    codex mcp add zenedu --url https://app.zenedu.io/mcp --bearer-token-env-var ZENEDU_API_TOKEN
+    ```
+
+    or the same in `~/.codex/config.toml`:
+
+    ```toml
+    [mcp_servers.zenedu]
+    url = "https://app.zenedu.io/mcp"
+    bearer_token_env_var = "ZENEDU_API_TOKEN"
+    ```
+
+    Keep `ZENEDU_API_TOKEN` exported in the shell that starts `codex`. The tools then appear in every Codex session, in the CLI and in the IDE extension.
+  </Tab>
+  <Tab title="Cursor">
+    Add to `.cursor/mcp.json` in the project or to the global Cursor MCP settings:
+
+    ```json
+    {
+      "mcpServers": {
+        "zenedu": {
+          "url": "https://app.zenedu.io/mcp",
+          "headers": {
+            "Authorization": "Bearer YOUR_API_TOKEN"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="n8n">
+    Add the **MCP Client Tool** node to an AI Agent workflow: endpoint `https://app.zenedu.io/mcp`, transport *HTTP Streamable*, authentication *Header Auth* with the header `Authorization` and the value `Bearer YOUR_API_TOKEN`. Pick the tools the agent may use or allow all.
+  </Tab>
+  <Tab title="DeepSeek">
+    DeepSeek's agent harness `dsh` (repository `deepseek-ai`, developer preview) connects MCP servers through the `@deepseek-ai/dsh-mcp-client` plugin. Add to `~/.dsh/profiles/web/cordis.patch.yml`:
+
+    ```yaml
+    insert:
+      - id: zenedu
+        name: '@deepseek-ai/dsh-mcp-client'
+        config:
+          serverName: zenedu
+          transport: streamable-http
+          url: https://app.zenedu.io/mcp
+          headers:
+            Authorization: !!js process.env.ZENEDU_API_TOKEN_HEADER
+    ```
+
+    and export `ZENEDU_API_TOKEN_HEADER="Bearer YOUR_API_TOKEN"` before `pnpm dsh web`. Any other MCP-capable client with a DeepSeek model (Cherry Studio, Cline, Continue) works the same way: server type *Streamable HTTP*, the URL and the `Authorization` header.
+  </Tab>
+</Tabs>

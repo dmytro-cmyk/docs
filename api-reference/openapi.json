@@ -1854,7 +1854,7 @@
       "put": {
         "operationId": "saveBotLegalDocument",
         "summary": "Save legal document",
-        "description": "Creates or updates a legal document (privacy policy or terms of service) for the bot.",
+        "description": "Creates or updates a legal document (privacy policy or terms of service) for the bot. `enabled` is required; `title` and `text` are changed only when present in the request (`null` clears them), so `{\"enabled\": false}` alone hides a document and keeps its text. An enabled document without text is rejected with 422.",
         "tags": [
           "Bot settings"
         ],
@@ -6609,7 +6609,7 @@
       "patch": {
         "operationId": "updateProductSlugs",
         "summary": "Update product slugs",
-        "description": "Updates public link slugs of a product. Only passed fields change.",
+        "description": "Updates public link slugs of a product. Only passed fields change; a passed slug cannot be empty. Slugs are unique across products, funnels, offers and funnel links of the whole platform (422 when taken).",
         "tags": [
           "Slugs"
         ],
@@ -6641,22 +6641,18 @@
                 "type": "object",
                 "properties": {
                   "landing_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Landing page slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Landing page slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   },
                   "bot_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Bot deep-link slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Bot deep-link slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   }
                 }
               }
@@ -6726,7 +6722,7 @@
       "patch": {
         "operationId": "updateFunnelSlugs",
         "summary": "Update funnel slugs",
-        "description": "Updates public link slugs of a funnel. Only passed fields change.",
+        "description": "Updates public link slugs of a funnel. Only passed fields change; a passed slug cannot be empty. Slugs are unique across products, funnels, offers and funnel links of the whole platform (422 when taken).",
         "tags": [
           "Slugs"
         ],
@@ -6758,22 +6754,18 @@
                 "type": "object",
                 "properties": {
                   "landing_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Landing page slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Landing page slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   },
                   "bot_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Bot deep-link slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Bot deep-link slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   }
                 }
               }
@@ -6843,7 +6835,7 @@
       "patch": {
         "operationId": "updateOfferSlugs",
         "summary": "Update offer slugs",
-        "description": "Updates public link slugs of a offer. Only passed fields change.",
+        "description": "Updates public link slugs of a offer. Only passed fields change; a passed slug cannot be empty. Slugs are unique across products, funnels, offers and funnel links of the whole platform (422 when taken).",
         "tags": [
           "Slugs"
         ],
@@ -6875,22 +6867,18 @@
                 "type": "object",
                 "properties": {
                   "landing_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Landing page slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Landing page slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   },
                   "bot_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Bot deep-link slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Bot deep-link slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   }
                 }
               }
@@ -6960,7 +6948,7 @@
       "patch": {
         "operationId": "updateFunnelLinkSlugs",
         "summary": "Update funnel link slugs",
-        "description": "Updates public link slugs of a funnel link. Only passed fields change.",
+        "description": "Updates public link slugs of a funnel link. Only passed fields change; a passed slug cannot be empty. Slugs are unique across products, funnels, offers and funnel links of the whole platform (422 when taken).",
         "tags": [
           "Slugs"
         ],
@@ -7001,22 +6989,18 @@
                 "type": "object",
                 "properties": {
                   "landing_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Landing page slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Landing page slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   },
                   "bot_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Bot deep-link slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Bot deep-link slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   }
                 }
               }
@@ -35512,7 +35496,8 @@
               "offer",
               "affiliate",
               "app"
-            ]
+            ],
+            "description": "`task` is the submission button a `task` step gets automatically: it cannot be created by hand (422 on `type`) and is accepted only when updating that existing button."
           },
           "name": {
             "type": "string",
