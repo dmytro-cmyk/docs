@@ -8,6 +8,10 @@ These conventions apply to **any agent or human** editing this repo (Claude, Cha
 
 ---
 
+## Publishing
+
+Follow the documentation publication rule in `../zenedu/AGENTS.md` under **Public API documentation**.
+
 ## Repository structure
 
 - **`docs.json`** — site config: theme, navigation, and the OpenAPI reference.
@@ -54,7 +58,7 @@ Rules:
   |---|---|---|---|
   | mini-app | Mini App | Додаток | Приложение |
   | web | Web Platform | Веб-платформа | Веб-платформа |
-  | orders | Payments | Платежі | Платежи |
+  | orders | Orders | Замовлення | Заказы |
   | affiliate | Affiliates | Партнерка | Партнёрка |
   | payment-systems | Payment methods | Способи оплати | Способы оплаты |
   | custom-fields | Additional fields | Додаткові поля | Дополнительные поля |
@@ -63,7 +67,7 @@ Rules:
   | sections | Modules | Модулі | Модули |
   | offers / coupons | Offers / Coupons | Тарифи / Промокоди | Тарифы / Промокоды |
 
-  Single items keep their dashboard noun: an order is «order / замовлення / заказ» (section is «Payments»),
+  Single items keep their dashboard noun: an order is «order / замовлення / заказ» (section is «Orders»),
   an offer is «тариф», a coupon is «промокод», a step is «крок / шаг», a subscriber is «підписник / подписчик».
   In guide prose, mention the mini app once as «Додаток / приложение (Telegram Mini App)», then just «додаток / приложение».
 

@@ -46,7 +46,8 @@
               {
                 "group": "User",
                 "pages": [
-                  "api-reference/user/me"
+                  "api-reference/user/me",
+                  "api-reference/user/workspace"
                 ]
               },
               {
@@ -143,7 +144,7 @@
                 ]
               },
               {
-                "group": "Payments",
+                "group": "Orders",
                 "pages": [
                   "api-reference/orders/list",
                   "api-reference/orders/get",
@@ -719,7 +720,8 @@
               {
                 "group": "Користувач",
                 "pages": [
-                  "uk/api-reference/user/me"
+                  "uk/api-reference/user/me",
+                  "uk/api-reference/user/workspace"
                 ]
               },
               {
@@ -816,7 +818,7 @@
                 ]
               },
               {
-                "group": "Платежі",
+                "group": "Замовлення",
                 "pages": [
                   "uk/api-reference/orders/list",
                   "uk/api-reference/orders/get",
@@ -1392,7 +1394,8 @@
               {
                 "group": "Пользователь",
                 "pages": [
-                  "ru/api-reference/user/me"
+                  "ru/api-reference/user/me",
+                  "ru/api-reference/user/workspace"
                 ]
               },
               {
@@ -1489,7 +1492,7 @@
                 ]
               },
               {
-                "group": "Платежи",
+                "group": "Заказы",
                 "pages": [
                   "ru/api-reference/orders/list",
                   "ru/api-reference/orders/get",

@@ -175,6 +175,53 @@
         }
       }
     },
+    "/api/v1/workspace": {
+      "get": {
+        "operationId": "getWorkspace",
+        "summary": "Get workspace",
+        "description": "Returns the workspace of the token owner: its name and the account currency. Requires the workspace manage permission.",
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Workspace",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Workspace"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden — requires workspace manage permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/bots": {
       "get": {
         "operationId": "listBots",
@@ -3822,7 +3869,7 @@
                   "settings": {
                     "type": "object",
                     "additionalProperties": true,
-                    "description": "Offer settings grouped by key: access, timeLimit, usageLimit, paymentNotification, subscriptionNotification, paymentReminder, removeFromProducts, request_contacts, landingRequestContacts, appRequestContacts, subscriptionPaymentAttempts, landingPaymentEmail, subscriptionRenewalReminder, landingPaymentReminder, delete_steps, landingSettings, botMessage, paidTrial, appDisplay"
+                    "description": "Offer settings grouped by key: access, timeLimit, usageLimit, paymentNotification, subscriptionNotification, paymentReminder, removeFromProducts, request_contacts, landingRequestContacts, appRequestContacts, landingPaymentEmail, landingPaymentReminder, delete_steps, landingSettings, botMessage, paidTrial, appDisplay"
                   }
                 }
               }
@@ -20209,7 +20256,7 @@
                   "settings": {
                     "type": "object",
                     "additionalProperties": true,
-                    "description": "Offer settings grouped by key: access, timeLimit, usageLimit, paymentNotification, subscriptionNotification, paymentReminder, removeFromProducts, request_contacts, landingRequestContacts, appRequestContacts, subscriptionPaymentAttempts, landingPaymentEmail, subscriptionRenewalReminder, landingPaymentReminder, delete_steps, landingSettings, botMessage, paidTrial, appDisplay"
+                    "description": "Offer settings grouped by key: access, timeLimit, usageLimit, paymentNotification, subscriptionNotification, paymentReminder, removeFromProducts, request_contacts, landingRequestContacts, appRequestContacts, landingPaymentEmail, landingPaymentReminder, delete_steps, landingSettings, botMessage, paidTrial, appDisplay"
                   }
                 }
               }
@@ -33641,6 +33688,23 @@
             "type": "string",
             "format": "date-time",
             "description": "Account creation timestamp"
+          }
+        }
+      },
+      "Workspace": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string",
+            "description": "Workspace name"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Account currency (ISO 4217 code), used for revenue amounts across the account",
+            "example": "USD"
           }
         }
       },
