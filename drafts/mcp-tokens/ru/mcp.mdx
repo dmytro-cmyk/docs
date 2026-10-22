@@ -1,0 +1,96 @@
+---
+title: "MCP-сервер"
+description: "Подключите ИИ-агентов к аккаунту Zenedu через Model Context Protocol"
+---
+
+Zenedu предоставляет [MCP](https://modelcontextprotocol.io)-сервер для ИИ-агентов. Подключённый агент может создавать курсы и воронки, управлять подписчиками и доступами, тарифами, заказами, рассылками, автоматизациями и настройками ботов. Агент сможет выполнить любое действие, которое раньше вы делали руками в кабинете.
+
+## Адрес
+
+```
+https://app.zenedu.io/mcp
+```
+
+Транспорт: Streamable HTTP.
+
+## Быстрая настройка
+
+Скопируйте промпт и отправьте его своему ИИ-агенту: Claude, ChatGPT, Cursor или любому другому. Агент сам добавит сервер, вам останется подтвердить подключение и войти в Zenedu.
+
+```
+Добавь MCP-сервер Zenedu https://app.zenedu.io/mcp
+```
+
+## Авторизация
+
+**OAuth.** Добавьте адрес как коннектор в своём клиенте. При первом подключении клиент откроет страницу Zenedu: войдите, выберите проект и нажмите **Разрешить**. Агент будет работать в пределах ваших прав в этом проекте.
+
+**MCP-токен.** Для клиентов без OAuth (n8n, скрипты) создайте токен в личном кабинете: **Настройки → Аккаунт → MCP → Создать токен**. Токен показывается один раз, скопируйте его сразу. Передавайте его в заголовке `Authorization: Bearer YOUR_MCP_TOKEN`.
+
+Все подключения и токены видны на той же вкладке **MCP**, там же любое из них можно отозвать.
+
+## Подключение клиента
+
+<Tabs>
+  <Tab title="Claude">
+    **Claude Code**
+
+    ```bash
+    claude mcp add --transport http zenedu https://app.zenedu.io/mcp
+    ```
+    Затем выполните `/mcp` в Claude Code, выберите `zenedu` и войдите в Zenedu в браузере. После этого попросите Claude, например: *«Покажи мои боты и создай воронку с тремя приветственными сообщениями в первом».*
+
+    **Claude Desktop и claude.ai**
+
+    Откройте **Settings → Connectors → Add custom connector**, укажите название `Zenedu` и адрес `https://app.zenedu.io/mcp`, затем нажмите **Connect** и разрешите доступ.
+  </Tab>
+  <Tab title="ChatGPT">
+    **ChatGPT в браузере и на десктопе**
+
+    Включите режим разработчика в **Settings → Apps & Connectors → Advanced settings**, затем создайте коннектор с адресом `https://app.zenedu.io/mcp` и аутентификацией *OAuth* и разрешите доступ.
+
+    **Codex**, агент ChatGPT для терминала и IDE:
+
+    ```bash
+    codex mcp add zenedu --url https://app.zenedu.io/mcp
+    codex mcp login zenedu
+    ```
+
+    Инструменты появятся в каждой сессии Codex, в CLI и в расширении для IDE.
+  </Tab>
+  <Tab title="Cursor">
+    Добавьте в `.cursor/mcp.json` проекта или в глобальные настройки MCP в Cursor:
+
+    ```json
+    {
+      "mcpServers": {
+        "zenedu": {
+          "url": "https://app.zenedu.io/mcp"
+        }
+      }
+    }
+    ```
+
+    Затем нажмите **Connect** рядом с `zenedu` в настройках MCP в Cursor и разрешите доступ.
+  </Tab>
+  <Tab title="n8n">
+    Добавьте ноду **MCP Client Tool** в воркфлоу с AI Agent: адрес `https://app.zenedu.io/mcp`, транспорт *HTTP Streamable*, авторизация *Header Auth* с заголовком `Authorization` и значением `Bearer YOUR_MCP_TOKEN`. Выберите инструменты, доступные агенту, или разрешите все.
+  </Tab>
+  <Tab title="DeepSeek">
+    Агентский harness DeepSeek `dsh` (репозиторий `deepseek-ai`, developer preview) подключает MCP-серверы через плагин `@deepseek-ai/dsh-mcp-client`. Добавьте в `~/.dsh/profiles/web/cordis.patch.yml`:
+
+    ```yaml
+    insert:
+      - id: zenedu
+        name: '@deepseek-ai/dsh-mcp-client'
+        config:
+          serverName: zenedu
+          transport: streamable-http
+          url: https://app.zenedu.io/mcp
+          headers:
+            Authorization: !!js process.env.ZENEDU_MCP_TOKEN_HEADER
+    ```
+
+    и экспортируйте `ZENEDU_MCP_TOKEN_HEADER="Bearer YOUR_MCP_TOKEN"` перед `pnpm dsh web`. Любой другой MCP-клиент с моделью DeepSeek (Cherry Studio, Cline, Continue) подключается так же: тип сервера *Streamable HTTP*, адрес и OAuth или заголовок `Authorization` с MCP-токеном.
+  </Tab>
+</Tabs>
