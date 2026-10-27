@@ -1,0 +1,154 @@
+---
+title: "MCP server"
+description: "Connect AI agents to your Zenedu account through the Model Context Protocol"
+---
+
+Zenedu provides an [MCP](https://modelcontextprotocol.io) server for AI agents. A connected agent can create courses and funnels, manage subscribers and access, offers, orders, broadcasts, automations and settings of your bots. The agent can do anything you used to do by hand in the dashboard.
+
+## Endpoint
+
+```
+https://app.zenedu.io/mcp
+```
+
+Transport: Streamable HTTP.
+
+## Quick setup
+
+Copy the prompt and send it to your AI agent: Claude, ChatGPT, Cursor or any other. The agent adds the server itself, you only approve the connection and sign in to Zenedu.
+
+```
+Add the Zenedu MCP server https://app.zenedu.io/mcp
+```
+
+## Authorization
+
+Add the address as a connector in your client. On the first connection the client opens a Zenedu page: sign in, choose the workspace and click **Allow**. The agent works within your permissions in that workspace. Any client that supports OAuth for MCP connects the same way.
+
+All connections are listed in the Zenedu dashboard: **Settings → Account → MCP**, where you can revoke any of them.
+
+## Connect a client
+
+<Tabs>
+  <Tab title="Claude">
+    **Claude Code**
+
+    ```bash
+    claude mcp add --transport http zenedu https://app.zenedu.io/mcp
+    ```
+    Then run `/mcp` in Claude Code, choose `zenedu` and sign in to Zenedu in the browser. After that ask Claude, for example: *"List my bots and create a funnel with three welcome messages in the first one."*
+
+    **Claude Desktop and claude.ai**
+
+    Open **Settings → Connectors → Add custom connector**, enter the name `Zenedu` and the address `https://app.zenedu.io/mcp`, then click **Connect** and allow access.
+  </Tab>
+  <Tab title="ChatGPT">
+    **ChatGPT web and desktop**
+
+    Turn on developer mode in **Settings → Apps & Connectors → Advanced settings**, then create a connector with the address `https://app.zenedu.io/mcp` and authentication *OAuth*, and allow access.
+
+    **Codex**, the ChatGPT agent for the terminal and IDE:
+
+    ```bash
+    codex mcp add zenedu --url https://app.zenedu.io/mcp
+    codex mcp login zenedu
+    ```
+
+    The tools then appear in every Codex session, in the CLI and in the IDE extension.
+  </Tab>
+  <Tab title="Cursor">
+    Add to `.cursor/mcp.json` in the project or to the global Cursor MCP settings:
+
+    ```json
+    {
+      "mcpServers": {
+        "zenedu": {
+          "url": "https://app.zenedu.io/mcp"
+        }
+      }
+    }
+    ```
+
+    Then click **Connect** next to `zenedu` in the Cursor MCP settings and allow access.
+  </Tab>
+</Tabs>
+
+## What the agent can do
+
+The agent works with the same operations that are available in the dashboard: bots and their settings, the mini app, courses with modules and lessons, funnels with steps and buttons, subscribers, tags and additional fields, offers and coupons, orders and subscriptions, broadcasts, automations, channels and groups, affiliates, bot commands, webhooks, payment methods, uploading files and images.
+
+## Permissions and security
+
+The agent gets access to the operations the user has in the workspace.
+
+Team members get the tools within the access they have been granted on the platform.
+
+Deleting, stopping and other irreversible actions are marked as destructive on the server side: the agent will ask you before running them. If your client supports call confirmation, keep it on for such actions.
+
+## Connections and revoking
+
+**Settings → Account → MCP** lists all your connections: client name, status, creation date and time of the last call. Any connection can be revoked, after which the client loses access and asks you to sign in again.
+
+Access is granted for a day and renewed by the client automatically, without signing in again. If a connection has not been used for 90 days, it expires and is marked in the list. Such a connection can be revoked, and to continue working, connect again.
+
+One connection gives access to one workspace. For the agent to work with several workspaces, connect the server for each of them separately.
+
+## First steps
+
+After connecting, ask the agent to show your bots. This checks that the access works, and the agent learns which bot to work with next: every other action is tied to a specific bot.
+
+Good to know in advance:
+
+- New courses and funnels are created disabled, new lessons hidden. The agent checks the result and enables them only when you ask.
+- Funnel steps are not sent to subscribers on their own until a sending time is set.
+- The agent asks before running destructive operations.
+
+Tasks that are a good place to start:
+
+```
+Show my bots
+```
+
+```
+Create a course "Sales Basics" with three modules of two lessons each, offer 49 EUR with lifetime access
+```
+
+```
+Create a funnel of three welcome messages with a one-day delay between them
+```
+
+```
+Send a broadcast to everyone who has not bought the course in the last 30 days
+```
+
+## Troubleshooting
+
+| What happens | What to do |
+|---|---|
+| The tools did not appear after signing in | Restart the session or refresh the list of MCP servers in the client. In Claude Code run `/mcp`, in Cursor click **Refresh** next to `zenedu`. |
+| The client says "Unauthorized" or asks to sign in again | The connection was revoked or has expired. Remove the connector in the client and add it again. |
+| ChatGPT does not let you add a connector | Turn on developer mode in **Settings → Apps & Connectors → Advanced settings**. On Business, Enterprise and Edu plans, connectors are enabled by the workspace administrator. |
+| The agent says it does not have the tool it needs | You do not have access to this operation in the workspace. Ask the workspace owner to extend your access. |
+| The agent works with the wrong workspace | The workspace is chosen when connecting. Revoke the connection in **Settings → Account → MCP** and connect again, choosing the right workspace. |
+
+## FAQ
+
+**Can I connect several clients?**
+
+Yes. Each client connects separately, all connections are listed in the dashboard.
+
+**Can team members connect their own agents?**
+
+Yes, each team member connects with their own sign-in and gets their own permissions. The owner sees only their own connections.
+
+**Can the agent break something?**
+
+The agent runs only the operations available to you in the workspace and asks before destructive operations. New things are created disabled until you check them.
+
+**Is it paid?**
+
+No, the MCP server is included in your Zenedu plan. Pricing of the client, for example Claude or ChatGPT, depends on its terms.
+
+**How do I disconnect the agent?**
+
+Open **Settings → Account → MCP** and revoke the connection. The client loses access immediately.

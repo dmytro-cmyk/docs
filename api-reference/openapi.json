@@ -1901,7 +1901,7 @@
       "put": {
         "operationId": "saveBotLegalDocument",
         "summary": "Save legal document",
-        "description": "Creates or updates a legal document (privacy policy or terms of service) for the bot.",
+        "description": "Creates or updates a legal document (privacy policy or terms of service) for the bot. `enabled` is required; `title` and `text` are changed only when present in the request (`null` clears them), so `{\"enabled\": false}` alone hides a document and keeps its text. An enabled document without text is rejected with 422.",
         "tags": [
           "Bot settings"
         ],
@@ -6656,7 +6656,7 @@
       "patch": {
         "operationId": "updateProductSlugs",
         "summary": "Update product slugs",
-        "description": "Updates public link slugs of a product. Only passed fields change.",
+        "description": "Updates public link slugs of a product. Only passed fields change; a passed slug cannot be empty. Slugs are unique across products, funnels, offers and funnel links of the whole platform (422 when taken).",
         "tags": [
           "Slugs"
         ],
@@ -6688,22 +6688,18 @@
                 "type": "object",
                 "properties": {
                   "landing_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Landing page slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Landing page slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   },
                   "bot_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Bot deep-link slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Bot deep-link slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   }
                 }
               }
@@ -6773,7 +6769,7 @@
       "patch": {
         "operationId": "updateFunnelSlugs",
         "summary": "Update funnel slugs",
-        "description": "Updates public link slugs of a funnel. Only passed fields change.",
+        "description": "Updates public link slugs of a funnel. Only passed fields change; a passed slug cannot be empty. Slugs are unique across products, funnels, offers and funnel links of the whole platform (422 when taken).",
         "tags": [
           "Slugs"
         ],
@@ -6805,22 +6801,18 @@
                 "type": "object",
                 "properties": {
                   "landing_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Landing page slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Landing page slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   },
                   "bot_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Bot deep-link slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Bot deep-link slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   }
                 }
               }
@@ -6890,7 +6882,7 @@
       "patch": {
         "operationId": "updateOfferSlugs",
         "summary": "Update offer slugs",
-        "description": "Updates public link slugs of a offer. Only passed fields change.",
+        "description": "Updates public link slugs of a offer. Only passed fields change; a passed slug cannot be empty. Slugs are unique across products, funnels, offers and funnel links of the whole platform (422 when taken).",
         "tags": [
           "Slugs"
         ],
@@ -6922,22 +6914,18 @@
                 "type": "object",
                 "properties": {
                   "landing_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Landing page slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Landing page slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   },
                   "bot_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Bot deep-link slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Bot deep-link slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   }
                 }
               }
@@ -7007,7 +6995,7 @@
       "patch": {
         "operationId": "updateFunnelLinkSlugs",
         "summary": "Update funnel link slugs",
-        "description": "Updates public link slugs of a funnel link. Only passed fields change.",
+        "description": "Updates public link slugs of a funnel link. Only passed fields change; a passed slug cannot be empty. Slugs are unique across products, funnels, offers and funnel links of the whole platform (422 when taken).",
         "tags": [
           "Slugs"
         ],
@@ -7048,22 +7036,18 @@
                 "type": "object",
                 "properties": {
                   "landing_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Landing page slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Landing page slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   },
                   "bot_slug": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
+                    "type": "string",
                     "maxLength": 25,
-                    "pattern": "^[a-zA-Z0-9_\\-]*$",
-                    "description": "Bot deep-link slug, empty or null clears it"
+                    "pattern": "^[a-zA-Z0-9_\\-]+$",
+                    "description": "Bot deep-link slug; cannot be empty, omit the field to keep the current value",
+                    "minLength": 1
                   }
                 }
               }
@@ -24805,7 +24789,7 @@
       "post": {
         "operationId": "createAutomation",
         "summary": "Create automation",
-        "description": "Creates an automation.",
+        "description": "Creates an automation. Events marked is_pro in the catalog and any conditions need the Pro plan: without it the request fails with 422 and code pro_required.",
         "tags": [
           "Automations"
         ],
@@ -24857,7 +24841,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required for a Pro event or conditions (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -25070,7 +25054,7 @@
       "put": {
         "operationId": "updateAutomation",
         "summary": "Update automation",
-        "description": "Updates an automation.",
+        "description": "Updates an automation. Events marked is_pro in the catalog and any conditions need the Pro plan: without it the request fails with 422 and code pro_required.",
         "tags": [
           "Automations"
         ],
@@ -25141,7 +25125,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required for a Pro event or conditions (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -25502,6 +25486,16 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Pro plan required (code pro_required, upgrade_url)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       },
@@ -25560,7 +25554,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -25703,7 +25697,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -25875,6 +25869,16 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Pro plan required (code pro_required, upgrade_url)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       },
@@ -25943,7 +25947,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -26076,7 +26080,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -26193,6 +26197,16 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Pro plan required (code pro_required, upgrade_url)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -26290,6 +26304,16 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Pro plan required (code pro_required, upgrade_url)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -26380,7 +26404,7 @@
             }
           },
           "422": {
-            "description": "Nothing to pay out",
+            "description": "Nothing to pay out or Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -26501,6 +26525,16 @@
           },
           "404": {
             "description": "No affiliate program",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -34218,6 +34252,21 @@
               }
             },
             "description": "Validation errors keyed by field name"
+          },
+          "code": {
+            "type": "string",
+            "description": "Machine-readable code of a business error: unauthorized, not_found, conflict, limit_exceeded, quota_exceeded, pro_required. Absent on validation errors."
+          },
+          "current_plan": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Only with code pro_required: the current plan as the dashboard names it (Pro, Basic, Trial), null without an active subscription."
+          },
+          "upgrade_url": {
+            "type": "string",
+            "description": "Only with code pro_required: the dashboard page where the plan can be upgraded."
           }
         }
       },
@@ -35576,7 +35625,8 @@
               "offer",
               "affiliate",
               "app"
-            ]
+            ],
+            "description": "`task` is the submission button a `task` step gets automatically: it cannot be created by hand (422 on `type`) and is accepted only when updating that existing button."
           },
           "name": {
             "type": "string",
@@ -35811,6 +35861,10 @@
           },
           "sort": {
             "type": "integer"
+          },
+          "awaiting_count": {
+            "type": "integer",
+            "description": "Subscribers the step is scheduled for and not yet sent to. Only in single-step responses."
           },
           "link_preview": {
             "type": "boolean"
