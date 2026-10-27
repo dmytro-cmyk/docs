@@ -21,7 +21,7 @@
                 "pages": [
                   "index",
                   "authentication",
-                  "mcp",
+                  "mcp-server",
                   "errors"
                 ]
               },
@@ -696,7 +696,7 @@
                 "pages": [
                   "uk/index",
                   "uk/authentication",
-                  "uk/mcp",
+                  "uk/mcp-server",
                   "uk/errors"
                 ]
               },
@@ -1371,7 +1371,7 @@
                 "pages": [
                   "ru/index",
                   "ru/authentication",
-                  "ru/mcp",
+                  "ru/mcp-server",
                   "ru/errors"
                 ]
               },
@@ -2037,6 +2037,16 @@
       }
     ]
   },
+  "redirects": [
+    {
+      "source": "/uk/mcp",
+      "destination": "/uk/mcp-server"
+    },
+    {
+      "source": "/ru/mcp",
+      "destination": "/ru/mcp-server"
+    }
+  ],
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
