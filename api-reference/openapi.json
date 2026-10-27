@@ -24742,7 +24742,7 @@
       "post": {
         "operationId": "createAutomation",
         "summary": "Create automation",
-        "description": "Creates an automation.",
+        "description": "Creates an automation. Events marked is_pro in the catalog and any conditions need the Pro plan: without it the request fails with 422 and code pro_required.",
         "tags": [
           "Automations"
         ],
@@ -24794,7 +24794,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required for a Pro event or conditions (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -25007,7 +25007,7 @@
       "put": {
         "operationId": "updateAutomation",
         "summary": "Update automation",
-        "description": "Updates an automation.",
+        "description": "Updates an automation. Events marked is_pro in the catalog and any conditions need the Pro plan: without it the request fails with 422 and code pro_required.",
         "tags": [
           "Automations"
         ],
@@ -25078,7 +25078,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required for a Pro event or conditions (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -25439,6 +25439,16 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Pro plan required (code pro_required, upgrade_url)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       },
@@ -25497,7 +25507,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -25640,7 +25650,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -25812,6 +25822,16 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Pro plan required (code pro_required, upgrade_url)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       },
@@ -25880,7 +25900,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -26013,7 +26033,7 @@
             }
           },
           "422": {
-            "description": "Validation error",
+            "description": "Validation error or Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -26130,6 +26150,16 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Pro plan required (code pro_required, upgrade_url)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -26227,6 +26257,16 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Pro plan required (code pro_required, upgrade_url)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -26317,7 +26357,7 @@
             }
           },
           "422": {
-            "description": "Nothing to pay out",
+            "description": "Nothing to pay out or Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -26438,6 +26478,16 @@
           },
           "404": {
             "description": "No affiliate program",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Pro plan required (code pro_required, upgrade_url)",
             "content": {
               "application/json": {
                 "schema": {
@@ -34138,6 +34188,21 @@
               }
             },
             "description": "Validation errors keyed by field name"
+          },
+          "code": {
+            "type": "string",
+            "description": "Machine-readable code of a business error: unauthorized, not_found, conflict, limit_exceeded, quota_exceeded, pro_required. Absent on validation errors."
+          },
+          "current_plan": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Only with code pro_required: the current plan as the dashboard names it (Pro, Basic, Trial), null without an active subscription."
+          },
+          "upgrade_url": {
+            "type": "string",
+            "description": "Only with code pro_required: the dashboard page where the plan can be upgraded."
           }
         }
       },
@@ -35732,6 +35797,10 @@
           },
           "sort": {
             "type": "integer"
+          },
+          "awaiting_count": {
+            "type": "integer",
+            "description": "Subscribers the step is scheduled for and not yet sent to. Only in single-step responses."
           },
           "link_preview": {
             "type": "boolean"

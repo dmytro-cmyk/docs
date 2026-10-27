@@ -31,6 +31,30 @@ description: "Error codes and handling in the Zenedu API"
 }
 ```
 
+## Business errors
+
+When a request is valid but the action is not possible, the response carries a machine-readable `code` next to `message`:
+
+| Code | Status | Meaning |
+|------|--------|---------|
+| `unauthorized` | `403` | The user lacks the permission for this action |
+| `not_found` | `404` | The entity does not exist in this bot |
+| `conflict` | `409` | A duplicate or the current state does not allow the action |
+| `limit_exceeded` | `422` | A plan limit does not allow the action |
+| `quota_exceeded` | `422` | The protective limit on the number of entities is reached (`limit` in the response) |
+| `pro_required` | `422` | The action is available on the Pro plan |
+
+The `pro_required` error also returns `current_plan` (Pro, Basic, Trial, or `null` without an active subscription) and `upgrade_url`, the dashboard page where the plan can be upgraded:
+
+```json
+{
+  "message": "This action is available on the Pro plan. Upgrade your plan to continue.",
+  "code": "pro_required",
+  "current_plan": "Basic",
+  "upgrade_url": "https://app.zenedu.io/workspace/billing"
+}
+```
+
 ## Rate limiting
 
 API requests are subject to rate limiting. When the limit is exceeded, the API returns a `429` status code with a `Retry-After` header indicating how many seconds to wait before retrying.
