@@ -456,7 +456,16 @@
                 "pages": [
                   "api-reference/subscriptions/list",
                   "api-reference/subscriptions/get",
-                  "api-reference/subscriptions/cancel"
+                  "api-reference/subscriptions/cancel",
+                  {
+                    "group": "Revenue recovery",
+                    "pages": [
+                      "api-reference/subscriptions/revenue-recovery/get",
+                      "api-reference/subscriptions/revenue-recovery/metrics",
+                      "api-reference/subscriptions/revenue-recovery/update-reminders",
+                      "api-reference/subscriptions/revenue-recovery/update"
+                    ]
+                  }
                 ]
               },
               {
@@ -617,6 +626,12 @@
                   "api-reference/custom-fields/create",
                   "api-reference/custom-fields/update",
                   "api-reference/custom-fields/delete"
+                ]
+              },
+              {
+                "group": "Tags",
+                "pages": [
+                  "api-reference/tags/list"
                 ]
               },
               {
@@ -1131,7 +1146,16 @@
                 "pages": [
                   "uk/api-reference/subscriptions/list",
                   "uk/api-reference/subscriptions/get",
-                  "uk/api-reference/subscriptions/cancel"
+                  "uk/api-reference/subscriptions/cancel",
+                  {
+                    "group": "Відновлення доходу",
+                    "pages": [
+                      "uk/api-reference/subscriptions/revenue-recovery/get",
+                      "uk/api-reference/subscriptions/revenue-recovery/metrics",
+                      "uk/api-reference/subscriptions/revenue-recovery/update-reminders",
+                      "uk/api-reference/subscriptions/revenue-recovery/update"
+                    ]
+                  }
                 ]
               },
               {
@@ -1292,6 +1316,12 @@
                   "uk/api-reference/custom-fields/create",
                   "uk/api-reference/custom-fields/update",
                   "uk/api-reference/custom-fields/delete"
+                ]
+              },
+              {
+                "group": "Теги",
+                "pages": [
+                  "uk/api-reference/tags/list"
                 ]
               },
               {
@@ -1806,7 +1836,16 @@
                 "pages": [
                   "ru/api-reference/subscriptions/list",
                   "ru/api-reference/subscriptions/get",
-                  "ru/api-reference/subscriptions/cancel"
+                  "ru/api-reference/subscriptions/cancel",
+                  {
+                    "group": "Восстановление дохода",
+                    "pages": [
+                      "ru/api-reference/subscriptions/revenue-recovery/get",
+                      "ru/api-reference/subscriptions/revenue-recovery/metrics",
+                      "ru/api-reference/subscriptions/revenue-recovery/update-reminders",
+                      "ru/api-reference/subscriptions/revenue-recovery/update"
+                    ]
+                  }
                 ]
               },
               {
@@ -1967,6 +2006,12 @@
                   "ru/api-reference/custom-fields/create",
                   "ru/api-reference/custom-fields/update",
                   "ru/api-reference/custom-fields/delete"
+                ]
+              },
+              {
+                "group": "Теги",
+                "pages": [
+                  "ru/api-reference/tags/list"
                 ]
               },
               {

@@ -77,6 +77,10 @@
       "description": "Subscriber custom fields"
     },
     {
+      "name": "Tags",
+      "description": "Subscriber tags of the bot"
+    },
+    {
       "name": "Folders",
       "description": "Folders for products, funnels, channels and groups"
     },
@@ -5694,6 +5698,105 @@
           },
           "422": {
             "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bot/{bot}/tags": {
+      "get": {
+        "operationId": "listTags",
+        "summary": "List tags",
+        "description": "Returns subscriber tags of the bot with their IDs, sorted by name.",
+        "tags": [
+          "Tags"
+        ],
+        "parameters": [
+          {
+            "name": "bot",
+            "in": "path",
+            "required": true,
+            "description": "Bot ID",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Substring of the tag name",
+            "schema": {
+              "type": "string",
+              "maxLength": 255
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "description": "Items per page, max 50",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of tags",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/PaginatedResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Tag"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden — lacks access to this bot",
             "content": {
               "application/json": {
                 "schema": {
@@ -23140,6 +23243,308 @@
         }
       }
     },
+      "/api/v1/bot/{bot}/subscriptions/revenue-recovery": {
+        "get": {
+          "operationId": "getRevenueRecovery",
+          "summary": "Get revenue recovery settings",
+          "description": "Returns the Revenue recovery tab of the Subscriptions section: retries of failed scheduled charges, reminders before a charge, failed charge notifications per stage, the monthly report switch and the limits of the forms. Effective values are returned: on the Basic plan the standard schedule and the default texts apply even if Pro values are stored. Texts are Telegram HTML.",
+          "tags": [
+            "Subscriptions"
+          ],
+          "parameters": [
+            {
+              "name": "bot",
+              "in": "path",
+              "required": true,
+              "description": "Bot ID",
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Revenue recovery settings",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/RevenueRecoverySettings"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Forbidden — lacks access to this bot or to the Subscriptions section (manage orders)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "patch": {
+          "operationId": "updateRevenueRecovery",
+          "summary": "Update revenue recovery settings",
+          "description": "Changes only the passed fields: payment retries, failed charge notifications per stage and the monthly report. The flexible schedule and own texts and buttons need the Pro plan (422 with code `pro_required` otherwise). Already planned retries keep their schedule: new values apply to charges that fail from now on. Reminders before a charge are changed with PUT …/revenue-recovery/reminders. Returns the full settings.",
+          "tags": [
+            "Subscriptions"
+          ],
+          "parameters": [
+            {
+              "name": "bot",
+              "in": "path",
+              "required": true,
+              "description": "Bot ID",
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevenueRecoverySettingsInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Revenue recovery settings",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/RevenueRecoverySettings"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Forbidden — lacks access to this bot or to the Subscriptions section (manage orders)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation error or the Pro plan is required (code `pro_required`)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/bot/{bot}/subscriptions/revenue-recovery/metrics": {
+        "get": {
+          "operationId": "getRevenueRecoveryMetrics",
+          "summary": "Get revenue recovery metrics",
+          "description": "Returns the metric cards of the Revenue recovery tab for a period: recovered payments (Zenedu recovered), recovery rate, failed charges and failure rate, each with a trend against the previous period of the same length. Amounts are in the account currency in major units, rates in percent (`null` when there is nothing to divide). Period bounds are counted in the account timezone.",
+          "tags": [
+            "Subscriptions"
+          ],
+          "parameters": [
+            {
+              "name": "bot",
+              "in": "path",
+              "required": true,
+              "description": "Bot ID",
+              "schema": {
+                "type": "integer"
+              }
+            },
+            {
+              "name": "period",
+              "in": "query",
+              "required": false,
+              "description": "Period preset of the dashboard select; default `30days`, `all` = all time without trends.",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "today",
+                  "yesterday",
+                  "7days",
+                  "30days",
+                  "90days",
+                  "current_month",
+                  "previous_month",
+                  "current_year",
+                  "previous_year",
+                  "all"
+                ],
+                "default": "30days"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Metrics of the period",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/RevenueRecoveryMetrics"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Forbidden — lacks access to this bot or to the Subscriptions section (manage orders)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Unknown period preset",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/bot/{bot}/subscriptions/revenue-recovery/reminders": {
+        "put": {
+          "operationId": "updateUpcomingReminders",
+          "summary": "Update reminders before a charge",
+          "description": "Replaces the full list of reminders sent to the subscriber before a scheduled charge. An empty list turns reminders off; the saved reminders come back when a list is passed again. Basic plan: one reminder, only its days change (the text stays the default or the one saved on Pro); more than one reminder answers 422 with code `pro_required`. Pro plan: up to three reminders with distinct days and own texts (Telegram HTML with placeholders `{{name}}`, `{{offer}}`, `{{price}}`, `{{period}}`, `{{next_payment_date}}`). A reminder is not sent for subscriptions as short as its days. Returns the full settings.",
+          "tags": [
+            "Subscriptions"
+          ],
+          "parameters": [
+            {
+              "name": "bot",
+              "in": "path",
+              "required": true,
+              "description": "Bot ID",
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpcomingRemindersInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Revenue recovery settings",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "$ref": "#/components/schemas/RevenueRecoverySettings"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Forbidden — lacks access to this bot or to the Subscriptions section (manage orders)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation error or the Pro plan is required (code `pro_required`)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
     "/api/v1/bot/{bot}/tasks": {
       "get": {
         "operationId": "listTasks",
@@ -23629,14 +24034,14 @@
                   },
                   "filters": {
                     "type": "object",
-                    "description": "Recipient filters (same shape as subscriber filters)"
+                    "description": "Recipient filters (same shape as subscriber filters). The `tag` filter takes a tag `id` from `GET /api/v1/bot/{bot}/tags` or `no_tags`; any other value returns 422 (`filters.N.params.tag`)."
                   },
                   "telegram_file_ids": {
                     "type": "array",
                     "items": {
                       "type": "integer"
                     },
-                    "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this broadcast (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — an already-attached, non-existent, or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/broadcasts/{broadcast}/attachments/{file}`."
+                    "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this broadcast (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — a file is attached once: an already-attached id returns 422 (`telegram_file_ids`: \"The file is already attached\"), a non-existent or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/broadcasts/{broadcast}/attachments/{file}`."
                   }
                 }
               }
@@ -23851,14 +24256,14 @@
                   },
                   "filters": {
                     "type": "object",
-                    "description": "Recipient filters"
+                    "description": "Recipient filters. The `tag` filter takes a tag `id` from `GET /api/v1/bot/{bot}/tags` or `no_tags`; any other value returns 422 (`filters.N.params.tag`)."
                   },
                   "telegram_file_ids": {
                     "type": "array",
                     "items": {
                       "type": "integer"
                     },
-                    "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this broadcast (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — an already-attached, non-existent, or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/broadcasts/{broadcast}/attachments/{file}`."
+                    "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this broadcast (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — a file is attached once: an already-attached id returns 422 (`telegram_file_ids`: \"The file is already attached\"), a non-existent or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/broadcasts/{broadcast}/attachments/{file}`."
                   }
                 }
               }
@@ -24894,7 +25299,7 @@
                         }
                       }
                     },
-                    "description": "Optional conditions"
+                    "description": "Optional conditions. The `tag` condition takes a tag `id` from `GET /api/v1/bot/{bot}/tags` or `no_tags`; any other value returns 422 (`conditions.N.params.tag`)."
                   }
                 }
               }
@@ -25178,7 +25583,7 @@
                         }
                       }
                     },
-                    "description": "Optional conditions"
+                    "description": "Optional conditions. The `tag` condition takes a tag `id` from `GET /api/v1/bot/{bot}/tags` or `no_tags`; any other value returns 422 (`conditions.N.params.tag`)."
                   }
                 }
               }
@@ -34763,6 +35168,21 @@
           }
         }
       },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "Folder": {
         "type": "object",
         "properties": {
@@ -35470,7 +35890,7 @@
             "items": {
               "type": "integer"
             },
-            "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this step (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — an already-attached, non-existent, or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/steps/{step}/attachments/{file}`."
+            "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this step (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — a file is attached once: an already-attached id returns 422 (`telegram_file_ids`: \"The file is already attached\"), a non-existent or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/steps/{step}/attachments/{file}`."
           }
         }
       },
@@ -35605,7 +36025,7 @@
             "items": {
               "type": "integer"
             },
-            "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this step (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — an already-attached, non-existent, or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/steps/{step}/attachments/{file}`."
+            "description": "IDs of files registered via `POST /api/v1/bot/{bot}/telegram-files` to attach to this step (photos, videos, documents, etc.). The given set replaces the current attachments entirely. Only files you uploaded that are not yet attached to anything are accepted — a file is attached once: an already-attached id returns 422 (`telegram_file_ids`: \"The file is already attached\"), a non-existent or another user's id returns 422 (`telegram_file_ids: Not found`). Omit the field or send an empty array to leave attachments unchanged; `null` is rejected with 422. To remove an attachment, use `DELETE …/steps/{step}/attachments/{file}`."
           }
         }
       },
@@ -36302,6 +36722,461 @@
           }
         }
       },
+        "RevenueRecoverySettings": {
+          "type": "object",
+          "properties": {
+            "is_pro": {
+              "type": "boolean",
+              "description": "Whether the Pro-only values (flexible schedule, extra reminders, own texts) are in effect"
+            },
+            "retries": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "schedule": {
+                  "type": "string",
+                  "enum": [
+                    "standard",
+                    "flexible"
+                  ],
+                  "description": "`standard`: up to 5 retries within 10 days, shortened for short subscriptions. `flexible`: own `attempts` and `period_days` (Pro)."
+                },
+                "attempts": {
+                  "type": "integer",
+                  "description": "Stored attempts of the flexible schedule"
+                },
+                "period_days": {
+                  "type": "integer",
+                  "description": "Stored recovery period of the flexible schedule, days"
+                },
+                "retry_days": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "description": "Days after a failed scheduled charge on which retries are planned for long subscriptions; empty while retries are off"
+                }
+              }
+            },
+            "upcoming_reminders": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "reminders": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "days": {
+                        "type": "integer",
+                        "description": "Days before the scheduled charge"
+                      },
+                      "text": {
+                        "type": "string",
+                        "description": "Text of the reminder, Telegram HTML"
+                      }
+                    }
+                  },
+                  "description": "Reminders in effect"
+                },
+                "saved_reminders": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "days": {
+                        "type": "integer",
+                        "description": "Days before the scheduled charge"
+                      },
+                      "text": {
+                        "type": "string",
+                        "description": "Text of the reminder, Telegram HTML"
+                      }
+                    }
+                  },
+                  "description": "Saved reminders, kept while reminders are off"
+                },
+                "locked_reminder_days": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "description": "Days of reminders saved on Pro that the Basic plan does not send"
+                }
+              }
+            },
+            "failed_charge_notification": {
+              "type": "object",
+              "description": "Notifications after a failed charge by stage: `first` — the scheduled charge failed and retries are planned, `intermediate` — a retry failed and retries remain, `last` — the last retry failed and the subscription is cancelled",
+              "properties": {
+                "first": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "Effective text of the notification, Telegram HTML"
+                    },
+                    "button": {
+                      "type": "string",
+                      "description": "Text of the «Pay with another card» button"
+                    }
+                  }
+                },
+                "intermediate": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "Effective text of the notification, Telegram HTML"
+                    },
+                    "button": {
+                      "type": "string",
+                      "description": "Text of the «Pay with another card» button"
+                    }
+                  }
+                },
+                "last": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "Effective text of the notification, Telegram HTML"
+                    }
+                  }
+                }
+              }
+            },
+            "monthly_report": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "On the 1st the owner gets a message in the Zenedu bot with the recovered payments of the last month"
+                }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "properties": {
+                "reminders_max": {
+                  "type": "integer",
+                  "description": "1 on Basic, 3 on Pro"
+                },
+                "reminder_days_min": {
+                  "type": "integer"
+                },
+                "reminder_days_max": {
+                  "type": "integer"
+                },
+                "attempts_min": {
+                  "type": "integer"
+                },
+                "attempts_max": {
+                  "type": "integer"
+                },
+                "period_days_min": {
+                  "type": "integer"
+                },
+                "period_days_max": {
+                  "type": "integer"
+                },
+                "standard_attempts": {
+                  "type": "integer"
+                },
+                "standard_period_days": {
+                  "type": "integer"
+                },
+                "text_max_length": {
+                  "type": "integer"
+                },
+                "button_max_length": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "RevenueRecoverySettingsInput": {
+          "type": "object",
+          "description": "Only the passed fields change.",
+          "properties": {
+            "retries_enabled": {
+              "type": "boolean",
+              "description": "Repeat a failed scheduled charge by the schedule; off = the subscription is cancelled right after the failed charge"
+            },
+            "schedule": {
+              "type": "string",
+              "enum": [
+                "standard",
+                "flexible"
+              ],
+              "description": "`flexible` needs the Pro plan"
+            },
+            "attempts": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "description": "Flexible schedule: number of attempts, at most one per day; pass together with `period_days` and not more than `period_days`"
+            },
+            "period_days": {
+              "type": "integer",
+              "minimum": 3,
+              "maximum": 30,
+              "description": "Flexible schedule: recovery period in days after the failed scheduled charge; pass together with `attempts`"
+            },
+            "failed_charge_enabled": {
+              "type": "object",
+              "description": "Switch per stage; any plan",
+              "properties": {
+                "first": {
+                  "type": "boolean"
+                },
+                "intermediate": {
+                  "type": "boolean"
+                },
+                "last": {
+                  "type": "boolean",
+                  "description": "Off = the subscriber gets the standard cancellation message"
+                }
+              }
+            },
+            "failed_charge_texts": {
+              "type": "object",
+              "description": "Own text per stage, Telegram HTML with placeholders `{{name}}`, `{{offer}}`, `{{price}}`, `{{next_attempt_date}}`; blank = the default text (Pro)",
+              "properties": {
+                "first": {
+                  "type": "string",
+                  "nullable": true,
+                  "maxLength": 4000
+                },
+                "intermediate": {
+                  "type": "string",
+                  "nullable": true,
+                  "maxLength": 4000
+                },
+                "last": {
+                  "type": "string",
+                  "nullable": true,
+                  "maxLength": 4000
+                }
+              }
+            },
+            "failed_charge_buttons": {
+              "type": "object",
+              "description": "Text of the «Pay with another card» button under the first and intermediate notifications; blank = the default text (Pro)",
+              "properties": {
+                "first": {
+                  "type": "string",
+                  "nullable": true,
+                  "maxLength": 64
+                },
+                "intermediate": {
+                  "type": "string",
+                  "nullable": true,
+                  "maxLength": 64
+                }
+              }
+            },
+            "monthly_report_enabled": {
+              "type": "boolean"
+            }
+          }
+        },
+        "UpcomingRemindersInput": {
+          "type": "object",
+          "required": [
+            "reminders"
+          ],
+          "properties": {
+            "reminders": {
+              "type": "array",
+              "maxItems": 3,
+              "description": "The full list; `[]` turns reminders off",
+              "items": {
+                "type": "object",
+                "required": [
+                  "days"
+                ],
+                "properties": {
+                  "days": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 30,
+                    "description": "Days before the scheduled charge, distinct per reminder"
+                  },
+                  "text": {
+                    "type": "string",
+                    "nullable": true,
+                    "maxLength": 4000,
+                    "description": "Own text (Pro, required there); ignored on Basic"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "RevenueRecoveryMetrics": {
+          "type": "object",
+          "properties": {
+            "period": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string",
+              "description": "Account currency of the amounts"
+            },
+            "recovered": {
+              "type": "object",
+              "description": "«Zenedu recovered»: failed scheduled charges recovered by a retry, by recovery date",
+              "properties": {
+                "amount": {
+                  "type": "number"
+                },
+                "count": {
+                  "type": "integer"
+                },
+                "all_time_amount": {
+                  "type": "number",
+                  "nullable": true,
+                  "description": "`null` until the first recovery"
+                },
+                "trend": {
+                  "type": "object",
+                  "nullable": true,
+                  "description": "Change against the previous period of the same length; `null` for all time or without a previous value",
+                  "properties": {
+                    "change": {
+                      "type": "number",
+                      "description": "Change in percent for amounts, in percentage points for rates"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "percent",
+                        "points"
+                      ]
+                    },
+                    "improved": {
+                      "type": "boolean",
+                      "description": "Whether the change is good for the school"
+                    }
+                  }
+                }
+              }
+            },
+            "recovery_rate": {
+              "type": "object",
+              "description": "Recovered among recovered and lost failed payments started in the period; payments still in progress are not counted",
+              "properties": {
+                "percent": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "trend": {
+                  "type": "object",
+                  "nullable": true,
+                  "description": "Change against the previous period of the same length; `null` for all time or without a previous value",
+                  "properties": {
+                    "change": {
+                      "type": "number",
+                      "description": "Change in percent for amounts, in percentage points for rates"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "percent",
+                        "points"
+                      ]
+                    },
+                    "improved": {
+                      "type": "boolean",
+                      "description": "Whether the change is good for the school"
+                    }
+                  }
+                }
+              }
+            },
+            "failed_charges": {
+              "type": "object",
+              "description": "Scheduled charges that failed at the first attempt, by charge date",
+              "properties": {
+                "amount": {
+                  "type": "number"
+                },
+                "count": {
+                  "type": "integer"
+                },
+                "trend": {
+                  "type": "object",
+                  "nullable": true,
+                  "description": "Change against the previous period of the same length; `null` for all time or without a previous value",
+                  "properties": {
+                    "change": {
+                      "type": "number",
+                      "description": "Change in percent for amounts, in percentage points for rates"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "percent",
+                        "points"
+                      ]
+                    },
+                    "improved": {
+                      "type": "boolean",
+                      "description": "Whether the change is good for the school"
+                    }
+                  }
+                }
+              }
+            },
+            "failure_rate": {
+              "type": "object",
+              "description": "Failed scheduled charges among all scheduled charges",
+              "properties": {
+                "percent": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "trend": {
+                  "type": "object",
+                  "nullable": true,
+                  "description": "Change against the previous period of the same length; `null` for all time or without a previous value",
+                  "properties": {
+                    "change": {
+                      "type": "number",
+                      "description": "Change in percent for amounts, in percentage points for rates"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "percent",
+                        "points"
+                      ]
+                    },
+                    "improved": {
+                      "type": "boolean",
+                      "description": "Whether the change is good for the school"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
       "Subscription": {
         "type": "object",
         "properties": {

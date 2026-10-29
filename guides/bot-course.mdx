@@ -186,6 +186,8 @@ Length limits:
 
 `telegram_file_ids` takes IDs from [step 2](#2-upload-files). Several attachments are sent together as an album. The set you pass **replaces** the step's attachments; to remove one file use [Delete step attachment](/api-reference/products/steps/delete-attachment).
 
+A file is attached once: after that it leaves the list of pending files. Passing the same ID to another step or broadcast fails with `422` `telegram_file_ids` — "The file is already attached". Upload the file again.
+
 ### Questions
 
 ```json
