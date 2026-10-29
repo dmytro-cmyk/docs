@@ -24015,14 +24015,6 @@
                       "has_spoiler": {
                         "type": "boolean"
                       },
-                      "attach_style": {
-                        "type": "string",
-                        "nullable": true,
-                        "enum": [
-                          "classic",
-                          "under_text"
-                        ]
-                      },
                       "autodelete": {
                         "type": "integer"
                       },
@@ -24237,14 +24229,6 @@
                       "has_spoiler": {
                         "type": "boolean"
                       },
-                      "attach_style": {
-                        "type": "string",
-                        "nullable": true,
-                        "enum": [
-                          "classic",
-                          "under_text"
-                        ]
-                      },
                       "autodelete": {
                         "type": "integer"
                       },
@@ -24339,7 +24323,7 @@
       "post": {
         "operationId": "sendBroadcast",
         "summary": "Send broadcast",
-        "description": "Sends the broadcast now or schedules it.",
+        "description": "Sends the broadcast now or schedules it. The broadcast must have at least one recipient matching its filters.",
         "tags": [
           "Broadcasts"
         ],
@@ -24401,6 +24385,16 @@
           },
           "404": {
             "description": "Broadcast not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict — the broadcast is neither a draft nor scheduled, or no subscriber matches its filters",
             "content": {
               "application/json": {
                 "schema": {
@@ -35804,13 +35798,6 @@
               "has_spoiler": {
                 "type": "boolean"
               },
-              "attach_style": {
-                "type": "string",
-                "enum": [
-                  "classic",
-                  "under_text"
-                ]
-              },
               "autodelete": {
                 "type": "integer",
                 "minimum": 0,
@@ -35938,13 +35925,6 @@
               },
               "has_spoiler": {
                 "type": "boolean"
-              },
-              "attach_style": {
-                "type": "string",
-                "enum": [
-                  "classic",
-                  "under_text"
-                ]
               },
               "autodelete": {
                 "type": "integer",
@@ -36410,12 +36390,6 @@
               },
               "has_spoiler": {
                 "type": "boolean"
-              },
-              "attach_style": {
-                "type": [
-                  "string",
-                  "null"
-                ]
               },
               "autodelete": {
                 "type": "integer",
@@ -37372,18 +37346,11 @@
             "properties": {
               "attach_file": {
                 "type": "boolean",
-                "description": "Whether a file is attached"
+                "description": "Send the text together with the attachment (\"Attached to text\" in the dashboard): true sends one message with the text as the caption (up to 1024 characters), false (default) sends the attachment first and the text as a separate message"
               },
               "has_spoiler": {
                 "type": "boolean",
                 "description": "Whether media is a spoiler"
-              },
-              "attach_style": {
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "description": "Attachment style"
               },
               "autodelete": {
                 "type": "integer",
