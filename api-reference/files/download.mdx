@@ -3,3 +3,5 @@ title: "Download file"
 description: "Downloads a file attached to a message"
 openapi: "GET /api/v1/bot/{bot}/file/{message}"
 ---
+
+Telegram rate limits return `429` with a `Retry-After` header in seconds. If another request is still resolving the file, the response is `503` with `Retry-After: 1`. Retry after the indicated delay. These temporary errors are not cached.

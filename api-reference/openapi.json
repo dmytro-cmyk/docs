@@ -4177,7 +4177,7 @@
       "get": {
         "operationId": "downloadFile",
         "summary": "Download file",
-        "description": "Downloads a file attached to a message.",
+        "description": "Downloads a file attached to a message. Telegram rate limits return 429 with Retry-After in seconds. If another request is still resolving the file, the response is 503 with Retry-After: 1. Retry after the indicated delay.",
         "tags": [
           "Files"
         ],
@@ -4253,8 +4253,64 @@
               }
             }
           },
+          "429": {
+            "description": "Telegram rate limit exceeded. Retry after the number of seconds in Retry-After.",
+            "headers": {
+              "Retry-After": {
+                "description": "Number of seconds to wait before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "description": "Temporary failures must not be cached.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "no-store"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "502": {
             "description": "Provider failed to serve the file",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Another request is resolving the file. Retry after one second.",
+            "headers": {
+              "Retry-After": {
+                "description": "Number of seconds to wait before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "description": "Temporary failures must not be cached.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "no-store"
+                  ]
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
