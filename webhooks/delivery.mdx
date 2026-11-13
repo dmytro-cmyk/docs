@@ -1,0 +1,33 @@
+---
+title: "Delivery and retries"
+description: "How Zenedu delivers webhooks, retries failed attempts and disables broken endpoints"
+---
+
+## Successful delivery
+
+A delivery is successful if your server responds with a `2xx` status within 3 seconds.
+
+A delivery fails if:
+
+| Situation | What to do |
+|---|---|
+| `4xx` or `5xx` response | Check your handler logs. `404` and `405` usually mean a wrong path or method, `401`, `403` and `419` mean authorization or CSRF protection |
+| No response within 3 seconds | Respond right away and process the event in a background queue |
+| Connection failed | Make sure the URL is reachable from the internet and DNS and the firewall let requests through |
+| TLS error | Use a valid certificate from a trusted certificate authority. Self-signed certificates are not accepted |
+
+## Retries
+
+After a failed delivery, Zenedu retries it with increasing intervals, from a minute up to a day, for about two days. Every retry comes with the same body, the same `_id` and the same signature.
+
+As soon as the endpoint responds with `2xx`, retries of that delivery stop. Other events keep being sent regardless of how many attempts earlier ones have left.
+
+## Automatic disabling
+
+If all retries fail and the endpoint has had no successful delivery in the last 96 hours, Zenedu disables the webhook. In **Settings → Workspace → API & Webhooks** the webhook shows the date since which it hasn't been sent. If the webhook belongs to an automation, the automation is stopped along with it.
+
+While a webhook is disabled, events are not sent to it and are not delivered later. When the endpoint works again:
+
+1. Send a [test webhook](/api-reference/webhooks/test) and make sure the endpoint responds with `2xx`.
+2. Enable the webhook in the dashboard or with [Activate webhook](/api-reference/webhooks/activate). An automation webhook is enabled together with the automation.
+3. Recover missed data through the API, for example the [list of orders](/api-reference/orders/list) for the period the webhook was disabled.

@@ -32,6 +32,14 @@
                   "guides/bot-course",
                   "guides/product-access"
                 ]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "webhooks/overview",
+                  "webhooks/delivery",
+                  "webhooks/events"
+                ]
               }
             ]
           },
@@ -676,6 +684,81 @@
                 ]
               },
               {
+                "group": "Webhook events",
+                "pages": [
+                  {
+                    "group": "Orders and subscriptions",
+                    "pages": [
+                      "api-reference/webhook-events/order-created",
+                      "api-reference/webhook-events/order-paid",
+                      "api-reference/webhook-events/order-cancelled",
+                      "api-reference/webhook-events/order-refunded",
+                      "api-reference/webhook-events/order-status-changed",
+                      "api-reference/webhook-events/subscription-created",
+                      "api-reference/webhook-events/subscription-renewed",
+                      "api-reference/webhook-events/subscription-past-due",
+                      "api-reference/webhook-events/subscription-cancelled"
+                    ]
+                  },
+                  {
+                    "group": "Subscribers",
+                    "pages": [
+                      "api-reference/webhook-events/subscriber-added",
+                      "api-reference/webhook-events/subscriber-unsubscribed",
+                      "api-reference/webhook-events/subscriber-resubscribed",
+                      "api-reference/webhook-events/subscriber-contact-created",
+                      "api-reference/webhook-events/subscriber-custom-field-changed",
+                      "api-reference/webhook-events/tag-added",
+                      "api-reference/webhook-events/tag-removed"
+                    ]
+                  },
+                  {
+                    "group": "Products and funnels",
+                    "pages": [
+                      "api-reference/webhook-events/product-subscriber-added",
+                      "api-reference/webhook-events/product-subscriber-started",
+                      "api-reference/webhook-events/product-subscriber-finished",
+                      "api-reference/webhook-events/product-access-expired",
+                      "api-reference/webhook-events/funnel-subscriber-added",
+                      "api-reference/webhook-events/funnel-subscriber-started",
+                      "api-reference/webhook-events/funnel-subscriber-finished",
+                      "api-reference/webhook-events/lesson-opened",
+                      "api-reference/webhook-events/lesson-completed",
+                      "api-reference/webhook-events/button-clicked"
+                    ]
+                  },
+                  {
+                    "group": "Channels and groups",
+                    "pages": [
+                      "api-reference/webhook-events/channel-subscriber-joined",
+                      "api-reference/webhook-events/channel-subscriber-left",
+                      "api-reference/webhook-events/group-subscriber-joined",
+                      "api-reference/webhook-events/group-subscriber-left"
+                    ]
+                  },
+                  {
+                    "group": "Responses and assignments",
+                    "pages": [
+                      "api-reference/webhook-events/poll-response-received",
+                      "api-reference/webhook-events/quiz-response-received",
+                      "api-reference/webhook-events/quiz-response-correct",
+                      "api-reference/webhook-events/quiz-response-wrong",
+                      "api-reference/webhook-events/question-response-received",
+                      "api-reference/webhook-events/task-received",
+                      "api-reference/webhook-events/task-approved"
+                    ]
+                  },
+                  {
+                    "group": "Messages",
+                    "pages": [
+                      "api-reference/webhook-events/message-received",
+                      "api-reference/webhook-events/message-sent"
+                    ]
+                  },
+                  "api-reference/webhook-events/webhook-test"
+                ]
+              },
+              {
                 "group": "Zapier",
                 "pages": [
                   "api-reference/zapier/create-webhook",
@@ -721,6 +804,14 @@
                   "uk/guides/miniapp-course",
                   "uk/guides/bot-course",
                   "uk/guides/product-access"
+                ]
+              },
+              {
+                "group": "Вебхуки",
+                "pages": [
+                  "uk/webhooks/overview",
+                  "uk/webhooks/delivery",
+                  "uk/webhooks/events"
                 ]
               }
             ]
@@ -1366,6 +1457,81 @@
                 ]
               },
               {
+                "group": "Події вебхуків",
+                "pages": [
+                  {
+                    "group": "Замовлення та підписки",
+                    "pages": [
+                      "uk/api-reference/webhook-events/order-created",
+                      "uk/api-reference/webhook-events/order-paid",
+                      "uk/api-reference/webhook-events/order-cancelled",
+                      "uk/api-reference/webhook-events/order-refunded",
+                      "uk/api-reference/webhook-events/order-status-changed",
+                      "uk/api-reference/webhook-events/subscription-created",
+                      "uk/api-reference/webhook-events/subscription-renewed",
+                      "uk/api-reference/webhook-events/subscription-past-due",
+                      "uk/api-reference/webhook-events/subscription-cancelled"
+                    ]
+                  },
+                  {
+                    "group": "Підписники",
+                    "pages": [
+                      "uk/api-reference/webhook-events/subscriber-added",
+                      "uk/api-reference/webhook-events/subscriber-unsubscribed",
+                      "uk/api-reference/webhook-events/subscriber-resubscribed",
+                      "uk/api-reference/webhook-events/subscriber-contact-created",
+                      "uk/api-reference/webhook-events/subscriber-custom-field-changed",
+                      "uk/api-reference/webhook-events/tag-added",
+                      "uk/api-reference/webhook-events/tag-removed"
+                    ]
+                  },
+                  {
+                    "group": "Продукти та воронки",
+                    "pages": [
+                      "uk/api-reference/webhook-events/product-subscriber-added",
+                      "uk/api-reference/webhook-events/product-subscriber-started",
+                      "uk/api-reference/webhook-events/product-subscriber-finished",
+                      "uk/api-reference/webhook-events/product-access-expired",
+                      "uk/api-reference/webhook-events/funnel-subscriber-added",
+                      "uk/api-reference/webhook-events/funnel-subscriber-started",
+                      "uk/api-reference/webhook-events/funnel-subscriber-finished",
+                      "uk/api-reference/webhook-events/lesson-opened",
+                      "uk/api-reference/webhook-events/lesson-completed",
+                      "uk/api-reference/webhook-events/button-clicked"
+                    ]
+                  },
+                  {
+                    "group": "Канали та групи",
+                    "pages": [
+                      "uk/api-reference/webhook-events/channel-subscriber-joined",
+                      "uk/api-reference/webhook-events/channel-subscriber-left",
+                      "uk/api-reference/webhook-events/group-subscriber-joined",
+                      "uk/api-reference/webhook-events/group-subscriber-left"
+                    ]
+                  },
+                  {
+                    "group": "Відповіді та завдання",
+                    "pages": [
+                      "uk/api-reference/webhook-events/poll-response-received",
+                      "uk/api-reference/webhook-events/quiz-response-received",
+                      "uk/api-reference/webhook-events/quiz-response-correct",
+                      "uk/api-reference/webhook-events/quiz-response-wrong",
+                      "uk/api-reference/webhook-events/question-response-received",
+                      "uk/api-reference/webhook-events/task-received",
+                      "uk/api-reference/webhook-events/task-approved"
+                    ]
+                  },
+                  {
+                    "group": "Повідомлення",
+                    "pages": [
+                      "uk/api-reference/webhook-events/message-received",
+                      "uk/api-reference/webhook-events/message-sent"
+                    ]
+                  },
+                  "uk/api-reference/webhook-events/webhook-test"
+                ]
+              },
+              {
                 "group": "Zapier",
                 "pages": [
                   "uk/api-reference/zapier/create-webhook",
@@ -1411,6 +1577,14 @@
                   "ru/guides/miniapp-course",
                   "ru/guides/bot-course",
                   "ru/guides/product-access"
+                ]
+              },
+              {
+                "group": "Вебхуки",
+                "pages": [
+                  "ru/webhooks/overview",
+                  "ru/webhooks/delivery",
+                  "ru/webhooks/events"
                 ]
               }
             ]
@@ -2053,6 +2227,81 @@
                   "ru/api-reference/webhooks/activate",
                   "ru/api-reference/webhooks/deactivate",
                   "ru/api-reference/webhooks/delete"
+                ]
+              },
+              {
+                "group": "События вебхуков",
+                "pages": [
+                  {
+                    "group": "Заказы и подписки",
+                    "pages": [
+                      "ru/api-reference/webhook-events/order-created",
+                      "ru/api-reference/webhook-events/order-paid",
+                      "ru/api-reference/webhook-events/order-cancelled",
+                      "ru/api-reference/webhook-events/order-refunded",
+                      "ru/api-reference/webhook-events/order-status-changed",
+                      "ru/api-reference/webhook-events/subscription-created",
+                      "ru/api-reference/webhook-events/subscription-renewed",
+                      "ru/api-reference/webhook-events/subscription-past-due",
+                      "ru/api-reference/webhook-events/subscription-cancelled"
+                    ]
+                  },
+                  {
+                    "group": "Подписчики",
+                    "pages": [
+                      "ru/api-reference/webhook-events/subscriber-added",
+                      "ru/api-reference/webhook-events/subscriber-unsubscribed",
+                      "ru/api-reference/webhook-events/subscriber-resubscribed",
+                      "ru/api-reference/webhook-events/subscriber-contact-created",
+                      "ru/api-reference/webhook-events/subscriber-custom-field-changed",
+                      "ru/api-reference/webhook-events/tag-added",
+                      "ru/api-reference/webhook-events/tag-removed"
+                    ]
+                  },
+                  {
+                    "group": "Продукты и воронки",
+                    "pages": [
+                      "ru/api-reference/webhook-events/product-subscriber-added",
+                      "ru/api-reference/webhook-events/product-subscriber-started",
+                      "ru/api-reference/webhook-events/product-subscriber-finished",
+                      "ru/api-reference/webhook-events/product-access-expired",
+                      "ru/api-reference/webhook-events/funnel-subscriber-added",
+                      "ru/api-reference/webhook-events/funnel-subscriber-started",
+                      "ru/api-reference/webhook-events/funnel-subscriber-finished",
+                      "ru/api-reference/webhook-events/lesson-opened",
+                      "ru/api-reference/webhook-events/lesson-completed",
+                      "ru/api-reference/webhook-events/button-clicked"
+                    ]
+                  },
+                  {
+                    "group": "Каналы и группы",
+                    "pages": [
+                      "ru/api-reference/webhook-events/channel-subscriber-joined",
+                      "ru/api-reference/webhook-events/channel-subscriber-left",
+                      "ru/api-reference/webhook-events/group-subscriber-joined",
+                      "ru/api-reference/webhook-events/group-subscriber-left"
+                    ]
+                  },
+                  {
+                    "group": "Ответы и задания",
+                    "pages": [
+                      "ru/api-reference/webhook-events/poll-response-received",
+                      "ru/api-reference/webhook-events/quiz-response-received",
+                      "ru/api-reference/webhook-events/quiz-response-correct",
+                      "ru/api-reference/webhook-events/quiz-response-wrong",
+                      "ru/api-reference/webhook-events/question-response-received",
+                      "ru/api-reference/webhook-events/task-received",
+                      "ru/api-reference/webhook-events/task-approved"
+                    ]
+                  },
+                  {
+                    "group": "Сообщения",
+                    "pages": [
+                      "ru/api-reference/webhook-events/message-received",
+                      "ru/api-reference/webhook-events/message-sent"
+                    ]
+                  },
+                  "ru/api-reference/webhook-events/webhook-test"
                 ]
               },
               {

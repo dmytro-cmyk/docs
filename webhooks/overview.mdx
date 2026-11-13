@@ -1,0 +1,119 @@
+---
+title: "Webhooks"
+description: "Receive Zenedu events on your server in real time"
+---
+
+A webhook is an HTTP request that Zenedu sends to your endpoint when a specific action happens in your account: an order is placed, a subscriber gets a tag, answers a quiz or writes to the bot. Your system doesn't need to poll the API to learn about changes: the event arrives on its own, usually within a few seconds.
+
+## Ways to receive webhooks
+
+Zenedu sends webhooks in two ways. Both arrive in the same format, are signed the same way and follow the same retry rules.
+
+| Way | Where to set up | When it is sent |
+|---|---|---|
+| Event subscription | **Settings → Workspace → API & Webhooks** or [Create webhook](/api-reference/webhooks/create) | On any of the selected [events](/webhooks/events) in all bots of the account |
+| “Send webhook” action | **Marketing → Automations** or [Create automation](/api-reference/automations/create) | When the automation fires: only for its trigger and conditions, such as a specific offer, product, tag or answer |
+
+## Quickstart
+
+<Steps>
+  <Step title="Create an endpoint">
+    Add a public HTTPS endpoint on your server that accepts `POST` requests with a JSON body and returns a `2xx` status.
+  </Step>
+  <Step title="Add a webhook">
+    Open **Settings → Workspace → API & Webhooks**, click **Add** in the **Webhooks** block, enter the URL and select events. [Create webhook](/api-reference/webhooks/create) does the same.
+  </Step>
+  <Step title="Send a test">
+    Click **Send test** or call [Send test webhook](/api-reference/webhooks/test). Your endpoint receives the [`webhook.test`](/api-reference/webhook-events/webhook-test) event.
+  </Step>
+  <Step title="Verify the signature">
+    Before trusting a request, [verify the signature](#signature) in the `Signature` header.
+  </Step>
+</Steps>
+
+## Request format
+
+Every webhook is a `POST` request with a JSON body. The body always has the same shape: service fields and the event object in `data`.
+
+```json
+{
+  "_id": "01JCQ8Z5W3K7X2M4N6P8R0T2V4",
+  "event": "tag.added",
+  "description": "CRM",
+  "timestamp": "2026-11-13T10:24:31+00:00",
+  "data": {
+    "botId": 42,
+    "tag_id": 7,
+    "tag_name": "VIP",
+    "id": 1503,
+    "user_id": 123456789,
+    "first_name": "Anna",
+    "last_name": "Koval",
+    "username": "anna_k",
+    "phone": null,
+    "email": "anna@example.com",
+    "notes": null,
+    "tags": "VIP, Student",
+    "is_active": true,
+    "is_blocked": false,
+    "last_active_at": "2026-11-13T10:24:29+00:00",
+    "created_at": "2026-10-02T08:15:00+00:00",
+    "utm_tags": {"utm_source": "instagram"},
+    "custom_fields": {"City": "Kyiv"}
+  }
+}
+```
+
+| Field | Description |
+|---|---|
+| `_id` | Unique delivery ID. Retries of the same delivery come with the same `_id` |
+| `event` | Event type, for example `order.paid`. See the [event catalog](/webhooks/events) |
+| `description` | The webhook description you set when creating it, or `null` |
+| `timestamp` | When the event happened, in ISO 8601 |
+| `data` | The event object. It always has `botId`, the ID of the bot where the event happened. Other fields depend on `event` |
+
+Objects in `data` match the API objects: a subscriber is the same as in [Get subscriber](/api-reference/subscribers/get), an order is the same as in [Get order](/api-reference/orders/get). Event fields, such as `tag_id` and `tag_name`, sit next to the subscriber fields.
+
+### Headers
+
+| Header | Description |
+|---|---|
+| `Content-Type` | Always `application/json` |
+| `Signature` | Signature of the request body, see [Signature](#signature) |
+| `X-Event-Type` | Event type, the same value as `event` |
+| `X-Webhook-ID` | Delivery ID, the same value as `_id` |
+
+### Signature
+
+Zenedu signs every webhook. The `Signature` header contains the HMAC-SHA256 of the raw request body in hex, keyed with the account's [API token](/authentication#getting-your-token). To verify a request, compute the HMAC of the body exactly as received, before parsing the JSON, and compare it with the header:
+
+```php
+$expected = hash_hmac('sha256', $rawBody, $apiToken);
+
+if (! hash_equals($expected, $signatureHeader)) {
+    // the request was not sent by Zenedu
+}
+```
+
+After you reset the API token, webhooks are signed with the new token.
+
+## Best practices
+
+- **Respond quickly.** Return `2xx` within 3 seconds and do heavy work, such as writing to a CRM, sending emails or calling the API, in a background queue. A request without a response within 3 seconds counts as failed and is retried.
+- **Handle duplicates.** The same event may arrive more than once. Store the `_id` of processed deliveries and skip repeats.
+- **Don't rely on order.** Each webhook is a separate HTTP request, and because of network delays or a retry, events that happened almost at the same time may arrive in a different order. If order matters, compare `timestamp`.
+- **Subscribe only to the events you need.** Extra events load your server for no benefit.
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Delivery and retries" icon="rotate" href="/webhooks/delivery">
+    Retry schedule and automatic disabling
+  </Card>
+  <Card title="Event catalog" icon="list" href="/webhooks/events">
+    All events and their data
+  </Card>
+  <Card title="Webhooks in the API" icon="code" href="/api-reference/webhooks/list">
+    Manage subscriptions through the API
+  </Card>
+</CardGroup>

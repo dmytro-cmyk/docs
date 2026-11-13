@@ -1,0 +1,89 @@
+---
+title: "Каталог подій"
+description: "Усі події вебхуків: коли надсилаються і що приходить у data"
+---
+
+На сторінці кожної події описані всі поля `data` з типами. Загальні поля тіла — `_id`, `event`, `description`, `timestamp` — описані у [форматі запиту](/uk/webhooks/overview#формат-запиту).
+
+Об’єкти в `data` збігаються з об’єктами API:
+
+- **Підписник** — як в [Отримати підписника](/uk/api-reference/subscribers/get). Поля події (`tag_id`, `product_name` тощо) лежать на одному рівні з полями підписника.
+- **Замовлення** — як в [Отримати замовлення](/uk/api-reference/orders/get), підписник у `data.subscriber`.
+- **Підписка** — як в [Отримати підписку](/uk/api-reference/subscriptions/get), підписник у `data.subscriber`.
+- **Завдання** — як у [Список завдань](/uk/api-reference/tasks/list), плюс `step_name` і `product_name`.
+
+## Замовлення та підписки
+
+| Подія | Коли надсилається | Об’єкт у `data` |
+|---|---|---|
+| [`order.created`](/uk/api-reference/webhook-events/order-created) | Підписник оформив замовлення за тарифом | Замовлення |
+| [`order.paid`](/uk/api-reference/webhook-events/order-paid) | Замовлення перейшло в статус `paid` | Замовлення |
+| [`order.cancelled`](/uk/api-reference/webhook-events/order-cancelled) | Замовлення перейшло в статус `cancelled` | Замовлення |
+| [`order.refunded`](/uk/api-reference/webhook-events/order-refunded) | Замовлення перейшло в статус `refunded` | Замовлення |
+| [`order.status.changed`](/uk/api-reference/webhook-events/order-status-changed) | Статус замовлення змінився, попередній статус у `old_status` | Замовлення |
+| [`subscription.created`](/uk/api-reference/webhook-events/subscription-created) | Підписник оформив підписку | Підписка |
+| [`subscription.renewed`](/uk/api-reference/webhook-events/subscription-renewed) | Списано черговий платіж за підпискою | Підписка |
+| [`subscription.past_due`](/uk/api-reference/webhook-events/subscription-past-due) | Черговий платіж за підпискою не пройшов | Підписка |
+| [`subscription.cancelled`](/uk/api-reference/webhook-events/subscription-cancelled) | Підписку скасовано, доступ діє до `expired_at` | Підписка (власна форма), підписник у `subscriber` |
+
+## Підписники
+
+| Подія | Коли надсилається | Об’єкт у `data` |
+|---|---|---|
+| [`subscriber.added`](/uk/api-reference/webhook-events/subscriber-added) | У боті з’явився новий підписник | Підписник |
+| [`subscriber.unsubscribed`](/uk/api-reference/webhook-events/subscriber-unsubscribed) | Підписник заблокував бота в Telegram | Підписник |
+| [`subscriber.resubscribed`](/uk/api-reference/webhook-events/subscriber-resubscribed) | Підписник розблокував бота в Telegram | Підписник |
+| [`subscriber.contact.created`](/uk/api-reference/webhook-events/subscriber-contact-created) | Підписник залишив телефон або ел. пошту | Підписник |
+| [`subscriber.custom_field.changed`](/uk/api-reference/webhook-events/subscriber-custom-field-changed) | Змінилося значення додаткового поля підписника | Підписник |
+| [`tag.added`](/uk/api-reference/webhook-events/tag-added) | Підписнику додано тег | Підписник |
+| [`tag.removed`](/uk/api-reference/webhook-events/tag-removed) | У підписника видалено тег | Підписник |
+
+## Продукти та воронки
+
+| Подія | Коли надсилається | Об’єкт у `data` |
+|---|---|---|
+| [`product.subscriber.added`](/uk/api-reference/webhook-events/product-subscriber-added) | Підписник отримав доступ до продукту | Підписник |
+| [`product.subscriber.started`](/uk/api-reference/webhook-events/product-subscriber-started) | Підписник почав проходити продукт | Підписник |
+| [`product.subscriber.finished`](/uk/api-reference/webhook-events/product-subscriber-finished) | Підписник пройшов продукт до кінця | Підписник |
+| [`product.access.expired`](/uk/api-reference/webhook-events/product-access-expired) | Закінчився термін доступу підписника до продукту | Підписник |
+| [`funnel.subscriber.added`](/uk/api-reference/webhook-events/funnel-subscriber-added) | Підписника додано до воронки | Підписник |
+| [`funnel.subscriber.started`](/uk/api-reference/webhook-events/funnel-subscriber-started) | Підписник почав проходити воронку | Підписник |
+| [`funnel.subscriber.finished`](/uk/api-reference/webhook-events/funnel-subscriber-finished) | Підписник пройшов воронку до кінця | Підписник |
+| [`lesson.opened`](/uk/api-reference/webhook-events/lesson-opened) | Підписник відкрив урок у додатку | Підписник |
+| [`lesson.completed`](/uk/api-reference/webhook-events/lesson-completed) | Підписник завершив урок у додатку | Підписник |
+| [`button.clicked`](/uk/api-reference/webhook-events/button-clicked) | Підписник натиснув кнопку в кроці | Підписник |
+
+## Канали та групи
+
+| Подія | Коли надсилається | Об’єкт у `data` |
+|---|---|---|
+| [`channel.subscriber.joined`](/uk/api-reference/webhook-events/channel-subscriber-joined) | Підписник приєднався до каналу | Підписник |
+| [`channel.subscriber.left`](/uk/api-reference/webhook-events/channel-subscriber-left) | Підписник покинув канал, причина в `reason` | Підписник |
+| [`group.subscriber.joined`](/uk/api-reference/webhook-events/group-subscriber-joined) | Підписник приєднався до групи | Підписник |
+| [`group.subscriber.left`](/uk/api-reference/webhook-events/group-subscriber-left) | Підписник покинув групу, причина в `reason` | Підписник |
+
+## Відповіді та завдання
+
+| Подія | Коли надсилається | Об’єкт у `data` |
+|---|---|---|
+| [`poll.response.received`](/uk/api-reference/webhook-events/poll-response-received) | Підписник відповів на опитування | Відповідь |
+| [`quiz.response.received`](/uk/api-reference/webhook-events/quiz-response-received) | Підписник відповів на тест | Відповідь |
+| [`quiz.response.correct`](/uk/api-reference/webhook-events/quiz-response-correct) | Підписник відповів на тест правильно | Відповідь |
+| [`quiz.response.wrong`](/uk/api-reference/webhook-events/quiz-response-wrong) | Підписник відповів на тест неправильно | Відповідь |
+| [`question.response.received`](/uk/api-reference/webhook-events/question-response-received) | Підписник відповів на запитання | Відповідь |
+| [`task.received`](/uk/api-reference/webhook-events/task-received) | Підписник надіслав завдання на перевірку | Завдання |
+| [`task.approved`](/uk/api-reference/webhook-events/task-approved) | Завдання підписника прийнято | Завдання |
+
+## Повідомлення
+
+| Подія | Коли надсилається | Об’єкт у `data` |
+|---|---|---|
+| [`message.received`](/uk/api-reference/webhook-events/message-received) | Підписник написав боту | Повідомлення, підписник у `subscriber` |
+| [`message.sent`](/uk/api-reference/webhook-events/message-sent) | Підписнику надіслано повідомлення з чату | Повідомлення, підписник у `subscriber` |
+
+## Тестовий вебхук
+
+| Подія | Коли надсилається | Об’єкт у `data` |
+|---|---|---|
+| [`webhook.test`](/uk/api-reference/webhook-events/webhook-test) | Тестовий запит для перевірки адреси | Тестові дані |
+`webhook.test` надсилається лише кнопкою **Надіслати тест** і через [Надіслати тестовий вебхук](/uk/api-reference/webhooks/test).

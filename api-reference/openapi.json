@@ -485,7 +485,36 @@
                           "subscription.cancelled",
                           "tag.added",
                           "message.received",
-                          "message.sent"
+                          "message.sent",
+                          "subscription.created",
+                          "subscription.renewed",
+                          "subscription.past_due",
+                          "lesson.completed",
+                          "product.subscriber.finished",
+                          "funnel.subscriber.finished",
+                          "product.access.expired",
+                          "tag.removed",
+                          "order.paid",
+                          "order.cancelled",
+                          "order.refunded",
+                          "task.received",
+                          "task.approved",
+                          "channel.subscriber.joined",
+                          "channel.subscriber.left",
+                          "group.subscriber.joined",
+                          "group.subscriber.left",
+                          "poll.response.received",
+                          "quiz.response.received",
+                          "quiz.response.correct",
+                          "quiz.response.wrong",
+                          "question.response.received",
+                          "subscriber.custom_field.changed",
+                          "subscriber.unsubscribed",
+                          "subscriber.resubscribed",
+                          "product.subscriber.started",
+                          "funnel.subscriber.started",
+                          "lesson.opened",
+                          "button.clicked"
                         ]
                       }
                     }
@@ -34089,6 +34118,3585 @@
       }
     }
   },
+  "webhooks": {
+    "order.created": {
+      "post": {
+        "summary": "Order created",
+        "description": "Sent when a subscriber places an order for an offer.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "order.created"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Order"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "order.paid": {
+      "post": {
+        "summary": "Order paid",
+        "description": "Sent when an order changes to `paid`. `order.status.changed` is sent for the same change.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "order.paid"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Order"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "order.cancelled": {
+      "post": {
+        "summary": "Order cancelled",
+        "description": "Sent when an order changes to `cancelled`. `order.status.changed` is sent for the same change.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "order.cancelled"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Order"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "order.refunded": {
+      "post": {
+        "summary": "Order refunded",
+        "description": "Sent when an order changes to `refunded`. `order.status.changed` is sent for the same change.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "order.refunded"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Order"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "order.status.changed": {
+      "post": {
+        "summary": "Order status changed",
+        "description": "Sent on every order status change. The previous status is in `old_status`. Changes to `paid`, `cancelled` and `refunded` also send their own event.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "order.status.changed"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Order"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "subscription.created": {
+      "post": {
+        "summary": "Subscription created",
+        "description": "Sent when a subscriber starts a subscription, including a trial.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "subscription.created"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscription"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "subscription.renewed": {
+      "post": {
+        "summary": "Subscription renewed",
+        "description": "Sent when a recurring payment for a subscription succeeds.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "subscription.renewed"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscription"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "subscription.past_due": {
+      "post": {
+        "summary": "Subscription past due",
+        "description": "Sent when a recurring payment for a subscription fails.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "subscription.past_due"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscription"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "subscription.cancelled": {
+      "post": {
+        "summary": "Subscription cancelled",
+        "description": "Sent when a subscription is cancelled. Paid access lasts until `expired_at`. Unlike other subscription events, `data` has its own shape with the subscriber in `data.subscriber`.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "subscription.cancelled"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "botId": {
+                            "type": "integer",
+                            "description": "ID of the bot the event happened in"
+                          },
+                          "subscriber_id": {
+                            "type": "integer",
+                            "description": "Subscriber ID"
+                          },
+                          "subscription_interval": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "description": "Billing period unit",
+                            "enum": [
+                              "day",
+                              "week",
+                              "month",
+                              "year",
+                              null
+                            ]
+                          },
+                          "subscription_interval_amount": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ],
+                            "description": "Number of period units in one billing period"
+                          },
+                          "subscription_cancel_reason": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "description": "Cancellation reason"
+                          },
+                          "subscriber_full_name": {
+                            "type": "string",
+                            "description": "Subscriber full name"
+                          },
+                          "subscriber_type": {
+                            "type": "string",
+                            "description": "`customer` if the subscriber has paid orders, otherwise `not_customer`",
+                            "enum": [
+                              "customer",
+                              "not_customer"
+                            ]
+                          },
+                          "subscriber": {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          "expired_at": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "description": "When paid access ends",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "subscriber.added": {
+      "post": {
+        "summary": "Subscriber added",
+        "description": "Sent when a new subscriber appears in a bot, usually after the first /start.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "subscriber.added"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "subscriber.unsubscribed": {
+      "post": {
+        "summary": "Subscriber unsubscribed",
+        "description": "Sent when a subscriber blocks the bot in Telegram.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "subscriber.unsubscribed"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "subscriber.resubscribed": {
+      "post": {
+        "summary": "Subscriber resubscribed",
+        "description": "Sent when a subscriber unblocks the bot in Telegram.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "subscriber.resubscribed"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "subscriber.contact.created": {
+      "post": {
+        "summary": "Subscriber contact created",
+        "description": "Sent when a subscriber shares a phone number or email: in a step, a survey or at checkout.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "subscriber.contact.created"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "subscriber.custom_field.changed": {
+      "post": {
+        "summary": "Subscriber additional field changed",
+        "description": "Sent when the value of a subscriber's additional field changes.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "subscriber.custom_field.changed"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "custom_field_id": {
+                                "type": "integer",
+                                "description": "Additional field ID"
+                              },
+                              "custom_field_name": {
+                                "type": "string",
+                                "description": "Additional field name"
+                              },
+                              "value": {
+                                "description": "New value"
+                              },
+                              "previous_value": {
+                                "description": "Previous value, `null` if the field was empty"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "tag.added": {
+      "post": {
+        "summary": "Tag added",
+        "description": "Sent when a tag is added to a subscriber.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "tag.added"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "tag_id": {
+                                "type": "integer",
+                                "description": "Tag ID"
+                              },
+                              "tag_name": {
+                                "type": "string",
+                                "description": "Tag name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "tag.removed": {
+      "post": {
+        "summary": "Tag removed",
+        "description": "Sent when a tag is removed from a subscriber.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "tag.removed"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "tag_id": {
+                                "type": "integer",
+                                "description": "Tag ID"
+                              },
+                              "tag_name": {
+                                "type": "string",
+                                "description": "Tag name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "product.subscriber.added": {
+      "post": {
+        "summary": "Subscriber added to product",
+        "description": "Sent when a subscriber gets access to a product.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "product.subscriber.added"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "product_id": {
+                                "type": "integer",
+                                "description": "Product ID"
+                              },
+                              "product_name": {
+                                "type": "string",
+                                "description": "Product name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "product.subscriber.started": {
+      "post": {
+        "summary": "Product started",
+        "description": "Sent when a subscriber starts a product: gets its first step or opens its first lesson.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "product.subscriber.started"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "product_id": {
+                                "type": "integer",
+                                "description": "Product ID"
+                              },
+                              "product_name": {
+                                "type": "string",
+                                "description": "Product name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "product.subscriber.finished": {
+      "post": {
+        "summary": "Product finished",
+        "description": "Sent when a subscriber finishes a product.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "product.subscriber.finished"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "product_id": {
+                                "type": "integer",
+                                "description": "Product ID"
+                              },
+                              "product_name": {
+                                "type": "string",
+                                "description": "Product name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "product.access.expired": {
+      "post": {
+        "summary": "Product access expired",
+        "description": "Sent when a subscriber's access period to a product ends.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "product.access.expired"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "product_id": {
+                                "type": "integer",
+                                "description": "Product ID"
+                              },
+                              "product_name": {
+                                "type": "string",
+                                "description": "Product name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "funnel.subscriber.added": {
+      "post": {
+        "summary": "Subscriber added to funnel",
+        "description": "Sent when a subscriber is added to a funnel.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "funnel.subscriber.added"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "funnel_id": {
+                                "type": "integer",
+                                "description": "Funnel ID"
+                              },
+                              "funnel_name": {
+                                "type": "string",
+                                "description": "Funnel name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "funnel.subscriber.started": {
+      "post": {
+        "summary": "Funnel started",
+        "description": "Sent when a subscriber starts a funnel.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "funnel.subscriber.started"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "funnel_id": {
+                                "type": "integer",
+                                "description": "Funnel ID"
+                              },
+                              "funnel_name": {
+                                "type": "string",
+                                "description": "Funnel name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "funnel.subscriber.finished": {
+      "post": {
+        "summary": "Funnel finished",
+        "description": "Sent when a subscriber finishes a funnel.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "funnel.subscriber.finished"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "funnel_id": {
+                                "type": "integer",
+                                "description": "Funnel ID"
+                              },
+                              "funnel_name": {
+                                "type": "string",
+                                "description": "Funnel name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "lesson.opened": {
+      "post": {
+        "summary": "Lesson opened",
+        "description": "Sent when a subscriber opens a lesson in the mini app.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "lesson.opened"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "lesson_id": {
+                                "type": "integer",
+                                "description": "Lesson ID"
+                              },
+                              "lesson_name": {
+                                "type": "string",
+                                "description": "Lesson name"
+                              },
+                              "product_id": {
+                                "type": "integer",
+                                "description": "Product ID"
+                              },
+                              "product_name": {
+                                "type": "string",
+                                "description": "Product name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "lesson.completed": {
+      "post": {
+        "summary": "Lesson completed",
+        "description": "Sent when a subscriber completes a lesson in the mini app.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "lesson.completed"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "lesson_id": {
+                                "type": "integer",
+                                "description": "Lesson ID"
+                              },
+                              "lesson_name": {
+                                "type": "string",
+                                "description": "Lesson name"
+                              },
+                              "product_id": {
+                                "type": "integer",
+                                "description": "Product ID"
+                              },
+                              "product_name": {
+                                "type": "string",
+                                "description": "Product name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "button.clicked": {
+      "post": {
+        "summary": "Button clicked",
+        "description": "Sent when a subscriber clicks a button in a step.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "button.clicked"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "button_id": {
+                                "type": "integer",
+                                "description": "Button ID"
+                              },
+                              "button_name": {
+                                "type": "string",
+                                "description": "Button text"
+                              },
+                              "step_id": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "description": "Step ID"
+                              },
+                              "step_name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Step name"
+                              },
+                              "product_id": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "description": "ID of the product or funnel the step belongs to"
+                              },
+                              "product_name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Name of the product or funnel the step belongs to"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "channel.subscriber.joined": {
+      "post": {
+        "summary": "Subscriber joined channel",
+        "description": "Sent when a subscriber joins a channel administered by the bot.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "channel.subscriber.joined"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "channel_id": {
+                                "type": "integer",
+                                "description": "Channel ID"
+                              },
+                              "channel_name": {
+                                "type": "string",
+                                "description": "Channel name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "channel.subscriber.left": {
+      "post": {
+        "summary": "Subscriber left channel",
+        "description": "Sent when a subscriber leaves or is removed from a channel. The reason is in `reason`.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "channel.subscriber.left"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "channel_id": {
+                                "type": "integer",
+                                "description": "Channel ID"
+                              },
+                              "channel_name": {
+                                "type": "string",
+                                "description": "Channel name"
+                              },
+                              "reason": {
+                                "type": "string",
+                                "description": "Why the subscriber left: `voluntarily` (left on their own), `manually` (removed by the team), `access_expired`, `cancelled_subscription`, `student_blocked` or `automation`",
+                                "enum": [
+                                  "voluntarily",
+                                  "manually",
+                                  "access_expired",
+                                  "cancelled_subscription",
+                                  "student_blocked",
+                                  "automation"
+                                ]
+                              },
+                              "left_at": {
+                                "type": "string",
+                                "description": "When the subscriber left",
+                                "format": "date-time"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "group.subscriber.joined": {
+      "post": {
+        "summary": "Subscriber joined group",
+        "description": "Sent when a subscriber joins a group administered by the bot.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "group.subscriber.joined"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "group_id": {
+                                "type": "integer",
+                                "description": "Group ID"
+                              },
+                              "group_name": {
+                                "type": "string",
+                                "description": "Group name"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "group.subscriber.left": {
+      "post": {
+        "summary": "Subscriber left group",
+        "description": "Sent when a subscriber leaves or is removed from a group. The reason is in `reason`.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "group.subscriber.left"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Subscriber"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "group_id": {
+                                "type": "integer",
+                                "description": "Group ID"
+                              },
+                              "group_name": {
+                                "type": "string",
+                                "description": "Group name"
+                              },
+                              "reason": {
+                                "type": "string",
+                                "description": "Why the subscriber left: `voluntarily` (left on their own), `manually` (removed by the team), `access_expired`, `cancelled_subscription`, `student_blocked` or `automation`",
+                                "enum": [
+                                  "voluntarily",
+                                  "manually",
+                                  "access_expired",
+                                  "cancelled_subscription",
+                                  "student_blocked",
+                                  "automation"
+                                ]
+                              },
+                              "left_at": {
+                                "type": "string",
+                                "description": "When the subscriber left",
+                                "format": "date-time"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "poll.response.received": {
+      "post": {
+        "summary": "Poll response received",
+        "description": "Sent when a subscriber answers a poll step.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "poll.response.received"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/WebhookStepResponse"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "quiz.response.received": {
+      "post": {
+        "summary": "Quiz response received",
+        "description": "Sent on every answer to a quiz step. `quiz.response.correct` or `quiz.response.wrong` is sent for the same answer.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "quiz.response.received"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/WebhookStepResponse"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "quiz.response.correct": {
+      "post": {
+        "summary": "Quiz response correct",
+        "description": "Sent when a subscriber answers a quiz step correctly.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "quiz.response.correct"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/WebhookStepResponse"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "quiz.response.wrong": {
+      "post": {
+        "summary": "Quiz response wrong",
+        "description": "Sent when a subscriber answers a quiz step incorrectly.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "quiz.response.wrong"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/WebhookStepResponse"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "question.response.received": {
+      "post": {
+        "summary": "Question response received",
+        "description": "Sent when a subscriber answers a question step.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "question.response.received"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/WebhookStepResponse"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "task.received": {
+      "post": {
+        "summary": "Assignment received",
+        "description": "Sent when a subscriber submits an assignment.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "task.received"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Task"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "step_name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Name of the step with the assignment"
+                              },
+                              "product_name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Name of the product the step belongs to"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "task.approved": {
+      "post": {
+        "summary": "Assignment approved",
+        "description": "Sent when a subscriber's assignment is approved.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "task.approved"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Task"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              },
+                              "step_name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Name of the step with the assignment"
+                              },
+                              "product_name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Name of the product the step belongs to"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "message.received": {
+      "post": {
+        "summary": "Message received",
+        "description": "Sent when a subscriber sends a message to the bot.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "message.received"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/WebhookMessage"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "message.sent": {
+      "post": {
+        "summary": "Message sent",
+        "description": "Sent when a message is sent to a subscriber from Chats or as a reply from Telegram.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "message.sent"
+                      },
+                      "data": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/WebhookMessage"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "botId": {
+                                "type": "integer",
+                                "description": "ID of the bot the event happened in"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    },
+    "webhook.test": {
+      "post": {
+        "summary": "Test webhook",
+        "description": "Sent by **Send test** in the dashboard and by [Send test webhook](/api-reference/webhooks/test). `data` has no `botId`.",
+        "tags": [
+          "Webhook events"
+        ],
+        "parameters": [
+          {
+            "name": "Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 of the raw request body, hex. The key is the API token of the account"
+          },
+          {
+            "name": "X-Event-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event type, the same as `event` in the body"
+          },
+          {
+            "name": "X-Webhook-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delivery ID, the same as `_id` in the body"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WebhookEvent"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "const": "webhook.test"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string",
+                            "description": "Fixed text",
+                            "examples": [
+                              "This is a test webhook to verify your endpoint configuration."
+                            ]
+                          },
+                          "endpoint_url": {
+                            "type": "string",
+                            "description": "URL the test was sent to",
+                            "format": "uri"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "Return any 2xx status within 3 seconds to confirm the delivery. Any other status, a connection error or a timeout is retried"
+          }
+        }
+      }
+    }
+  },
   "components": {
     "securitySchemes": {
       "bearerAuth": {
@@ -34812,7 +38420,36 @@
                 "subscription.cancelled",
                 "tag.added",
                 "message.received",
-                "message.sent"
+                "message.sent",
+                "subscription.created",
+                "subscription.renewed",
+                "subscription.past_due",
+                "lesson.completed",
+                "product.subscriber.finished",
+                "funnel.subscriber.finished",
+                "product.access.expired",
+                "tag.removed",
+                "order.paid",
+                "order.cancelled",
+                "order.refunded",
+                "task.received",
+                "task.approved",
+                "channel.subscriber.joined",
+                "channel.subscriber.left",
+                "group.subscriber.joined",
+                "group.subscriber.left",
+                "poll.response.received",
+                "quiz.response.received",
+                "quiz.response.correct",
+                "quiz.response.wrong",
+                "question.response.received",
+                "subscriber.custom_field.changed",
+                "subscriber.unsubscribed",
+                "subscriber.resubscribed",
+                "product.subscriber.started",
+                "funnel.subscriber.started",
+                "lesson.opened",
+                "button.clicked"
               ]
             },
             "description": "Event types to subscribe to. At least one is required."
@@ -38399,6 +42036,235 @@
               "type": "integer"
             },
             "description": "Payment method IDs of this account in the new order, without duplicates"
+          }
+        }
+      },
+      "WebhookEvent": {
+        "type": "object",
+        "description": "Body of every webhook delivery",
+        "required": [
+          "_id",
+          "event",
+          "description",
+          "timestamp",
+          "data"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Unique delivery ID (ULID), the same as the `X-Webhook-ID` header. Retries of a delivery keep it, use it to skip duplicates",
+            "examples": [
+              "01JCQ8Z5W3K7X2M4N6P8R0T2V4"
+            ]
+          },
+          "event": {
+            "type": "string",
+            "description": "Event type, the same as the `X-Event-Type` header"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Description of the webhook subscription"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "When the event happened (ISO 8601)",
+            "format": "date-time"
+          },
+          "data": {
+            "type": "object",
+            "description": "Event object, its shape depends on `event`"
+          }
+        }
+      },
+      "WebhookStepResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Response ID"
+          },
+          "step_id": {
+            "type": "integer",
+            "description": "Step ID"
+          },
+          "step_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Step name"
+          },
+          "type": {
+            "type": "string",
+            "description": "Step type",
+            "enum": [
+              "poll",
+              "quiz",
+              "question"
+            ]
+          },
+          "product_id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "ID of the product or funnel the step belongs to"
+          },
+          "product_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Name of the product or funnel the step belongs to"
+          },
+          "subscriber_id": {
+            "type": "integer",
+            "description": "Subscriber ID"
+          },
+          "subscriber_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Subscriber full name"
+          },
+          "text": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Text answer, for a question step"
+          },
+          "option": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Chosen option, for a single-choice poll or quiz",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Option ID"
+              },
+              "text": {
+                "type": "string",
+                "description": "Option text"
+              },
+              "is_correct": {
+                "type": "boolean",
+                "description": "Whether the option is correct in a quiz"
+              }
+            }
+          },
+          "options": {
+            "type": "array",
+            "description": "Chosen options, for a multiple-choice poll or quiz",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Option ID"
+                },
+                "text": {
+                  "type": "string",
+                  "description": "Option text"
+                },
+                "is_correct": {
+                  "type": "boolean",
+                  "description": "Whether the option is correct in a quiz"
+                }
+              }
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "description": "When the response was received",
+            "format": "date-time"
+          }
+        }
+      },
+      "WebhookMessage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Message ID"
+          },
+          "telegram_message_id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Telegram message ID"
+          },
+          "subscriber": {
+            "$ref": "#/components/schemas/Subscriber"
+          },
+          "text": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Message text"
+          },
+          "outgoing": {
+            "type": "boolean",
+            "description": "`true` for a message sent to the subscriber, `false` for a message from the subscriber"
+          },
+          "file": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Attached file, `null` if there is none",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "File type"
+              },
+              "url": {
+                "type": "string",
+                "description": "Download link, requires the API token",
+                "format": "uri"
+              },
+              "title": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "File name"
+              },
+              "size": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "File size in bytes"
+              },
+              "duration": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "Duration in seconds, for audio and video"
+              }
+            }
+          },
+          "reply_to_message_id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Telegram ID of the message this one replies to"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "When the message was saved",
+            "format": "date-time"
           }
         }
       }

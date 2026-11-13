@@ -13,6 +13,11 @@ a[data-component-part="pagination-next"][href$="/guides/miniapp-course"] {
   display: none !important;
 }
 
+/* Names in the first column of tables (events, fields, headers) never break mid-word */
+table td:first-child code {
+  white-space: nowrap;
+}
+
 [data-component-part="field-required-pill"]::after {
   content: "required";
   font-size: 0.75rem;

@@ -1,0 +1,89 @@
+---
+title: "Event catalog"
+description: "All webhook events: when they are sent and what comes in data"
+---
+
+Each event page describes every `data` field with its type. The common body fields, `_id`, `event`, `description` and `timestamp`, are described in the [request format](/webhooks/overview#request-format).
+
+Objects in `data` match the API objects:
+
+- **Subscriber**: the same as in [Get subscriber](/api-reference/subscribers/get). Event fields (`tag_id`, `product_name` and so on) sit at the same level as the subscriber fields.
+- **Order**: the same as in [Get order](/api-reference/orders/get), the subscriber is in `data.subscriber`.
+- **Subscription**: the same as in [Get subscription](/api-reference/subscriptions/get), the subscriber is in `data.subscriber`.
+- **Assignment**: the same as in [List assignments](/api-reference/tasks/list), plus `step_name` and `product_name`.
+
+## Orders and subscriptions
+
+| Event | When it is sent | Object in `data` |
+|---|---|---|
+| [`order.created`](/api-reference/webhook-events/order-created) | A subscriber placed an order for an offer | Order |
+| [`order.paid`](/api-reference/webhook-events/order-paid) | An order changed to `paid` | Order |
+| [`order.cancelled`](/api-reference/webhook-events/order-cancelled) | An order changed to `cancelled` | Order |
+| [`order.refunded`](/api-reference/webhook-events/order-refunded) | An order changed to `refunded` | Order |
+| [`order.status.changed`](/api-reference/webhook-events/order-status-changed) | An order status changed, the previous status is in `old_status` | Order |
+| [`subscription.created`](/api-reference/webhook-events/subscription-created) | A subscriber started a subscription | Subscription |
+| [`subscription.renewed`](/api-reference/webhook-events/subscription-renewed) | A recurring subscription payment succeeded | Subscription |
+| [`subscription.past_due`](/api-reference/webhook-events/subscription-past-due) | A recurring subscription payment failed | Subscription |
+| [`subscription.cancelled`](/api-reference/webhook-events/subscription-cancelled) | A subscription was cancelled, access lasts until `expired_at` | Subscription (own shape), subscriber in `subscriber` |
+
+## Subscribers
+
+| Event | When it is sent | Object in `data` |
+|---|---|---|
+| [`subscriber.added`](/api-reference/webhook-events/subscriber-added) | A new subscriber appeared in a bot | Subscriber |
+| [`subscriber.unsubscribed`](/api-reference/webhook-events/subscriber-unsubscribed) | A subscriber blocked the bot in Telegram | Subscriber |
+| [`subscriber.resubscribed`](/api-reference/webhook-events/subscriber-resubscribed) | A subscriber unblocked the bot in Telegram | Subscriber |
+| [`subscriber.contact.created`](/api-reference/webhook-events/subscriber-contact-created) | A subscriber shared a phone number or email | Subscriber |
+| [`subscriber.custom_field.changed`](/api-reference/webhook-events/subscriber-custom-field-changed) | The value of a subscriber's additional field changed | Subscriber |
+| [`tag.added`](/api-reference/webhook-events/tag-added) | A tag was added to a subscriber | Subscriber |
+| [`tag.removed`](/api-reference/webhook-events/tag-removed) | A tag was removed from a subscriber | Subscriber |
+
+## Products and funnels
+
+| Event | When it is sent | Object in `data` |
+|---|---|---|
+| [`product.subscriber.added`](/api-reference/webhook-events/product-subscriber-added) | A subscriber got access to a product | Subscriber |
+| [`product.subscriber.started`](/api-reference/webhook-events/product-subscriber-started) | A subscriber started a product | Subscriber |
+| [`product.subscriber.finished`](/api-reference/webhook-events/product-subscriber-finished) | A subscriber finished a product | Subscriber |
+| [`product.access.expired`](/api-reference/webhook-events/product-access-expired) | A subscriber's access to a product expired | Subscriber |
+| [`funnel.subscriber.added`](/api-reference/webhook-events/funnel-subscriber-added) | A subscriber was added to a funnel | Subscriber |
+| [`funnel.subscriber.started`](/api-reference/webhook-events/funnel-subscriber-started) | A subscriber started a funnel | Subscriber |
+| [`funnel.subscriber.finished`](/api-reference/webhook-events/funnel-subscriber-finished) | A subscriber finished a funnel | Subscriber |
+| [`lesson.opened`](/api-reference/webhook-events/lesson-opened) | A subscriber opened a lesson in the app | Subscriber |
+| [`lesson.completed`](/api-reference/webhook-events/lesson-completed) | A subscriber completed a lesson in the app | Subscriber |
+| [`button.clicked`](/api-reference/webhook-events/button-clicked) | A subscriber clicked a button in a step | Subscriber |
+
+## Channels and groups
+
+| Event | When it is sent | Object in `data` |
+|---|---|---|
+| [`channel.subscriber.joined`](/api-reference/webhook-events/channel-subscriber-joined) | A subscriber joined a channel | Subscriber |
+| [`channel.subscriber.left`](/api-reference/webhook-events/channel-subscriber-left) | A subscriber left a channel, the reason is in `reason` | Subscriber |
+| [`group.subscriber.joined`](/api-reference/webhook-events/group-subscriber-joined) | A subscriber joined a group | Subscriber |
+| [`group.subscriber.left`](/api-reference/webhook-events/group-subscriber-left) | A subscriber left a group, the reason is in `reason` | Subscriber |
+
+## Responses and assignments
+
+| Event | When it is sent | Object in `data` |
+|---|---|---|
+| [`poll.response.received`](/api-reference/webhook-events/poll-response-received) | A subscriber answered a poll | Response |
+| [`quiz.response.received`](/api-reference/webhook-events/quiz-response-received) | A subscriber answered a quiz | Response |
+| [`quiz.response.correct`](/api-reference/webhook-events/quiz-response-correct) | A subscriber answered a quiz correctly | Response |
+| [`quiz.response.wrong`](/api-reference/webhook-events/quiz-response-wrong) | A subscriber answered a quiz incorrectly | Response |
+| [`question.response.received`](/api-reference/webhook-events/question-response-received) | A subscriber answered a question | Response |
+| [`task.received`](/api-reference/webhook-events/task-received) | A subscriber submitted an assignment for review | Assignment |
+| [`task.approved`](/api-reference/webhook-events/task-approved) | A subscriber's assignment was approved | Assignment |
+
+## Messages
+
+| Event | When it is sent | Object in `data` |
+|---|---|---|
+| [`message.received`](/api-reference/webhook-events/message-received) | A subscriber wrote to the bot | Message, subscriber in `subscriber` |
+| [`message.sent`](/api-reference/webhook-events/message-sent) | A message was sent to a subscriber from Chats | Message, subscriber in `subscriber` |
+
+## Test webhook
+
+| Event | When it is sent | Object in `data` |
+|---|---|---|
+| [`webhook.test`](/api-reference/webhook-events/webhook-test) | A test request to check the endpoint | Test data |
+`webhook.test` is sent only by the **Send test** button and by [Send test webhook](/api-reference/webhooks/test).
